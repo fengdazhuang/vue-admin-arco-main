@@ -1,7 +1,7 @@
 export default {
   path: 'result',
   name: 'result',
-  component: () => import('@/views/result/index.vue'),
+  component: () => import('@/views/backStage/result/index.vue'),
   meta: {
     locale: 'menu.result',
     icon: 'icon-check-circle',
@@ -11,7 +11,7 @@ export default {
     {
       path: 'success',
       name: 'success',
-      component: () => import('@/views/result/success/index.vue'),
+      component: () => import('@/views/backStage/result/success/index.vue'),
       meta: {
         locale: 'menu.result.success',
         requiresAuth: true,
@@ -21,7 +21,7 @@ export default {
     {
       path: 'error',
       name: 'error',
-      component: () => import('@/views/result/error/index.vue'),
+      component: () => import('@/views/backStage/result/error/index.vue'),
       meta: {
         locale: 'menu.result.error',
         requiresAuth: true,

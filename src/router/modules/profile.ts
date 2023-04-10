@@ -1,7 +1,7 @@
 export default {
   path: 'profile',
   name: 'profile',
-  component: () => import('@/views/profile/index.vue'),
+  component: () => import('@/views/backStage/profile/index.vue'),
   meta: {
     locale: 'menu.profile',
     requiresAuth: true,
@@ -11,7 +11,7 @@ export default {
     {
       path: 'basic',
       name: 'basic',
-      component: () => import('@/views/profile/basic/index.vue'),
+      component: () => import('@/views/backStage/profile/basic/index.vue'),
       meta: {
         locale: 'menu.profile.basic',
         requiresAuth: true,

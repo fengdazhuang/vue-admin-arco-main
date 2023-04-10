@@ -1,7 +1,7 @@
 export default {
   path: 'user',
   name: 'user',
-  component: () => import('@/views/user/index.vue'),
+  component: () => import('@/views/backStage/user/index.vue'),
   meta: {
     locale: 'menu.user',
     icon: 'icon-user',
@@ -11,7 +11,7 @@ export default {
     {
       path: 'info',
       name: 'info',
-      component: () => import('@/views/user/info/index.vue'),
+      component: () => import('@/views/backStage/user/info/index.vue'),
       meta: {
         locale: 'menu.user.info',
         requiresAuth: true,
@@ -21,7 +21,7 @@ export default {
     {
       path: 'setting',
       name: 'setting',
-      component: () => import('@/views/user/setting/index.vue'),
+      component: () => import('@/views/backStage/user/setting/index.vue'),
       meta: {
         locale: 'menu.user.setting',
         requiresAuth: true,

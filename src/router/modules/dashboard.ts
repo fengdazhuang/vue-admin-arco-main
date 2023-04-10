@@ -1,7 +1,8 @@
 export default {
   path: 'dashboard',
   name: 'dashboard',
-  component: () => import('@/views/dashboard/index.vue'),
+  component: () => import('@/views/backStage/dashboard/index.vue'),
+  redirect:'/workplace',
   meta: {
     locale: 'menu.dashboard',
     requiresAuth: true,
@@ -11,7 +12,7 @@ export default {
     {
       path: 'workplace',
       name: 'workplace',
-      component: () => import('@/views/dashboard/workplace/index.vue'),
+      component: () => import('@/views/backStage/dashboard/workplace/index.vue'),
       meta: {
         locale: 'menu.dashboard.workplace',
         requiresAuth: true,
@@ -22,7 +23,7 @@ export default {
     {
       path: 'monitor',
       name: 'monitor',
-      component: () => import('@/views/dashboard/monitor/index.vue'),
+      component: () => import('@/views/backStage/dashboard/monitor/index.vue'),
       meta: {
         locale: 'menu.dashboard.monitor',
         requiresAuth: true,

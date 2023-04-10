@@ -11,7 +11,12 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Block: typeof import('./src/components/global-setting/block.vue')['default']
     Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
+    CarouselF: typeof import('./src/components/Carousel-f.vue')['default']
     Chart: typeof import('./src/components/chart/index.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElMenu: typeof import('element-plus/es')['ElMenu']
+    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElRow: typeof import('element-plus/es')['ElRow']
     Footer: typeof import('./src/components/footer/index.vue')['default']
     FormWrapper: typeof import('./src/components/global-setting/form-wrapper.vue')['default']
     GlobalSetting: typeof import('./src/components/global-setting/index.vue')['default']

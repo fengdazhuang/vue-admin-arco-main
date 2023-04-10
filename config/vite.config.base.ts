@@ -9,6 +9,22 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
   base: '',
+  server: {
+    host: 'localhost',
+    port: 8081,
+    proxy: {
+      "/admin": {
+        target: "http://localhost:8001"
+      },
+      "/file":{
+        target: "http://localhost:8005"
+      },
+      "/competition":{
+        target: "http://localhost:8004"
+      },
+
+    }
+  },
   plugins: [
     vue(), 
     vueJsx(), 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   createRouter,
   createWebHashHistory,
@@ -20,19 +21,51 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: 'login',
+      name:'home',
+      component:()=>import("@/views/Home.vue"),
+      redirect: 'index',
+      children:[
+        {
+            path:'index',
+            name:'index',
+            component:()=>import("@/views/Index.vue")
+        },
+        {
+            path:'volunteerService',
+            name:'volunteerService',
+            component:()=>import("@/views/VolunteerService.vue")
+        },
+        // {
+        //     path:'backStage',
+        //     name:'backStage',
+        //     component: PageLayout,
+        //     // component:()=>import("@/views/BackStage.vue"),
+        //     redirect:'login',
+            
+        //     children: appRoutes,
+        // }
+    ]
     },
-    Login,
     {
-      name: 'root',
-      path: '/',
+      path:'/backStage',
+      name:'backStage',
       component: PageLayout,
+      // component:()=>import("@/views/BackStage.vue"),
+      redirect:'login',
+      
       children: appRoutes,
-    },
+  },
+    Login,
+    // {
+    //   name: 'root',
+    //   path: '/',
+    //   component: PageLayout,
+    //   children: appRoutes,
+    // },
     {
       path: '/:pathMatch(.*)*',
       name: 'notFound',
-      component: () => import('@/views/not-found/index.vue'),
+      component: () => import('@/views/backStage/not-found/index.vue'),
     },
   ],
   scrollBehavior() {

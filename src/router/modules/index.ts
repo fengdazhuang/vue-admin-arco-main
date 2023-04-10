@@ -5,7 +5,7 @@ import Form from './form';
 import Profile from './profile';
 import Visualization from './visualization';
 import Result from './result';
-import Exception from './exception';
+import personnel from './personnel';
 import User from './user';
 /** simple end */
 
@@ -17,7 +17,7 @@ export default [
   Form,
   Profile,
   Result,
-  Exception,
+  personnel,
   User,
   /** simple end */
 ];

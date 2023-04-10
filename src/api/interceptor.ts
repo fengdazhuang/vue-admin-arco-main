@@ -23,14 +23,15 @@ axios.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     const res = response.data;
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 200) {
+    if (res.code !== 200 && res.code!==20000 && res.code!==600) {
+      console.log('res.message',res.code)
       Message.error({
         content: res.message || 'Error',
         duration: 5 * 1000,
       });
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+      // admin08: Illegal token; admin12: Other clients logged in; admin14: Token expired;
       if (
-        [50008, 50012, 50014].includes(res.code) &&
+        [admin08, admin12, admin14].includes(res.code) &&
         response.config.url !== '/api/user/info'
       ) {
         Modal.error({

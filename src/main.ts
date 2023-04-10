@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { createApp } from 'vue';
-import axios from 'axios'
-axios.defaults.baseURL='http://localhost:8001';
+// import axios from 'axios'
+// axios.defaults.baseURL='http://localhost:8001';
 import ArcoVue from '@arco-design/web-vue';
 import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import globalComponents from '@/components';

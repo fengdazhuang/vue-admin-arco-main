@@ -22,7 +22,7 @@ export default defineComponent({
     const appRoute = computed(() => {
       return router
         .getRoutes()
-        .find((el) => el.name === 'root') as RouteRecordNormalized;
+        .find((el) => el.name === 'backStage') as RouteRecordNormalized;
     });
     const menuTree = computed(() => {
       const copyRouter = JSON.parse(JSON.stringify(appRoute.value.children));

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'query-string';
 import { Options } from '@/types/global';
+import {UserState} from "@/store/modules/user/types";
 
 export interface PolicyRecord {
   id: string;
@@ -22,6 +23,7 @@ export interface PolicyListRes {
   list: PolicyRecord[];
   total: number;
 }
+
 
 export function queryPolicyList(params: PolicyParams) {
   return axios.get<PolicyListRes>('/api/list/policy', {
@@ -53,4 +55,23 @@ export function queryTheServiceList() {
 
 export function queryRulesPresetList() {
   return axios.get('/api/list/rules-preset');
+}
+
+export  function addComCategory (data) {
+  return axios.post('/competition/addComCategory',data);
+}
+export  function addComInfo (data) {
+  return axios.post('/competition/addComInfo',data);
+}
+// export function getCompetitioncategorys() {
+//   return axios.get('/competition/getComCategorys');
+// }
+export function getComInfos(){
+  return axios.get('/competition/getComInfos')
+}
+export  function getComNamesByComCategoryId () {
+  return axios.get('/competition/getComNamesByComCategoryId');
+}
+export function uploadImg (data) {
+  return axios.post('/file/uploadFiles',data)
 }

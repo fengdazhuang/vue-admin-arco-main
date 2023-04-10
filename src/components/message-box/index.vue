@@ -5,7 +5,7 @@
         <template #title>
           <span> {{ item.title }}{{ formatUnreadLength(item.key) }} </span>
         </template>
-        <a-result v-if="!renderList.length" status="404">
+        <a-result v-if="!renderList.length" status="player">
           <template #subtitle> {{ $t('messageBox.noContent') }} </template>
         </a-result>
         <List

@@ -1,7 +1,7 @@
 export default {
   path: 'visualization',
   name: 'visualization',
-  component: () => import('@/views/visualization/index.vue'),
+  component: () => import('@/views/backStage/visualization/index.vue'),
   meta: {
     locale: 'menu.visualization',
     requiresAuth: true,
@@ -11,7 +11,7 @@ export default {
     {
       path: 'data-analysis',
       name: 'dataAnalysis',
-      component: () => import('@/views/visualization/data-analysis/index.vue'),
+      component: () => import('@/views/backStage/visualization/data-analysis/index.vue'),
       meta: {
         locale: 'menu.visualization.dataAnalysis',
         requiresAuth: true,
@@ -22,7 +22,7 @@ export default {
       path: 'multi-dimension-data-analysis',
       name: 'multiDimensionDataAnalysis',
       component: () =>
-        import('@/views/visualization/multi-dimension-data-analysis/index.vue'),
+        import('@/views/backStage/visualization/multi-dimension-data-analysis/index.vue'),
       meta: {
         locale: 'menu.visualization.multiDimensionDataAnalysis',
         requiresAuth: true,
