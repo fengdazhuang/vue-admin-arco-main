@@ -13,6 +13,7 @@ export default defineConfig({
     host: 'localhost',
     port: 8081,
     proxy: {
+      target: `http://localhost:8080`,
       "/admin": {
         target: "http://localhost:8001"
       },
