@@ -31,11 +31,11 @@ export function addPlayer(data){
 export function deletePlayer(params) {
   return axios.delete('/api1/player/deletePlayer',params)
 }
-export  function listPlayers(data) {
-  return axios.post('/api1/player/listPlayers',data)
+export  function listPlayers(params) {
+  return axios.get('/api1/player/listPlayers',params)
 }
-export  function queryPlayer(data) {
-  return axios.post('/api1/player/queryPlayer',data)
+export  function queryPlayer(params) {
+  return axios.get('/api1/player/queryPlayer',params)
 }
 export  function updatePlayer(data) {
   return axios.put('/api1/player/updatePlayer',data)
