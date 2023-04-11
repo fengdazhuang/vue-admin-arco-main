@@ -31,7 +31,7 @@ axios.interceptors.response.use(
       });
       // admin08: Illegal token; admin12: Other clients logged in; admin14: Token expired;
       if (
-        [admin08, admin12, admin14].includes(res.code) &&
+        [50008, 50012, 50014].includes(res.code) &&
         response.config.url !== '/api/user/info'
       ) {
         Modal.error({

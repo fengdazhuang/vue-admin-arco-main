@@ -13,14 +13,13 @@ export default defineConfig({
     host: 'localhost',
     port: 8081,
     proxy: {
-      target: `http://localhost:8080`,
-      "/admin": {
+      "/api1": {
         target: "http://localhost:8001"
       },
-      "/file":{
-        target: "http://localhost:8005"
+      "/api9":{
+        target: "http://localhost:8009"
       },
-      "/competition":{
+      "/api4":{
         target: "http://localhost:8004"
       },
 

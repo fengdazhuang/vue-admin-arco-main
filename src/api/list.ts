@@ -15,7 +15,10 @@ export interface PolicyRecord {
 }
 
 export interface PolicyParams extends Partial<PolicyRecord> {
-  current: number;
+  competitionName:''
+  country:'',
+  name:'',
+  pageNumber: number;
   pageSize: number;
 }
 
@@ -58,20 +61,20 @@ export function queryRulesPresetList() {
 }
 
 export  function addComCategory (data) {
-  return axios.post('/competition/addComCategory',data);
+  return axios.post('/api4/competition/addComCategory',data);
 }
 export  function addComInfo (data) {
-  return axios.post('/competition/addComInfo',data);
+  return axios.post('/api4/competition/addComInfo',data);
 }
 // export function getCompetitioncategorys() {
 //   return axios.get('/competition/getComCategorys');
 // }
 export function getComInfos(){
-  return axios.get('/competition/getComInfos')
+  return axios.get('/api4/competition/getComInfos')
 }
 export  function getComNamesByComCategoryId () {
-  return axios.get('/competition/getComNamesByComCategoryId');
+  return axios.get('/api4/competition/getComNamesByComCategoryId');
 }
 export function uploadImg (data) {
-  return axios.post('/file/uploadFiles',data)
+  return axios.post('/api4/file/uploadFiles',data)
 }
