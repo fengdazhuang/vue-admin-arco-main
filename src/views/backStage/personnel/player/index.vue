@@ -12,14 +12,12 @@
             </template>
           </a-input>
         </div>
-
-
-<!--        <tree />-->
         <a-tree
+                multiple="true"
             ref="treeRef"
             @click="handlegetData($refs.treeRef)"
             class="tree"
-            :checkable="true"
+            :checkable="false"
             v-model:checked-keys="checkedKeys"
             :check-strictly="checkStrictly"
             :data="treeData"
@@ -98,11 +96,6 @@
                         </div>
                       </a-space>
                     </a-form-item>
-<!--                    <a-form-item field="age" label="年龄"-->
-<!--                                 :rules="[{required:true,message:'age is required'},{type:'number', max:200,message:'age is max than 200'}]"-->
-<!--                    >-->
-<!--                      <a-input-number v-model="form.age" placeholder="请输入你的年龄" />-->
-<!--                    </a-form-item>-->
                     <a-form-item field="email" label="电子邮箱"
                                  :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                                  :validate-trigger="['change','input']"
@@ -155,82 +148,53 @@
         >
           <template #columns>
             <a-table-column
-                @click="handleConsole()"
-                :title="$t('searchTable.columns.number')"
-                data-index="id"
-            />
-            <a-table-column
+                    width="100"
                 :title="$t('searchTable.columns.name')"
                 data-index="name"
             />
+              <a-table-column
+                      width="80"
+                      :title="$t('searchTable.columns.image')"
+                      data-index="photo"
+              >
+                  <template #cell="{ record }">
+                      <a-space>
+                          <a-avatar
+                                  :size="40"
+                                  shape="square"
+                          >
+                              <img
+                                      alt="avatar"
+                                      :src="record.photo"
+                              />
+                          </a-avatar>
+                          <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
+                      </a-space>
+                  </template>
+              </a-table-column>
             <a-table-column
+                    width="80"
                 :title="$t('searchTable.columns.contentType')"
                 data-index="sex"
             >
-<!--              <template #cell="{ record }">-->
-<!--                <a-space>-->
-<!--                  <a-avatar-->
-<!--                      v-if="record.contentType === 'img'"-->
-<!--                      :size="16"-->
-<!--                      shape="square"-->
-<!--                  >-->
-<!--                    <img-->
-<!--                        alt="avatar"-->
-<!--                        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image"-->
-<!--                    />-->
-<!--                  </a-avatar>-->
-<!--                  <a-avatar-->
-<!--                      v-else-if="record.contentType === 'horizontalVideo'"-->
-<!--                      :size="16"-->
-<!--                      shape="square"-->
-<!--                  >-->
-<!--                    <img-->
-<!--                        alt="avatar"-->
-<!--                        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image"-->
-<!--                    />-->
-<!--                  </a-avatar>-->
-<!--                  <a-avatar v-else :size="16" shape="square">-->
-<!--                    <img-->
-<!--                        alt="avatar"-->
-<!--                        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image"-->
-<!--                    />-->
-<!--                  </a-avatar>-->
-<!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
-<!--                </a-space>-->
-<!--              </template>-->
             </a-table-column>
             <a-table-column
+                    width="100"
                 :title="$t('searchTable.columns.filterType1')"
                 data-index="competitionName"
             >
             </a-table-column>
+
+
             <a-table-column
-                title="电子邮箱"
-                data-index="email"
-            />
-            <a-table-column
-                :title="$t('searchTable.columns.image')"
-                data-index="photo"
-            >
-              <template #cell="{ record }">
-                <a-space>
-                  <a-avatar
-                      :size="40"
-                      shape="square"
-                  >
-                    <img
-                        alt="avatar"
-                        :src="record.photo"
-                    />
-                  </a-avatar>
-<!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
-                </a-space>
-              </template>
-            </a-table-column>
-            <a-table-column
+                    width="100"
                 :title="$t('searchTable.columns.count')"
                 data-index="country"
             />
+              <a-table-column
+                      title="电子邮箱"
+                      data-index="email"
+              />
             <a-table-column
                 :title="$t('searchTable.columns.createdTime')"
                 data-index="createTime"
@@ -291,13 +255,6 @@
                   </div>
                 </a-space>
               </a-form-item>
-<!--              <a-form-item field="age" label="年龄"-->
-<!--                           :rules="[{required:true,message:'age is required'},{type:'number', max:200,message:'age is max than 200'}]"-->
-<!--              >-->
-
-
-<!--                <a-input-number v-model="form.age" placeholder="请输入你的年龄" />-->
-<!--              </a-form-item>-->
               <a-form-item field="email" label="电子邮箱"
                            :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                            :validate-trigger="['change','input']"
@@ -341,17 +298,12 @@ import useLoading from '@/hooks/loading';
 import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
 import { addPlayer,deletePlayer,listPlayers,queryPlayer,updatePlayer} from '@/api/user';
 import { Pagination, Options } from '@/types/global';
-import axios from "axios";
-// import { FormInstance } from '@arco-design/web-vue/es/form';
-// import tree from "../player/tree.vue";
 const generateFormModel = () => {
   return {
     name: '',
-    // contentType: '',
-    // filterType: '',
-    // createdTime: [],
-    // status: '',
-    country:''
+    country:'',
+      pageNumber:1,
+      pageSize:20
   };
 };
 export default defineComponent({
@@ -369,7 +321,6 @@ export default defineComponent({
       ...basePagination,
     });
     const handleConsole = ()=>{
-      console.log(1111);
     }
     const ctx1 = getCurrentInstance()
     const {ctx} = getCurrentInstance()
@@ -413,15 +364,16 @@ export default defineComponent({
     const treeRef = ref()
     const data = ref({})
     const PlayerList = ref([])
-    const imgSrc = ref('')
+    const imgSrc = ref('@/assets/images/img1.jpg')
     const isImg = ref(false)
     const inputPic = ref(null)
     const date = new Date()
-    
+    const competitions = ref('')
+      let node
     const form = reactive({
       competitionName:'',
       name: '',
-      photo:'',
+      photo:'@/assets/images/img1.jpg',
       country: '',
       sex:1,
       email:''
@@ -467,11 +419,9 @@ export default defineComponent({
                   email:''
                 });
             });
-      // formRef1.value?.validate();
     };
     
     const handleClick1 = (row) => {
-      console.log('rowrowrow',row)
       isImg.value = true
       imgSrc.value = row.photo
       if (row.sex==='男') {
@@ -480,21 +430,20 @@ export default defineComponent({
         row.sex = '0'
       }
       showModel.value = true;
-      console.log('rowrowrow1111',row)
       ctx.$nextTick(() => {
         Object.assign(form, row);
       });
-      // console.log(form.value);
-      
-      // console.log('row.value',row);
       
     };
-    const handleDelete = (row)=>{
-      const params={
+    const handleDelete = async (row)=>{
+      const useParams={
         params:{
-
+            id:row.id
         }
       }
+      await deletePlayer(useParams)
+        fetchData()
+
     }
     const rowSelection = reactive({
       type: 'checkbox',
@@ -536,11 +485,9 @@ export default defineComponent({
     }
     const handleConfirm = async ($ref,type)=> {
       /* eslint-disable */
-      console.log('formData',form)
       const res = await addPlayer(form)
-      console.log('resAdd',res)
       visible.value = false
-      imgSrc.value = ''
+      imgSrc.value = '@/assets/images/img1.jpg'
       isImg.value = false
       fetchData()
       $ref.formRef.validate((valid)=>{
@@ -564,9 +511,7 @@ export default defineComponent({
     }
     const handleConfirm1 = async ($ref,type)=> {
       /* eslint-disable */
-      console.log('formDataEdit',form)
       const res = await updatePlayer(form)
-      console.log('resAdd',res)
       visible.value = false
       fetchData()
       $ref.formRef.validate((valid)=>{
@@ -639,14 +584,14 @@ export default defineComponent({
     ];
     const treeDataCountry = [
       {
-        key:'1',
+        key:'中国',
         title:'中国'
       },
       {
-        key:'2',
+        key:'巴基斯坦',
         title:'巴基斯坦'
       },{
-        key:'3',
+        key:'韩国',
         title:'韩国'
       }
 
@@ -708,57 +653,78 @@ export default defineComponent({
     const checkedKeys = ref([]);
     const checkStrictly = ref(false);
     const  handlegetData = (treeRef)=>{
-      const node = treeRef.getSelectedNodes()
-      let nodes = treeRef.getCheckedNodes()
-      // console.log('node',node[0].title)
-      console.log('nodes',nodes)
+      node = treeRef.getSelectedNodes()
+
     }
 
-    const uploadCover = (e)=> {
-      var me = ctx1.ctx;
-
-      let f = inputPic.value.files[0];
-
-      let multiForm = new FormData() ; 		//创建一个form对象
-      multiForm.append('files', f, f.name);  	//append 向form表单添加数据
-
-      // 请求后端获得最新数据
-      var fsServerUrl = 'http://localhost:8009';
-      axios.defaults.withCredentials = true;
-      var fileServer = fsServerUrl + '/api9/file/uploadFiles';
-
-      axios.post(
-          fileServer,
-          multiForm,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            }
-          })
-          .then(res => {
-            console.log('resImg',res)
-            if (res.code === 200) {
-              var imagesList = res.data;
-              if (imagesList.length < 1) {
-                alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
-              } else {
-                imgSrc.value = imagesList[0];
-                form.photo = imagesList[0]
-                isImg.value = true
-              }
-            } else {
-              alert(res.data.msg);
-            }
-          });
-    }
-
+    // const uploadCover = (e)=> {
+    //   var me = ctx1.ctx;
+    //
+    //   let f = inputPic.value.files[0];
+    //
+    //   let multiForm = new FormData() ; 		//创建一个form对象
+    //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+    //
+    //   // 请求后端获得最新数据
+    //   var fsServerUrl = 'http://localhost:8009';
+    //   axios.defaults.withCredentials = true;
+    //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+    //
+    //   axios.post(
+    //       fileServer,
+    //       multiForm,
+    //       {
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data',
+    //         }
+    //       })
+    //       .then(res => {
+    //         console.log('resImg',res)
+    //         if (res.code === 200) {
+    //           var imagesList = res.data;
+    //           if (imagesList.length < 1) {
+    //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
+    //           } else {
+    //             imgSrc.value = imagesList[0];
+    //             form.photo = imagesList[0]
+    //             isImg.value = true
+    //           }
+    //         } else {
+    //           alert(res.data.msg);
+    //         }
+    //       });
+    // }
+      const uploadCover = (e)=> {
+          imgSrc.value='@/assets/images/img1.jpg'
+          form.photo = '@/assets/images/img1.jpg'
+          isImg.value = true
+      }
     
-    const search = () => {
-      
-      fetchData({
-        ...basePagination,
-        ...formModel.value,
-      } as unknown as PolicyParams);
+    const search = async () => {
+        const items = node.map(item=>{
+            return item.title
+        })
+        competitions.value = items.join(',')
+        let useParams = {
+            params:{
+                ...formModel.value,
+                competitionName:competitions.value
+            }
+            // params:{
+            //     pageNumber:1,
+            //     pageSize:20,
+            //     country:1,
+            //     name:222,
+            //     competitionName:1
+            // }
+        }
+        const res = await listPlayers(useParams)
+
+
+      // fetchData({
+      //   ...basePagination,
+      //   ...formModel.value,
+      // } as unknown as PolicyParams);
     };
     const onPageChange = (pageNumber: number) => {
       fetchData({ ...basePagination, pageNumber });
@@ -803,7 +769,8 @@ export default defineComponent({
       uploadCover,
       imgSrc,
       isImg,
-      inputPic
+      inputPic,
+        handleDelete
     };
   },
 });

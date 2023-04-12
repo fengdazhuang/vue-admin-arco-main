@@ -8,7 +8,6 @@ export default {
   'searchTable.form.contentType': '内容体裁',
   'searchTable.form.contentType.img': '图文',
   'searchTable.columns.image':'照片',
-  'searchTable.columns.filterType2':'参赛项目',
   'searchTable.form.contentType.horizontalVideo': '横版短视频',
   'searchTable.form.contentType.verticalVideo': '竖版小视频',
   'searchTable.form.filterType': '筛选方式',
@@ -31,7 +30,6 @@ export default {
   'searchTable.columns.filterType1': '参赛项目',
   'searchTable.columns.filterType2': '负责项目',
   'searchTable.columns.filterType3': '管理项目',
-  'searchTable.columns.image': '照片',
   'searchTable.columns.count': '国籍',
   'searchTable.columns.createdTime': '创建时间',
 

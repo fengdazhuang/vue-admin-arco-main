@@ -39,12 +39,12 @@ export default defineComponent({
           center: ['40%', '50%'],
           radius: 80,
           indicator: [
-            { name: '国际', max: 6admin },
+            { name: '国际', max: 6500 },
             { name: '财经', max: 22000 },
             { name: '科技', max: 30000 },
             { name: '其他', max: 38000 },
             { name: '体育', max: 52000 },
-            { name: '娱乐', max: 2admin0 },
+            { name: '娱乐', max: 25000 },
           ],
           axisName: {
             color: isDark ? '#ffffff' : '#1D2129',
@@ -73,7 +73,7 @@ export default defineComponent({
             },
             data: [
               {
-                value: [4850, 19000, 19000, 29admin, 35200, 20000],
+                value: [4850, 19000, 19000, 29500, 35200, 20000],
                 name: '纯文本',
                 symbol: 'none',
                 itemStyle: {
@@ -81,7 +81,7 @@ export default defineComponent({
                 },
               },
               {
-                value: [2250, 17000, 21000, 23admin, 42950, 22000],
+                value: [2250, 17000, 21000, 23500, 42950, 22000],
                 name: '图文类',
                 symbol: 'none',
                 itemStyle: {
@@ -89,7 +89,7 @@ export default defineComponent({
                 },
               },
               {
-                value: [5850, 11000, 26000, 27admin, 46950, 18000],
+                value: [5850, 11000, 26000, 27500, 46950, 18000],
                 name: '视频类',
                 symbol: 'none',
                 itemStyle: {

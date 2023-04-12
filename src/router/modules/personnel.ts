@@ -13,7 +13,7 @@ export default {
       name: 'player',
       component: () => import('@/views/backStage/personnel/player/index.vue'),
       meta: {
-        locale: 'menu.personnel.player',
+        locale: '运动员',
         requiresAuth: true,
         roles: ['admin'],
       },
@@ -23,7 +23,7 @@ export default {
       name: 'judge',
       component: () => import('@/views/backStage/personnel/judge/index.vue'),
       meta: {
-        locale: 'menu.personnel.judge',
+        locale: '裁判',
         requiresAuth: true,
         roles: ['*'],
       },
@@ -33,7 +33,7 @@ export default {
       name: 'admin',
       component: () => import('@/views/backStage/personnel/admin/index.vue'),
       meta: {
-        locale: 'menu.personnel.admin',
+        locale: '管理员',
         requiresAuth: true,
         roles: ['*'],
       },

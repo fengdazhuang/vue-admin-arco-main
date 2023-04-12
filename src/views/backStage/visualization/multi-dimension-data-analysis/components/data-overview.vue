@@ -13,6 +13,7 @@
             :value-from="0"
             animation
           >
+
             <template #prefix>
               <span
                 class="statistic-prefix"

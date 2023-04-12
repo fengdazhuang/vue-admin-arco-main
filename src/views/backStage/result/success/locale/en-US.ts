@@ -1,4 +1,6 @@
 export default {
+  'menu.list':'咨詢管理',
+  'menu.list.searchTable':'查看咨詢',
   'menu.result.success': 'Success',
   'success.result.title': 'Submit Success',
   'success.result.subTitle': 'Submit form success!',
