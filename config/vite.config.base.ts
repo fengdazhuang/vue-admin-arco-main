@@ -22,6 +22,9 @@ export default defineConfig({
       "/api4":{
         target: "http://localhost:8004"
       },
+      "/api2":{
+        target: "http://localhost:8002"
+      },
 
     }
   },

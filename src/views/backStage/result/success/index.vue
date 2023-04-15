@@ -1,41 +1,51 @@
 <template>
     <div class="subscribe-container">
-        <Breadcrumb :items="['menu.list', 'menu.list.searchTable']" />
+        <Breadcrumb :items="['menu.result', 'menu.result.success']" />
         <div class="subscribe-header-container">
             <div class="subscribe-header">
                 <div class="subscribe-left">
                     <span>文章状态</span>
                     <a-tabs>
-                        <a-tab-pane key="1">
+                        <a-tab-pane  :active-key="tabName" key="已发布">
                             <template #title>
-                                <icon-subscribed /> 已发布
+                                <div @click="handleTabName(1)">
+                                    <icon-subscribed /> 已发布
+                                </div>
+
                             </template>
 
                         </a-tab-pane>
-                        <a-tab-pane key="2">
+                        <a-tab-pane  key="未发布">
                             <template #title>
-                                <icon-subscribe /> 未发布
+                                <div @click="handleTabName(3)">
+                                    <icon-subscribe /> 未发布
+                                </div>>
+
                             </template>
 
                         </a-tab-pane>
-                        <a-tab-pane key="3">
+                        <a-tab-pane  key="已撤回">
                             <template #title>
-                                <icon-undo /> 已撤回
+                                <div @click="handleTabName(2)">
+                                    <icon-undo /> 已撤回
+                                </div>>
+
                             </template>
 
                         </a-tab-pane>
                     </a-tabs>
-<!--                    <router-link to="/">已发布</router-link>-->
-<!--                    <router-link to="/">未发布</router-link>-->
-<!--                    <router-link to="/">已撤回</router-link>-->
                 </div>
                 <div class="subscribe-right">
-                    <a-input-search :style="{width:'320px'}" placeholder="请输入搜索内容" search-button>
+                    <a-input-search v-model="form.keyword" :style="{width:'320px'}" placeholder="请输入搜索内容" search-button>
+<!--                        <div @click="handleSearch" ></div>-->
+
                         <template #button-icon>
-                            <icon-search/>
+                            <span @click="handleSearch">
+                                <icon-search/>
+                            </span>
                         </template>
                         <template #button-default>
-                            Search
+                            <span @click="handleSearch">Search</span>
                         </template>
                     </a-input-search>
                 </div>
@@ -43,6 +53,7 @@
             <div class="subscribe-time">
                 <span>时间选择</span>
                 <a-range-picker
+                        v-model="time"
                         style="width: 360px; margin: 0 24px 24px 0;"
                         show-time
                         :time-picker-props="{ defaultValue: ['00:00:00', '09:09:06'] }"
@@ -97,13 +108,84 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
-    import { addAdmin,listAdmins,logout,queryAdmin,resetPassword,updateStatus} from '@/api/user';
-    import { Pagination, Options } from '@/types/global';
-
+    import { queryNews} from '@/api/user';
+    console.log('localStorage',window.localStorage.getItem('token'))
     export default defineComponent({
         // components:{tree},
-        setup() {}
+        setup() {
+            const { loading, setLoading } = useLoading(true);
+            const time = ref()
+            const  tabName = ref('')
+            const articleList = ref([])
+            const startDate = ref('')
+            const endDate = ref('')
+            const form = reactive({
+                status:1,
+                keyword:'',
+            })
+            const basePagination = {
+                pageNumber: 1,
+                pageSize: 20,
+            };
+            const pagination = reactive({
+                ...basePagination,
+            });
+
+            const fetchData = async (
+                params = { pageNumber: 1, pageSize: 20 }
+            ) => {
+
+                setLoading(true);
+
+                try {
+                    console.log('data')
+                    let useParams = {
+                        params:{
+                            ...params,
+                            startDate:startDate.value,
+                            endDate:endDate.value,
+                            keyword:form.keyword,
+                            status:form.status
+                        }
+                    }
+                    console.log('data111')
+                    const { data } = await queryNews(useParams);
+
+                    articleList.value = data.records
+                    // renderData.value = data.list;
+                    pagination.pageNumber = params.pageNumber;
+                    pagination.total = data.total;
+                } catch (err) {
+                    // you can report use errorHandler or other
+                } finally {
+                    setLoading(false);
+                }
+            };
+            const handleSearch = ()=>{
+                fetchData()
+            }
+            const handleTabName =  (tabName)=>{
+                form.status = tabName
+                fetchData()
+            }
+            const onOk = ()=>{
+                startDate.value = time.value[0]
+                endDate.value=time.value[1]
+                console.log(startDate.value,startDate.value)
+                fetchData()
+            }
+            fetchData()
+            console.log(tabName)
+            return {
+                tabName,
+                handleTabName,
+                time,
+                onOk,
+                handleSearch,
+                form,
+                articleList
+            }
+        }
 
     });
 </script>

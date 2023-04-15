@@ -20,7 +20,7 @@ import localeSuccess from '@/views/backStage/result/success/locale/zh-CN';
 import localeError from '@/views/backStage/result/error/locale/zh-CN';
 
 import localeplayer from '@/views/backStage/personnel/player/locale/zh-CN';
-import localeplayer from '@/views/backStage/personnel/player/locale/zh-CN';
+import localejudge from '@/views/backStage/personnel/judge/locale/zh-CN';
 import localeadmin from '@/views/backStage/personnel/admin/locale/zh-CN';
 
 import localeUserInfo from '@/views/backStage/user/info/locale/zh-CN';
@@ -31,8 +31,8 @@ import localeSettings from './zh-CN/settings';
 export default {
   'menu.dashboard': '仪表盘',
   'menu.list': '赛事管理',
+  'menu.result':'资讯管理',
   'menu.person': '人员管理',
-  'menu.result': '结果页',
   'menu.personnel': '人员管理',
   'menu.form': '表单页',
   'menu.profile': '详情页',
@@ -56,7 +56,7 @@ export default {
   ...localeSuccess,
   ...localeError,
   ...localeplayer,
-  ...localeplayer,
+  ...localejudge,
   ...localeadmin,
   ...localeUserInfo,
   ...localeUserSetting,

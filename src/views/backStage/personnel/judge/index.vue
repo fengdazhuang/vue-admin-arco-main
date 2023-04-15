@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Breadcrumb :items="['menu.list', 'menu.list.searchTable']" />
+        <Breadcrumb :items="['menu.person', 'menu.exception.judge']" />
         <div class="main">
 
             <div class="tree-container">
@@ -23,7 +23,7 @@
                         :data="treeData"
                 />
             </div>
-            <a-card class="general-card card" :title="$t('menu.list.searchTable')">
+            <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
                 <a-row>
                     <a-col :flex="1">
                         <a-form

@@ -81,3 +81,12 @@ export function resetPassword (data) {
 export function updateStatus (data) {
   return axios.put('/api1/admin/updateStatus',data)
 }
+
+// 文章发布
+export function addNews(data) {
+  return axios.post('/api2/news/addNews',data)
+}
+
+export function queryNews(params) {
+  return axios.get('/api2/news/queryNews',params)
+}

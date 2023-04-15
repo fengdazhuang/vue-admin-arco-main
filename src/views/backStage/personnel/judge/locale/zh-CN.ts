@@ -1,5 +1,5 @@
 export default {
-  'menu.exception.player': '裁判',
+  'menu.exception.judge': '裁判',
   // 'menu.list.searchTable': '赛程信息',
   'searchTable.form.number': '编号',
   'searchTable.form.number.placeholder': '请输入编号',

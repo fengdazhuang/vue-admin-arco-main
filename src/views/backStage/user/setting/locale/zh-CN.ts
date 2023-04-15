@@ -4,7 +4,7 @@ export default {
   'userSetting.menu.title.account': '账号设置',
   'userSetting.menu.title.password': '密码',
   'userSetting.menu.title.message': '消息通知',
-  'userSetting.menu.title.result': '结果页',
+  'userSetting.menu.title.result': '资讯管理',
   'userSetting.menu.title.data': '导出数据',
   'userSetting.saveSuccess': '保存成功',
   'userSetting.title.basicInfo': '基本信息',

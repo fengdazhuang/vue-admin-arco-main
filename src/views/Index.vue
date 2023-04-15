@@ -1,5 +1,5 @@
 <template>
-    <div class="index">
+    <div class="index" @scroll="handleScroll">
         <div class="top">
             <div class="banner">
                 <Carousel-f />
@@ -11,42 +11,63 @@
                 <div class="main">
                     <h1 class="sub-title">亚洲规模最大的综合性运动会</h1>
                     <div class="main-content">
-                        <div class="main-content-left">
-                            <p>杭州2022年第19届亚运会( The 19th Asian Games Hangzhou 2022)，简称“杭州2022年亚运会”，将在中国浙江杭州举
-                                行，原定于2022年9月10日至25日举办；2022年7月19日亚洲奥林匹克理事会宣布将于2023年9月23日至10月8日举办。
-                            </p>
-                            <p>
-                                截至2020年12月，本届亚洲运动会共设40个竞赛大项，包括31个奥运项目和9个非奥运项目 [1] 。同时，在保持40个大项目
-                                不变的前提下，增设电子竞技、霹雳舞两个竞赛项目
-                            </p>
-                            <p>
-                                杭州2022年亚运会以“中国新时代·杭州新亚运”为定位、“中国特色、浙江风采、杭州韵味、精彩纷呈”为目标，秉持“绿色、智
-                                能、节俭、文明”的办会理念，坚持“以杭州为主，浙江全省共享”的办赛原则。
-                            </p>
-                            <div class="main-content-left-link">
-                                <a href="https://baike.baidu.com/item/%e4%ba%9a%e6%b4%b2%e8%bf%90%e5%8a%a8%e4%bc%9a/2753926" target="_blank">查看详情<span>——></span></a>
+                        <transition name="left" appear>
+                            <div  v-show="isShow" class="main-content-left">
+                                <p>杭州2022年第19届亚运会( The 19th Asian Games Hangzhou 2022)，简称“杭州2022年亚运会”，将在中国浙江杭州举
+                                    行，原定于2022年9月10日至25日举办；2022年7月19日亚洲奥林匹克理事会宣布将于2023年9月23日至10月8日举办。
+                                </p>
+                                <p>
+                                    截至2020年12月，本届亚洲运动会共设40个竞赛大项，包括31个奥运项目和9个非奥运项目 [1] 。同时，在保持40个大项目
+                                    不变的前提下，增设电子竞技、霹雳舞两个竞赛项目
+                                </p>
+                                <p>
+                                    杭州2022年亚运会以“中国新时代·杭州新亚运”为定位、“中国特色、浙江风采、杭州韵味、精彩纷呈”为目标，秉持“绿色、智
+                                    能、节俭、文明”的办会理念，坚持“以杭州为主，浙江全省共享”的办赛原则。
+                                </p>
+                                <div class="main-content-left-link">
+                                    <a href="https://baike.baidu.com/item/%e4%ba%9a%e6%b4%b2%e8%bf%90%e5%8a%a8%e4%bc%9a/2753926" target="_blank">查看详情<span>——></span></a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="main-content-right">
-                            <img src="@/assets/images/intro1.jpg" alt="">
-                        </div>
-                        <div class="main-content-img">
-                            <img src="@/assets/images/intro2.png" alt="">
-                        </div>
+                        </transition>
+                        <transition name="right" appear>
+                            <div v-show="isShow" class="main-content-right">
+                                <img src="@/assets/images/intro1.jpg" alt="">
+                            </div>
+                        </transition>
+                        <transition v-show="isShow" name="img" appear>
+                            <div class="main-content-img">
+                                <img src="@/assets/images/intro2.png" alt="">
+                            </div>
+                        </transition>
+
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bottom">大屏</div>
+        <div class="bottom">
+            <order-map></order-map>
+        </div>
     </div>
 </template>
 
 <script>
 /* eslint-disable */
+import {ref} from 'vue'
 import Carousel from '@/components/Carousel-f.vue'
+import OrderMap from '@/components/orderMap.vue'
 export default {
     name: 'index',
-    components: { Carousel }
+    components: { Carousel,OrderMap },
+    setup(){
+        const isShow = ref(true)
+        const handleScroll = (e) => {
+            console.log(e.target)
+        }
+        return {
+            isShow,
+            handleScroll
+        }
+    }
     // setup () {
     //     const handleCarouse = () => { }
     //     return {
@@ -59,12 +80,21 @@ export default {
 
 <style lang='scss' scoped>
 @import '@/assets/style/global.scss';
+.left-enter {
+  transform: translateX(-100%);
+}
+.left-enter-to {
+  transform: translateX(0);
+}
+.left-enter-active {
+  transition: 0.5s linear;
+}
 .index {
     font-size: px2rem(50px);
     .top {
         height: px2rem(722px);
         .center-wrap {
-            width: 1160px;
+            width: px2rem(1160px);
             height: 100%;
         }
         .btns {
@@ -80,7 +110,7 @@ export default {
                 width: px2rem(28px);
                 height: px2rem(44px);
                 border-radius: 2px;
-                background: url(@/assets/images/icons.png) no-repeat -21px -94px;
+                background: url(@/assets/images/icons.png) no-repeat px2rem(-21px) px2rem(-94px);
             }
             .btn-right {
                 position: absolute;
@@ -89,8 +119,8 @@ export default {
                 transform: translateY(-50%);
                 width: px2rem(28px);
                 height: px2rem(44px);
-                border-radius: 2px;
-                background: url(@/assets/images/icons.png) no-repeat -21px -29px;
+                border-radius: px2rem(2px);
+                background: url(@/assets/images/icons.png) no-repeat px2rem(-21px) px2rem(-29px);
             }
         }
         .banner {
@@ -150,7 +180,7 @@ export default {
                             height: px2rem(50px);
                             font-size: px2rem(16px);
                             text-align: center;
-                            border: 1.4px solid #000;
+                            border: px2rem(1.4px) solid #000;
                             border-radius: px2rem(50px);
 
                             a {
@@ -195,7 +225,8 @@ export default {
     }
     .bottom {
         height: px2rem(920px);
-        background-color: green;
+      background-image: url('@/assets/images/pageBg.png');
+        //background-color: green;
         // margin-top: 200px;
     }
 }

@@ -9,12 +9,15 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BaseScrollList: typeof import('./src/components/BaseScrollList.vue')['default']
     Block: typeof import('./src/components/global-setting/block.vue')['default']
     Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
     CarouselF: typeof import('./src/components/Carousel-f.vue')['default']
     Chart: typeof import('./src/components/chart/index.vue')['default']
+    ElCol: typeof import('element-plus/es')['ElCol']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElRow: typeof import('element-plus/es')['ElRow']
     Footer: typeof import('./src/components/footer/index.vue')['default']
     FormWrapper: typeof import('./src/components/global-setting/form-wrapper.vue')['default']
     GlobalSetting: typeof import('./src/components/global-setting/index.vue')['default']
@@ -22,8 +25,11 @@ declare module '@vue/runtime-core' {
     Menu: typeof import('./src/components/menu/index.vue')['default']
     MessageBox: typeof import('./src/components/message-box/index.vue')['default']
     Navbar: typeof import('./src/components/navbar/index.vue')['default']
+    OrderMap: typeof import('./src/components/orderMap.vue')['default']
+    OrderMap111: typeof import('./src/components/orderMap111.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SalesList: typeof import('./src/components/SalesList/index.vue')['default']
     UploadImg: typeof import('./src/components/uploadImg/uploadImg.vue')['default']
   }
 }

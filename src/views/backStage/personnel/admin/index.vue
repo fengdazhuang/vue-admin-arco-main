@@ -1,7 +1,7 @@
 
 <template>
     <div class="container">
-        <Breadcrumb :items="['menu.list', 'menu.list.searchTable']" />
+        <Breadcrumb :items="['menu.person', 'menu.exception.admin']" />
         <div class="main">
 
 <!--            <div class="tree-container">-->
@@ -24,7 +24,7 @@
 <!--                        :data="treeData"-->
 <!--                />-->
 <!--            </div>-->
-            <a-card class="general-card card" :title="$t('menu.list.searchTable')">
+            <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
                 <a-row>
                     <a-col :flex="1">
                         <a-form
@@ -113,6 +113,7 @@
                     </a-col>
                 </a-row>
                 <a-table
+                        size="large"
                         row-key="id"
                         :loading="loading"
                         :pagination="pagination"
@@ -139,6 +140,7 @@
                         >
                         </a-table-column>
                         <a-table-column
+                                width="200"
                                 title="电子邮箱"
                                 data-index="email"
                         />
@@ -150,7 +152,7 @@
                             <template #cell="{ record }">
                                 <a-space style="margin-bottom: 20px;">
                                     <a-switch  @click="handleChangeStatus(record)" v-model="disabled" />
-                                    Disabled: {{isAbled }}- {{record}}
+                                    Disabled: {{isAbled }}
                                 </a-space>
 <!--                                <span v-if="record.status === 'offline'" class="circle"></span>-->
 <!--                                <span v-else class="circle pass"></span>-->
@@ -158,6 +160,7 @@
                             </template>
                         </a-table-column>
                         <a-table-column
+                                width="220"
                                 :title="$t('searchTable.columns.createdTime')"
                                 data-index="createTime"
                         />

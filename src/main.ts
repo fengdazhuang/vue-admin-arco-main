@@ -5,6 +5,10 @@ import { createApp } from 'vue';
 import ArcoVue from '@arco-design/web-vue';
 import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import globalComponents from '@/components';
+// import datav from 'datav-libs-dev-self'
+import 'echarts'
+import ECharts from 'vue-echarts'
+
 import router from './router';
 import store from './store';
 import i18n from './locale';
@@ -18,7 +22,7 @@ import '@/api/interceptor';
 // import "element-plus/dist/index.css";
 // import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const app = createApp(App);
-
+app.component('VueEcharts', ECharts)
 app.use(ArcoVue, {});
 app.use(ArcoVueIcon);
 
@@ -28,6 +32,7 @@ app.use(store);
 app.use(i18n);
 app.use(globalComponents);
 app.use(directive);
+// app.use(datav)
 app.mount('#app');
 
 // for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

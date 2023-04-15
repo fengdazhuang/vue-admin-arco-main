@@ -31,10 +31,28 @@ const router = createRouter({
             component:()=>import("@/views/Index.vue")
         },
         {
+          path:'information',
+          name:'information',
+          component:()=>import("@/views/Information/Information.vue"),
+          children:[
+            {
+              path:'infochild',
+              name:'infochild',
+              component:()=>import('@/views/Information/informations/info.vue')
+            }
+          ]
+        },
+        {
+          path:'competition',
+          name:'competition',
+          component:()=>import("@/views/Competition/Competition.vue")
+        },
+        {
             path:'volunteerService',
             name:'volunteerService',
             component:()=>import("@/views/VolunteerService.vue")
         },
+
         // {
         //     path:'backStage',
         //     name:'backStage',
