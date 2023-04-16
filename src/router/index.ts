@@ -51,8 +51,7 @@ const router = createRouter({
             path:'volunteerService',
             name:'volunteerService',
             component:()=>import("@/views/VolunteerService.vue")
-        },
-
+        }
         // {
         //     path:'backStage',
         //     name:'backStage',
@@ -63,6 +62,11 @@ const router = createRouter({
         //     children: appRoutes,
         // }
     ]
+    },
+    {
+      path:'/preview',
+      name:'preview',
+      component:()=>import("@/views/backStage/result/error/info.vue")
     },
     {
       path:'/backStage',

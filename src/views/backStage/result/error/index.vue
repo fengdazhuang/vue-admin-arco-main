@@ -1,7 +1,7 @@
 <template>
     <Breadcrumb :items="['menu.result', 'menu.result.error']" />
         <div class="textEdit">
-            <a-form  :model="form" :style="{width:'100%'}" @submit="handleSubmit">
+            <a-form  ref="articleRef" :model="form" :style="{width:'100%'}" @submit="handleSubmit">
                 <div class="textEdit-title">
                     <a-input label="资讯标题" v-model="form.title"  :style="{width:'100%',height:'80px',background:'#fff',border:0}" placeholder="请输入资讯标题" allow-clear />
                 </div>
@@ -42,12 +42,12 @@
                 <div class="textEdit-footer">
                 <div class="textEdit-footer-btns">
                 <a-button class="btns-common" type="primary">返回</a-button>
-                <a-button class="btns-common" type="primary">预览</a-button>
+                <a-button class="btns-common" type="primary" @click="handlePreview">预览</a-button>
                 <a-button class="btns-common" @click="handleIsAppoint" type="primary">
                     定时发布
 
                 </a-button>
-                <a-button class="btns-common"  :style="{background:'rgb(202,57,74)',color:'#fff'}" @click="handlePublic" type="primary">
+                <a-button class="btns-common"  :style="{background:'rgb(202,57,74)',color:'#fff'}" @click="handlePublic($refs.articleRef)" type="primary">
                     发布文章
                 </a-button>
 
@@ -99,6 +99,7 @@
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
+ import { Message } from '@arco-design/web-vue';
     export default {
         components: { QuillEditor },
         props: ['model'],
@@ -153,6 +154,7 @@
         },
         setup(){
             const time = ref()
+            const articleRef = ref(null)
             const form = reactive({
                 title:'',
                 content:'',
@@ -166,12 +168,17 @@
             const  imgSrc = ref('')
             const isImg = ref(false)
             const ctx1 = getCurrentInstance()
-            const handlePublic = async ()=>{
+            const handlePublic = async (articleRef)=>{
                 const useData = {...form,publishTime:new Date(time.value)}
                 console.log(useData)
                 console.log(new Date(time.value))
                const res = await addNews(useData)
-                console.log(res)
+                if (res.code === 200) {
+                    // articleRef.resetFields()
+                    // form.title = ''
+                    // form.content = ''
+                    Message.success('发布成功')
+                }
             }
             // const fetchData = async (
             //     params = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20 }
@@ -250,6 +257,10 @@
                 }
                 console.log('form.isAppoint',form.isAppoint)
             }
+            const handlePreview = ()=>{
+                window.sessionStorage.setItem('item',JSON.stringify(form))
+                window.open('#/preview')
+            }
             const onOk = ()=>{
 
             }
@@ -261,7 +272,9 @@
                 isImg,
                 onOk,
                 handleIsAppoint,
-                time
+                time,
+                handlePreview,
+                articleRef
             }
         }
     }

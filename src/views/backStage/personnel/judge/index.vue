@@ -296,7 +296,7 @@
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
     import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
-    import { addJudge,deleteJudge,listJudges,updateJudge} from '@/api/user';
+    import {addJudge, deleteJudge, listJudges, listPlayers, updateJudge} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
         return {
@@ -367,7 +367,7 @@
             const imgSrc = ref('@/assets/images/img1.jpg')
             const isImg = ref(false)
             const inputPic = ref(null)
-            const date = new Date()
+            // const date = new Date()
             const competitions = ref('')
             let node
             const form = reactive({
@@ -395,7 +395,7 @@
                         } else {
                             item.sex = '女'
                         }
-                        item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
+                        // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
                     })
                     PlayerList.value = data.records
                     // renderData.value = data.list;
@@ -710,21 +710,19 @@
                         ...formModel.value,
                         competitionName:competitions.value
                     }
-                    // params:{
-                    //     pageNumber:1,
-                    //     pageSize:20,
-                    //     country:1,
-                    //     name:222,
-                    //     competitionName:1
-                    // }
                 }
-                const res = await listJudges(useParams)
+                // const res = await listJudges(useParams)
+                const {data} = await listJudges(useParams)
+                data.records.forEach(item =>{
+                    // item.sex
+                    if(item.sex===1) {
+                        item.sex = '男'
+                    } else {
+                        item.sex = '女'
+                    }
+                })
+                PlayerList.value = data.records
 
-
-                // fetchData({
-                //   ...basePagination,
-                //   ...formModel.value,
-                // } as unknown as PolicyParams);
             };
             const onPageChange = (pageNumber: number) => {
                 fetchData({ ...basePagination, pageNumber });

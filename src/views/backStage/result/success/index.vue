@@ -64,39 +64,43 @@
                 />
             </div>
         </div>
-        <div class="subscribe-content">
-            <div class="subscribe-content-card">
+        <div class="subscribe-content-container">
+            <div class="subscribe-content" @click="handlePreview(item)" v-for="item in articleList" :key="item.id">
+                <div class="subscribe-content-card">
                 <div class="subscribe-content-card-img">
                     <img src="@/assets/images/img1.jpg" />
                 </div>
                 <div class="subscribe-content-card-content">
-                    <div class="title">震惊！速看......</div>
+                    <div class="title">{{item.title}}</div>
                     <div class="comment">
-                        <span>阅读</span>
-                        <span>评论</span>
+                        <span>阅读 0 </span>
+                        <span>评论 0</span>
                     </div>
-                    <div class="publish">已发布</div>
-                    <div class="createTime">2022-2-22</div>
+                    <div class="publish" v-show="publish" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(184,254,184)',color:'rgb(79,152,83)'}">已发布</div>
+                    <div class="publish" v-show="prepublish" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'#ff7d00',color:''}">未发布</div>
+                    <div class="publish" v-show="canceled" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(214,214,214)',color:'rgb(145,145,145)'}">已撤回</div>
+                    <div class="createTime" >{{item.createTime}}</div>
                 </div>
             </div>
-            <div class="subscribe-content-operate">
+                <div class="subscribe-content-operate">
                 <a-space direction="vertical" class="btns">
                     <div>
-                        <a-button  type="text" status="warning">
-                            <template #icon>
-                                <icon-undo />
-                            </template>
-                            撤回
-                        </a-button>
+                        <a-button  v-show="item.articleStatus === 1 ? true:false" @click="handleWithDraw(item.id)" type="text" status="warning">
+                                <template #icon>
+                                    <icon-undo />
+                                </template>
+                                撤回
+                            </a-button>
                     </div>
 
-                    <a-button type="text" status="danger">
+                    <a-button  @click="handleDelete(item.id)" type="text" status="danger">
                         <template #icon>
                             <icon-close />
                         </template>
                         删除
                     </a-button>
                 </a-space>
+            </div>
             </div>
         </div>
 
@@ -108,7 +112,7 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import { queryNews} from '@/api/user';
+    import { queryNews,deleteNews,withdraw} from '@/api/user';
     console.log('localStorage',window.localStorage.getItem('token'))
     export default defineComponent({
         // components:{tree},
@@ -119,6 +123,10 @@
             const articleList = ref([])
             const startDate = ref('')
             const endDate = ref('')
+            const date = new Date()
+            const publish = ref(true)
+            const prepublish = ref(true)
+            const canceled = ref(true)
             const form = reactive({
                 status:1,
                 keyword:'',
@@ -136,9 +144,7 @@
             ) => {
 
                 setLoading(true);
-
                 try {
-                    console.log('data')
                     let useParams = {
                         params:{
                             ...params,
@@ -148,9 +154,10 @@
                             status:form.status
                         }
                     }
-                    console.log('data111')
                     const { data } = await queryNews(useParams);
-
+                    // data.records.forEach(item => {
+                    //     item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
+                    // })
                     articleList.value = data.records
                     // renderData.value = data.list;
                     pagination.pageNumber = params.pageNumber;
@@ -175,7 +182,33 @@
                 fetchData()
             }
             fetchData()
-            console.log(tabName)
+            const handlePreview = (item)=>{
+                window.sessionStorage.setItem('item',JSON.stringify(item))
+                window.open('#/preview')
+            }
+            const handleWithDraw = async (id)=>{
+                // const useParams = {
+                //     params:{
+                //         id: parseInt(id)
+                //     }
+                // }
+                const idNum = {
+                    params:{
+                        id
+                    }
+                }
+                const res = await withdraw({},idNum)
+                fetchData()
+            }
+            const handleDelete = async (id)=>{
+                const useParams = {
+                    params:{
+                        id
+                    }
+                }
+                const res = await deleteNews(useParams)
+                fetchData()
+            }
             return {
                 tabName,
                 handleTabName,
@@ -183,7 +216,14 @@
                 onOk,
                 handleSearch,
                 form,
-                articleList
+                articleList,
+                date,
+                publish,
+                prepublish,
+                canceled,
+                handleWithDraw,
+                handleDelete,
+                handlePreview
             }
         }
 
@@ -236,6 +276,7 @@
       margin-top: 20px;
       border-bottom: 1px solid grey;
       padding: 20px 0 20px 20px;
+      cursor: pointer;
       .subscribe-content-card {
         display: flex;
 

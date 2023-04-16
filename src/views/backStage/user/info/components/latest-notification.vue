@@ -20,7 +20,7 @@ export default defineComponent({
     const { loading, setLoading } = useLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, admin);
+    }, 500);
     return {
       loading,
     };

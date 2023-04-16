@@ -90,3 +90,13 @@ export function addNews(data) {
 export function queryNews(params) {
   return axios.get('/api2/news/queryNews',params)
 }
+export function deleteNews(params) {
+  return axios.delete('/api2/news/deleteNews',params)
+}
+export function withdraw(data,params) {
+  return axios.put('/api2/news/withdraw',data,params)
+}
+
+export function update(data) {
+  return axios.put('/api2/news/update',data)
+}

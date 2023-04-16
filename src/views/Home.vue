@@ -126,8 +126,10 @@ export default {
                 margin-left: px2rem(45px);
             }
             .common {
+
                 position: relative;
                 top: 50%;
+              width: px2rem(72px);
                 height: px2rem(30px);
                 font-size: px2rem(18px);
                 border-radius: px2rem(15px);

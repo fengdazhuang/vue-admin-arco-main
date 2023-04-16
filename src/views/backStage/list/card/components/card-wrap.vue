@@ -42,12 +42,10 @@
               负责人：{{ principal }}
             </div>
               <div :style="{margin:'25px 0 0 0'}">
-              创建时间：{{ `${date.getFullYear(createTime)}-${date.getMonth(createTime)}-${date.getDate(createTime)} ${date.getHours(createTime)}-${date.getMinutes()}-${date.getSeconds(createTime)}`}}
+              创建时间：{{ createTime }}
             </div>
               <img class="card-img" :src="img"/>
             </div>
-
-
             <slot></slot>
           </template>
 

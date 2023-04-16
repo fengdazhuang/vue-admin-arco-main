@@ -362,7 +362,7 @@ export default defineComponent({
     const showModel = ref(false)
     const formRef = ref();
     const treeRef = ref()
-    const data = ref({})
+    // const data = ref({})
     const PlayerList = ref([])
     const imgSrc = ref('@/assets/images/img1.jpg')
     const isImg = ref(false)
@@ -395,7 +395,7 @@ export default defineComponent({
           } else {
             item.sex = '女'
           }
-          item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
+          // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
         })
         PlayerList.value = data.records
         // renderData.value = data.list;
@@ -710,21 +710,18 @@ export default defineComponent({
                 ...formModel.value,
                 competitionName:competitions.value
             }
-            // params:{
-            //     pageNumber:1,
-            //     pageSize:20,
-            //     country:1,
-            //     name:222,
-            //     competitionName:1
-            // }
         }
-        const res = await listPlayers(useParams)
+        const {data} = await listPlayers(useParams)
+        data.records.forEach(item =>{
+            // item.sex
+            if(item.sex===1) {
+                item.sex = '男'
+            } else {
+                item.sex = '女'
+            }
+        })
+        PlayerList.value = data.records
 
-
-      // fetchData({
-      //   ...basePagination,
-      //   ...formModel.value,
-      // } as unknown as PolicyParams);
     };
     const onPageChange = (pageNumber: number) => {
       fetchData({ ...basePagination, pageNumber });

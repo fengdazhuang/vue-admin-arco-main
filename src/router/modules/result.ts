@@ -26,7 +26,7 @@ export default {
         locale: 'menu.result.error',
         requiresAuth: true,
         roles: ['admin'],
-      },
+      }
     },
   ],
 };

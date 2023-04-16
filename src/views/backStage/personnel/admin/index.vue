@@ -3,27 +3,6 @@
     <div class="container">
         <Breadcrumb :items="['menu.person', 'menu.exception.admin']" />
         <div class="main">
-
-<!--            <div class="tree-container">-->
-<!--                <div class="tree-search">-->
-<!--                    <h3>赛事筛选</h3>-->
-<!--                    <a-input class="inputCSS" :style="{width:'230px'}" placeholder="Please enter something" allow-clear>-->
-<!--                        <template #prefix>-->
-<!--                            <icon-user />-->
-<!--                        </template>-->
-<!--                    </a-input>-->
-<!--                </div>-->
-<!--                <a-tree-->
-<!--                        multiple="true"-->
-<!--                        ref="treeRef"-->
-<!--                        @click="handlegetData($refs.treeRef)"-->
-<!--                        class="tree"-->
-<!--                        :checkable="false"-->
-<!--                        v-model:checked-keys="checkedKeys"-->
-<!--                        :check-strictly="checkStrictly"-->
-<!--                        :data="treeData"-->
-<!--                />-->
-<!--            </div>-->
             <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
                 <a-row>
                     <a-col :flex="1">
@@ -151,8 +130,8 @@
 
                             <template #cell="{ record }">
                                 <a-space style="margin-bottom: 20px;">
-                                    <a-switch  @click="handleChangeStatus(record)" v-model="disabled" />
-                                    Disabled: {{isAbled }}
+                                    <a-switch  @click="handleChangeStatus(record,disabled)" checked-value="1" unchecked-value="0" v-model="value" />
+                                    Current Value: {{ value }}
                                 </a-space>
 <!--                                <span v-if="record.status === 'offline'" class="circle"></span>-->
 <!--                                <span v-else class="circle pass"></span>-->
@@ -238,8 +217,7 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
-    import { addAdmin,listAdmins,logout,queryAdmin,resetPassword,updateStatus} from '@/api/user';
+    import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
         return {
@@ -251,6 +229,7 @@
     export default defineComponent({
         // components:{tree},
         setup() {
+            const value = ref(false)
             const { loading, setLoading } = useLoading(true);
             const { t } = useI18n();
             const renderData = ref<PolicyRecord[]>([]);
@@ -308,7 +287,7 @@
             const data = ref({})
             const PlayerList = ref([])
             const inputPic = ref(null)
-            const date = new Date()
+            // const date = new Date()
             const competitions = ref('')
             const message = ref('')
             const isRepeat = ref(false)
@@ -347,10 +326,15 @@
                         } else {
                             item.sex = '女'
                         }
-                        item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
+                    })
+                    data.records.forEach(item=>{
+                        if (item.status) {
+                            item.status = 1
+                        } else {
+                            item.status = 0
+                        }
                     })
                     PlayerList.value = data.records
-                    // renderData.value = data.list;
                     pagination.pageNumber = params.pageNumber;
                     pagination.total = data.total;
                 } catch (err) {
@@ -609,12 +593,19 @@
                     email:row.email
                 })
             }
-            const handleChangeStatus = async (row)=>{
+            const handleChangeStatus = async (row,disabled)=>{
+                if (disabled) {
+                    disabled = 1
+                } else {
+                    disabled = 0
+                }
                 const params = {
                     id:row.id,
-                        status:row.status
+                    status:disabled
                 }
-                await updateStatus(params)
+                const res = await updateStatus(params)
+                console.log('update',res)
+                disabled = !disabled
             }
             const handleLeave = async ()=>{
                 const  useParams = {
@@ -749,7 +740,8 @@
                 handleLeave,
                 message,
                 handleReset,
-                handleChangeStatus
+                handleChangeStatus,
+                value
             };
         },
     });
