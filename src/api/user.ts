@@ -100,3 +100,6 @@ export function withdraw(data,params) {
 export function update(data) {
   return axios.put('/api2/news/update',data)
 }
+export function fetchList (data) {
+  return axios.get('https://www.fastmock.site/mock/e85283acd24926300e4c1ced32faffa5/weixin/api/order',data)
+}

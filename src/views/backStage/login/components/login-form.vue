@@ -103,8 +103,8 @@ export default defineComponent({
     const userStore = useUserStore();
     const  visible2 = ref(false)
     const userInfo = reactive({
-      username: 'admin',
-      password: 'admin',
+      username: '111',
+      password: 'zdIuUu1DeK',
       validateCode:'',
       key:''
     });

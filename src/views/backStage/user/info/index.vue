@@ -2,6 +2,7 @@
   <div class="container">
     <Breadcrumb :items="['menu.user', 'menu.user.info']" />
     <UserInfoHeader />
+      <UserInfo />
     <div class="content">
       <div class="content-left">
         <a-space direction="vertical" :size="16" fill>
@@ -27,6 +28,7 @@ import LatestNotification from './components/latest-notification.vue';
 import MyProject from './components/my-project.vue';
 import LatestActivity from './components/latest-activity.vue';
 import Myteam from './components/my-team.vue';
+import UserInfo from './components/UserInfo.vue'
 
 export default defineComponent({
   components: {
@@ -35,6 +37,7 @@ export default defineComponent({
     MyProject,
     LatestActivity,
     Myteam,
+      UserInfo
   },
   setup() {
     const { t } = useI18n();

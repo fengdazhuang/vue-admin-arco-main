@@ -14,10 +14,20 @@ declare module '@vue/runtime-core' {
     Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
     CarouselF: typeof import('./src/components/Carousel-f.vue')['default']
     Chart: typeof import('./src/components/chart/index.vue')['default']
+    ElAlert: typeof import('element-plus/es')['ElAlert']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
+    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
+    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
     Footer: typeof import('./src/components/footer/index.vue')['default']
     FormWrapper: typeof import('./src/components/global-setting/form-wrapper.vue')['default']
     GlobalSetting: typeof import('./src/components/global-setting/index.vue')['default']
@@ -31,5 +41,8 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SalesList: typeof import('./src/components/SalesList/index.vue')['default']
     UploadImg: typeof import('./src/components/uploadImg/uploadImg.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
