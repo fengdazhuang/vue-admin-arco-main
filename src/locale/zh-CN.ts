@@ -34,7 +34,7 @@ export default {
   'menu.result':'资讯管理',
   'menu.person': '人员管理',
   'menu.personnel': '人员管理',
-  'menu.form': '表单页',
+  'menu.form': '志愿管理',
   'menu.profile': '详情页',
   'menu.visualization': '数据可视化',
   'menu.user': '个人中心',
