@@ -52,6 +52,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 1,
     '@typescript-eslint/no-empty-function': 1,
     '@typescript-eslint/no-explicit-any': 0,
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
     'import/extensions': [
       2,
       'ignorePackages',

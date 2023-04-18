@@ -6,14 +6,14 @@
     <div class="content">
       <div class="content-left">
         <a-space direction="vertical" :size="16" fill>
-          <MyProject />
-          <LatestActivity />
+<!--          <MyProject />-->
+<!--          <LatestActivity />-->
         </a-space>
       </div>
       <div class="content-right">
         <a-space :size="16" direction="vertical" fill>
-          <Myteam />
-          <LatestNotification />
+<!--          <Myteam />-->
+<!--          <LatestNotification />-->
         </a-space>
       </div>
     </div>
@@ -24,19 +24,19 @@
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import UserInfoHeader from './components/user-info-header.vue';
-import LatestNotification from './components/latest-notification.vue';
-import MyProject from './components/my-project.vue';
-import LatestActivity from './components/latest-activity.vue';
-import Myteam from './components/my-team.vue';
+// import LatestNotification from './components/latest-notification.vue';
+// import MyProject from './components/my-project.vue';
+// import LatestActivity from './components/latest-activity.vue';
+// import Myteam from './components/my-team.vue';
 import UserInfo from './components/UserInfo.vue'
 
 export default defineComponent({
   components: {
     UserInfoHeader,
-    LatestNotification,
-    MyProject,
-    LatestActivity,
-    Myteam,
+    // LatestNotification,
+    // MyProject,
+    // LatestActivity,
+    // Myteam,
       UserInfo
   },
   setup() {
