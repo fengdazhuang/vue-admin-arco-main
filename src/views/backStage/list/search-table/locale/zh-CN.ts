@@ -1,5 +1,5 @@
 export default {
-  'menu.list.searchTable': '赛程信息',
+  'menu.list.searchTable': '比赛场地',
   'menu.list.address':'比赛场地',
   'searchTable.form.number': '集合编号',
   'searchTable.form.number.placeholder': '请输入集合编号',

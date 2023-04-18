@@ -71,12 +71,6 @@
         },
         setup(){
             const zone = ref('')
-            const handleCreateArea = async ()=>{
-                const comArea = zone.value
-                const res =  await addComArea(comArea)
-                console.log("res",res)
-            }
-            const tabMapOptions = ref([])
             const handleGetComAreas = async ()=>{
                 const {data} =  await getComAreas()
                 const useData = data.map(item=>{
@@ -88,6 +82,14 @@
                 console.log('useData',useData)
                 tabMapOptions.value = useData
             }
+            const handleCreateArea = async ()=>{
+                const comArea = zone.value
+                const res =  await addComArea(comArea)
+                handleGetComAreas()
+                console.log("res",res)
+            }
+            const tabMapOptions = ref([])
+
             handleGetComAreas()
             const handleGetComPositions = async (key,label)=>{
                 console.log('key',key)
