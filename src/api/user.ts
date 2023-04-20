@@ -12,7 +12,9 @@ export interface LoginRes {
 export function login(data: LoginData) {
   return axios.post<LoginRes>('/api1/admin/login', data);
 }
-
+export function loginVolunteer (data) {
+  return axios.post('/api3/volunteer/login',data)
+}
 export function getValidateCode() {
   return axios.get<LoginRes>('/api1/admin/getCodeImage');
 }

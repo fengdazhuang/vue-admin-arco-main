@@ -114,6 +114,7 @@ export default defineComponent({
       console.log(res)
       img.value = res.data.validateCode
       userInfo.key=res.data.key
+        console.log(userInfo)
     }
     getValidateCode()
     console.log('img',img)

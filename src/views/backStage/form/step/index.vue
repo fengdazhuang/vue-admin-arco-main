@@ -6,17 +6,9 @@
             <a-card :style="{width:'100%'}" class="general-card card" title="志愿者管理">
                 <a-space size="large" >
                     <span :style="{color:'#000'}">服务方向</span>
-                    <a-radio-group>
-                        <a-radio value="A"></a-radio>
-                        <a-radio value="B"></a-radio>
-                        <a-radio value="C"></a-radio>
-                        <a-radio value="D"></a-radio>
-                    </a-radio-group>
+                        <a-tree-select @change="handleSearchDirection(form.risk)" :data="treeDataCountry" v-model="form.risk"  placeholder="请选择服务方向"/>
                     <span :style="{color:'#000'}">志愿类型</span>
-                    <a-radio-group>
-                        <a-radio value="0">赛会志愿者</a-radio>
-                        <a-radio value="1">城市志愿者</a-radio>
-                    </a-radio-group>
+                    <a-tree-select @change="handleSearchType(form.volunteerType)" :data="treeDataCountry" v-model="form.volunteerType"  placeholder="请选择志愿类型"/>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
                 <a-table
@@ -98,7 +90,7 @@
                                          :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <a-input v-model="form.name" @blur="handleLeave" placeholder="请输入你的姓名" />
+                                <a-input v-model="form.name"  placeholder="请输入你的姓名" />
                                 <span v-show="isRepeat">{{message}}</span>
                             </a-form-item>
                             <a-form-item field="photo" label="照片">
@@ -155,6 +147,7 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
+    import {pageVolunteers} from '@/api/volunteer'
     import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
@@ -165,12 +158,12 @@
         };
     };
     export default defineComponent({
-        // components:{tree},
         setup() {
+            const test = [{name:'111'},{name:'222'},{name:'333'}]
             const value = ref(false)
             const { loading, setLoading } = useLoading(true);
             const { t } = useI18n();
-            const renderData = ref<PolicyRecord[]>([]);
+            const renderData = ref([]);
             const formModel = ref(generateFormModel());
             const basePagination: Pagination = {
                 pageNumber: 1,
@@ -225,48 +218,68 @@
             const data = ref({})
             const PlayerList = ref([])
             const inputPic = ref(null)
-            // const date = new Date()
             const competitions = ref('')
             const message = ref('')
             const isRepeat = ref(false)
             let node
-            // const form = reactive({
-            //     pageNumber:1,
-            //     pageSize:20,
-            //     name: '',
-            // });
-            // const form = reactive({
-            //     usename:'',
-            //     name: '',
-            //     status: 1,
-            //     country: '',
-            //     sex:1,
-            //     email:''
-            // });
             const num = ref(1)
             const handleChange = (value: number) => {
                 console.log(value)
             }
             const form = reactive({
-                username:'',
-                sex:1,
-                email:'',
                 name:'',
                 photo:'@/assets/images/img1.jpg',
+                sex:'',
                 age:13,
                 risk:'',
-                applyTime:''
+                applyTime:'',
+                email:'',
+                volunteerType:''
             });
 
+            // const fetchData = async (
+            //     params = {name:'',pageNumber: 1, pageSize: 20 }
+            // ) => {
+            //     setLoading(true);
+            //     try {
+            //         let useParams = {
+            //             params:{...params}
+            //         }
+            //         const { data } = await listAdmins(useParams);
+            //         data.records.forEach(item =>{
+            //             if(item.sex===1) {
+            //                 item.sex = '男'
+            //             } else {
+            //                 item.sex = '女'
+            //             }
+            //         })
+            //         data.records.forEach(item=>{
+            //             if (item.status) {
+            //                 item.status = 1
+            //             } else {
+            //                 item.status = 0
+            //             }
+            //         })
+            //         PlayerList.value = data.records
+            //         pagination.pageNumber = params.pageNumber;
+            //         pagination.total = data.total;
+            //     } catch (err) {
+            //         // you can report use errorHandler or other
+            //     } finally {
+            //         setLoading(false);
+            //     }
+            // };
             const fetchData = async (
-                params = {name:'',pageNumber: 1, pageSize: 20 }
+                params = {pageNumber: 1, pageSize: 20,volunteerType:'',risk:'' }
             ) => {
                 setLoading(true);
                 try {
+
                     let useParams = {
                         params:{...params}
                     }
-                    const { data } = await listAdmins(useParams);
+                    const { data } = await pageVolunteers(useParams);
+                    console.log('data',data)
                     data.records.forEach(item =>{
                         if(item.sex===1) {
                             item.sex = '男'
@@ -289,16 +302,6 @@
                 } finally {
                     setLoading(false);
                 }
-            };
-            const handleCreate = () => {
-                visible.value = true;
-                ctx.$nextTick(() => {
-                    Object.assign(form, {
-                        username:'',
-                        sex:1,
-                        email:''
-                    });
-                });
             };
 
             const handleClick1 = (row) => {
@@ -332,25 +335,18 @@
             //   await new Promise(resolve => setTimeout(resolve, 3000));
             //   return true;
             // };
-            const handleCancel = () => {
-                visible.value = false;
-                ctx.$nextTick(() => {
-                    Object.assign(form, {
-                        username:'',
-                        sex:1,
-                        email:''
-                    });
-                });
-            }
             const handleCancel1 = () => {
                 showModel.value = false;
                 ctx.$nextTick(() => {
                     Object.assign(form, {
-                        competitionName:'',
-                        name: '',
-                        country: '',
-                        sex:1,
-                        email:''
+                        name:'',
+                        photo:'@/assets/images/img1.jpg',
+                        sex:'',
+                        age:13,
+                        risk:'',
+                        applyTime:'',
+                        email:'',
+                        volunteerType:''
                     });
                 });
             }
@@ -417,6 +413,7 @@
 
 
             }
+
             const options = [
                 {
                     value: 'beijing',
@@ -465,15 +462,15 @@
             ];
             const treeDataCountry = [
                 {
-                    key:'中国',
-                    title:'中国'
+                    key:'111',
+                    title:'111'
                 },
                 {
-                    key:'巴基斯坦',
-                    title:'巴基斯坦'
+                    key:'222',
+                    title:'222'
                 },{
-                    key:'韩国',
-                    title:'韩国'
+                    key:'333',
+                    title:'333'
                 }
 
             ]
@@ -554,22 +551,6 @@
                 console.log('update',res)
                 disabled = !disabled
             }
-            const handleLeave = async ()=>{
-                const  useParams = {
-                    params:{
-                        username:form.username
-                    }
-                }
-                await queryAdmin(useParams)
-
-                // if(res.code!=200) {
-                //     message.value = res.message
-                //     isRepeat.value = true
-                // } else {
-                //     isRepeat.value = false
-                // }
-                // console.log('queryAdmin',res)
-            }
             const  handlegetData = (treeRef)=>{
                 node = treeRef.getSelectedNodes()
 
@@ -626,24 +607,31 @@
                 }
                 const {data} = await listAdmins(useParams)
                 PlayerList.value = data.records
-                // renderData.value = data.list;
-                // pagination.pageNumber = params.pageNumber;
-                // pagination.total = data.total;
-                // const nameList = res.data.records.map(item =>{
-                //     return item.name
-                // })
-                // const params = {name:}
-                // fetchData()
-
-                // fetchData({
-                //   ...basePagination,
-                //   ...formModel.value,
-                // } as unknown as PolicyParams);
             };
             const onPageChange = (pageNumber: number) => {
                 fetchData({ ...basePagination, pageNumber });
             };
 
+            const handleSearchDirection= (risk)=>{
+                console.log('risk',risk)
+                const params = {
+                    pageNumber:1,
+                    pageSize:20,
+                    volunteerType:form.volunteerType,
+                    risk
+                }
+                fetchData(params)
+            }
+
+            const handleSearchType = (type)=>{
+                const params = {
+                    pageNumber:1,
+                    pageSize:20,
+                    volunteerType:type,
+                    risk:form.risk
+                }
+                fetchData(params)
+            }
             fetchData();
             const reset = () => {
                 formModel.value = generateFormModel();
@@ -662,8 +650,6 @@
                 statusOptions,
                 visible,
                 showModel,
-                handleCreate,
-                handleCancel,
                 form,
                 options,
                 treeData,
@@ -684,13 +670,15 @@
                 inputPic,
                 handleDelete,
                 isAbled,
-                handleLeave,
                 message,
                 handleReset,
                 handleChangeStatus,
                 value,
                 num,
-                handleChange
+                handleChange,
+                handleSearchDirection,
+                handleSearchType,
+                test
             };
         },
     });

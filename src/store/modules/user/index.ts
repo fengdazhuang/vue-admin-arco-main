@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import {
+  loginVolunteer,
   login as userLogin,
   logout as userLogout,
    getValidateCode as ValidateCode ,
   getUserInfo,
   LoginData,
 } from '@/api/user';
-import { setToken, clearToken } from '@/utils/auth';
+import { setToken, clearToken,setVolunteerToken } from '@/utils/auth';
 import { UserState } from './types';
 
 const useUserStore = defineStore('user', {
@@ -68,6 +69,17 @@ const useUserStore = defineStore('user', {
     async getValidateCode() {
       try {
         const res = await ValidateCode();
+        return res
+      } catch (err) {
+        clearToken();
+        throw err;
+      }
+    },
+    async loginVolunteer(loginForm: LoginData) {
+      try {
+        const res = await loginVolunteer(loginForm);
+        console.log('loginForm)',loginForm.key)
+        setVolunteerToken(loginForm.key);
         return res
       } catch (err) {
         clearToken();

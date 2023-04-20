@@ -25,12 +25,15 @@ export default defineConfig({
       "/api2":{
         target: "http://localhost:8002"
       },
+      "/api3":{
+        target: "http://localhost:8003"
+      },
 
     }
   },
   plugins: [
-    vue(), 
-    vueJsx(), 
+    vue(),
+    vueJsx(),
     svgLoader({ svgoConfig: {} }),
     AutoImport({
       resolvers: [ElementPlusResolver()],

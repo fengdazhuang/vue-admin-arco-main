@@ -15,12 +15,11 @@
                 <el-menu-item index="2" class="common">
                     <router-link to="competition">赛事</router-link>
                 </el-menu-item>
-                <el-menu-item index="3" class="common">
-                    <router-link to="VolunteerService">志愿服务</router-link>
+                <el-menu-item @click="PageOpen()" index="3" class="common">
+                    志愿服务
                 </el-menu-item>
-
                 <el-menu-item index="4" class="common">
-                    <router-link to="backStage" @click="handleChangeHeader">后台管理</router-link>
+                    <router-link to="backStage" >后台管理</router-link>
                 </el-menu-item>
             </el-menu>
         </div>
@@ -82,7 +81,7 @@
         </div>
     </div>
 </template>
-  
+
   <script>
   /* eslint-disable */
 import { ref } from 'vue'
@@ -93,22 +92,36 @@ export default {
         const handleSelect = (key, keyPath) => {
             console.log(key, keyPath)
         }
-        const handleChangeHeader = ()=>{
-          
-        }
+        const PageOpen = () => {
+            window.open("#/ind-index");
+        };
         return {
             activeIndex,
             handleSelect,
-            handleChangeHeader
+            PageOpen
         }
     }
 
 
 }
   </script>
-  
+
 <style lang="scss">
 @import '@/assets/style/global.scss';
+.ser-btn{
+  font-size: 18px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  height: 30px;
+  width: 100px;
+  margin-top: 0.3rem;
+  margin-right: 0.1rem;
+}
+.ser-btn:hover{
+  color: rgb(119, 165, 255);
+  background-color: rgb(236, 245, 255);
+}
 .flex-grow {
     flex-grow: 0.7;
 }
