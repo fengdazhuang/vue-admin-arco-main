@@ -18,12 +18,12 @@
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
                 <el-tab-pane v-for="item in tabMapOptions"  :key="item.key">
                     <template #label>
-                        <span class="custom-tabs-label" @click="handleGetComPositions(item.key,item.label)">
+                        <span class="custom-tabs-label" @click="handleGetComPositions(item.label)">
                             <span>{{item.label}}</span>
                         </span>
                     </template>
                     <keep-alive>
-                        <tab-pane :area="item.label" :id="item.key" />
+                        <tab-pane :area="item.label" :id="item.key" :initList="list" />
                     </keep-alive>
                 </el-tab-pane>
         </el-tabs>
@@ -42,13 +42,6 @@
         components: { TabPane },
         data() {
             return {
-                // tabMapOptions: [
-                //     { label: 'China', key: 111},
-                //     { label: 'USA', key: 222},
-                //     { label: 'Japan', key: 333 },
-                //     { label: 'Eurozone', key: 444 }
-                // ],
-                activeName: 'CN',
                 createdTimes: 0
             }
         },
@@ -70,7 +63,9 @@
             }
         },
         setup(){
+            const list = ref([])
             const zone = ref('')
+            const activeName = '杭州赛区'
             const handleGetComAreas = async ()=>{
                 const {data} =  await getComAreas()
                 const useData = data.map(item=>{
@@ -79,41 +74,36 @@
                         key:item.id
                     }
                 })
-                console.log('useData',useData)
                 tabMapOptions.value = useData
             }
             const handleCreateArea = async ()=>{
-                const comArea = zone.value
-                const res =  await addComArea(comArea)
+                const body = {
+                    comArea:zone.value
+                }
+                const res =  await addComArea(JSON.stringify(body))
                 handleGetComAreas()
-                console.log("res",res)
             }
             const tabMapOptions = ref([])
 
             handleGetComAreas()
-            const handleGetComPositions = async (key,label)=>{
-                console.log('key',key)
-                console.log('label',label)
+            const handleGetComPositions = async (label)=>{
                 const useParams = {
                     params:{
                         area:label,
-                        keyword:''
+                        keyword: ''
                     }
                 }
-                console.log(key,label)
-                const res = await getComPositions(useParams)
-                console.log('resgetComPositions',res)
-
+                const {data} = await getComPositions(useParams)
+                list.value = data
             }
-            const handletext = ()=>{
-                console.log(1111)
-            }
+            handleGetComPositions(activeName)
             return {
                 handleCreateArea,
                 zone,
                 tabMapOptions,
                 handleGetComPositions,
-                handletext
+                list,
+                activeName
             }
         }
     }

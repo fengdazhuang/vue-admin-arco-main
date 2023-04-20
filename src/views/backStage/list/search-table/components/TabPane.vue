@@ -1,13 +1,11 @@
 <template>
     <div class="create">
-
         <a-form :model="form" :style="{ width: '600px' }">
             <a-form-item  field="position" label="比赛会场" :rules="[{required:true,message:'请选择比赛会场'}]">
                 <a-input
                         v-model="form.position"
                         placeholder="请输入比赛会场"
                 />
-
             </a-form-item>
             <a-form-item field="isCG" label="具体地址" >
                 <a-radio-group v-model.number="form.isCG">
@@ -72,20 +70,10 @@
 
 <script>
     /* eslint-disable */
-import {addComPosition,deleteComPosition} from '@/api/CompetitionArea'
-    import {reactive} from "vue";
+import {addComPosition,deleteComPosition,getComPositions} from '@/api/CompetitionArea'
+    import {reactive,ref} from "vue";
 
 export default {
-  // filters: {
-  //   statusFilter(status) {
-  //     const statusMap = {
-  //       published: 'success',
-  //       draft: 'info',
-  //       deleted: 'danger'
-  //     }
-  //     return statusMap[status]
-  //   }
-  // },
   props: {
     id: {
       type: Number,
@@ -93,7 +81,8 @@ export default {
     },
       area:{
         type:String
-      }
+      },
+      initList:Array
   },
   data() {
     return {
@@ -107,23 +96,13 @@ export default {
     }
   },
   created() {
-    // this.getList()
   },
   methods: {
-    // getList() {
-    //   this.loading = true
-    //     console.log('this.$props.type',this.$props.type)
-    //   this.$emit('create') // for test
-    //   fetchList(this.listQuery).then(response => {
-    //     this.list = response.data.items
-    //     this.loading = false
-    //   })
-    //
-    // }
+
   },
     setup(props){
-      const list = reactive([{id:111,title:'hhh'},{id:111,title:'hhh'}])
-
+      let list = ref([])
+        list.value = props.initList
       const form = reactive({
           isCG:2,
           area:'',
@@ -131,14 +110,24 @@ export default {
           position:'',
           specificPosition:''
       })
+        const handleGetComPositions = async (label)=>{
+            const useParams = {
+                params:{
+                    area:label,
+                    keyword: ''
+                }
+            }
+            const {data} = await getComPositions(useParams)
+            list.value = data
+        }
         const handleDelete = async (row)=>{
-            console.log('row',row)
           const useParams = {
               params:{
-                  id:111
+                  id:row.id
               }
           }
           await deleteComPosition(useParams)
+            await handleGetComPositions(props.area)
         }
       const handleCreateComPosition = async ()=>{
           form.area=props.area
@@ -150,6 +139,8 @@ export default {
               specificPosition:form.specificPosition
           }
           const res = await addComPosition(body)
+          await handleGetComPositions(props.area)
+
       }
         const treeData = [
             {

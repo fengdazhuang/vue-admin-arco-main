@@ -19,55 +19,6 @@
                     </a-radio-group>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
-                <a-row style="margin-bottom: 16px">
-                    <a-col :span="16">
-                        <a-space>
-                            <a-button @click="handleCreate()" type="primary">新增</a-button>
-                            <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
-                                <template #title>
-                                    添加运动员
-                                </template>
-                                <div>
-                                    <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
-                                        <a-form-item field="username" label="用户名"
-                                                     :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
-                                                     :validate-trigger="['change','input']"
-                                        >
-                                            <a-input v-model="form.username" @blur="handleLeave" placeholder="请输入你的用户名" />
-                                            <span v-show="isRepeat">{{message}}</span>
-                                        </a-form-item>
-                                        <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
-                                            <a-radio-group v-model="form.sex">
-                                                <a-radio value="1">男</a-radio>
-                                                <a-radio value="0">女</a-radio>
-                                            </a-radio-group>
-                                        </a-form-item>
-                                        <a-form-item field="email" label="电子邮箱"
-                                                     :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
-                                                     :validate-trigger="['change','input']"
-                                        >
-                                            <a-input v-model="form.email" placeholder="电子邮箱" />
-                                        </a-form-item>
-
-                                        <a-form-item>
-                                            <a-space>
-                                                <!-- <a-button html-type="submit" type="primary">提交</a-button> -->
-                                                <a-button type="primary" status="danger" @click="$refs.formRef.resetFields()">重置</a-button>
-                                            </a-space>
-                                        </a-form-item>
-                                    </a-form>
-                                </div>
-                            </a-modal>
-                            <!-- <a-upload action="/">
-                              <template #upload-button>
-                                <a-button>
-                                  {{ $t('searchTable.operation.import') }}
-                                </a-button>
-                              </template>
-                            </a-upload> -->
-                        </a-space>
-                    </a-col>
-                </a-row>
                 <a-table
                         size="large"
                         row-key="id"
@@ -81,14 +32,29 @@
                     <template #columns>
                         <a-table-column
                                 width="100"
-                                title="用户名"
-                                data-index="username"
+                                title="姓名"
+                                data-index="name"
                         />
                         <a-table-column
                                 width="100"
-                                title="昵称"
-                                data-index="name"
-                        />
+                                title="照片"
+                                data-index="photo"
+                        >
+                            <template #cell="{ record }">
+                                <a-space>
+                                    <a-avatar
+                                            :size="40"
+                                            shape="square"
+                                    >
+                                        <img
+                                                alt="avatar"
+                                                :src="record.photo"
+                                        />
+                                    </a-avatar>
+                                    <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
+                                </a-space>
+                            </template>
+                        </a-table-column>>
                         <a-table-column
                                 width="80"
                                 title="性别"
@@ -97,28 +63,19 @@
                         </a-table-column>
                         <a-table-column
                                 width="200"
-                                title="电子邮箱"
-                                data-index="email"
+                                title="年龄"
+                                data-index="age"
                         />
-                        <a-table-column
-                                :title="$t('searchTable.columns.status')"
-                                data-index="status"
-                        >
 
-                            <template #cell="{ record }">
-                                <a-space style="margin-bottom: 20px;">
-                                    <a-switch  @click="handleChangeStatus(record,disabled)" checked-value="1" unchecked-value="0" v-model="value" />
-                                    Current Value: {{ value }}
-                                </a-space>
-                                <!--                                <span v-if="record.status === 'offline'" class="circle"></span>-->
-                                <!--                                <span v-else class="circle pass"></span>-->
-                                <!--                                {{ $t(`searchTable.form.status.${record.status}`) }}-->
-                            </template>
-                        </a-table-column>
                         <a-table-column
                                 width="220"
-                                :title="$t('searchTable.columns.createdTime')"
-                                data-index="createTime"
+                                title="服务方向"
+                                data-index="risk"
+                        />
+                        <a-table-column
+                                width="220"
+                                title="申请时间"
+                                data-index="applyTime"
                         />
 
                         <a-table-column
@@ -126,11 +83,7 @@
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
-                                <!--                                <a-button @click="handleClick1(record)" type="text">编辑</a-button>-->
-                                <a-button @click="handleReset(record)" type="text"  status="danger" size="small">重置</a-button>
-                                <!--                                <a-button @click="handleDelete(record)" v-permission="['admin']" type="text" status="danger" size="small">-->
-                                <!--                                    {{ $t('searchTable.columns.operations.delete') }}-->
-                                <!--                                </a-button>-->
+                                <a-button @click="handleClick1(record)" type="text">编辑</a-button>
                             </template>
                         </a-table-column>
                     </template>
@@ -140,44 +93,52 @@
                         编辑管理员信息
                     </template>
                     <div>
-
-                        <a-form setFields="" ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}" @submit="handleSubmit">
+                        <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
                             <a-form-item field="name" label="姓名"
                                          :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <a-input v-model="form.name" placeholder="请输入你的姓名" />
+                                <a-input v-model="form.name" @blur="handleLeave" placeholder="请输入你的姓名" />
+                                <span v-show="isRepeat">{{message}}</span>
                             </a-form-item>
-                            <a-form-item field="competitionName" label="管理项目"
-                                         :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
-                                         :validate-trigger="['change','input']"
-                            >
-                                <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择管理项目"/>
+                            <a-form-item field="photo" label="照片">
+                                <template #cell="{ record }">
+                                    <a-space>
+                                        <a-avatar
+                                                :size="40"
+                                                shape="square"
+                                        >
+                                            <img
+                                                    alt="avatar"
+                                                    :src="record.photo"
+                                            />
+                                        </a-avatar>
+                                        <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
+                                    </a-space>
+                                </template>
                             </a-form-item>
-                            <a-form-item field="email" label="电子邮箱"
-                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
-                                         :validate-trigger="['change','input']"
-                            >
-                                <a-input v-model="form.email" placeholder="请输入电子邮箱" />
-                            </a-form-item>
-                            <a-form-item field="country" label="国籍" :rules="[{required:true,message:'国籍不能为空'}]">
-                                <a-select v-model="form.country" placeholder="请选择国籍" allow-clear>
-                                    <a-option value="中国">中国</a-option>
-                                    <a-option value="巴基斯坦">巴基斯坦</a-option>
-                                    <a-option value="韩国">韩国</a-option>
-                                </a-select>
-                            </a-form-item>
-                            <a-form-item field="sex" label="性别" :rules="[{required:true,message:'不能为空'}]">
+                            <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
                                 <a-radio-group v-model="form.sex">
                                     <a-radio value="1">男</a-radio>
                                     <a-radio value="0">女</a-radio>
                                 </a-radio-group>
                             </a-form-item>
-                            <a-form-item>
-                                <a-space>
-                                    <!-- <a-button html-type="submit" type="primary">提交</a-button> -->
-                                    <a-button type="primary" status="danger" @click="$refs.formRef.resetFields()">重置</a-button>
-                                </a-space>
+                            <a-form-item field="age" label="年龄"
+                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <el-input-number v-model="num" :min="1" :max="10" @change="handleChange" />
+                            </a-form-item>
+                            <a-form-item field="risk" label="服务方向"
+                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <a-input v-model="form.risk" placeholder="服务方向" />
+                            </a-form-item>
+                            <a-form-item field="applyTime" label="申请时间"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <a-input v-model="form.applyTime" disabled/>
                             </a-form-item>
                         </a-form>
                     </div>
@@ -282,10 +243,19 @@
             //     sex:1,
             //     email:''
             // });
+            const num = ref(1)
+            const handleChange = (value: number) => {
+                console.log(value)
+            }
             const form = reactive({
                 username:'',
                 sex:1,
-                email:''
+                email:'',
+                name:'',
+                photo:'@/assets/images/img1.jpg',
+                age:13,
+                risk:'',
+                applyTime:''
             });
 
             const fetchData = async (
@@ -718,7 +688,9 @@
                 message,
                 handleReset,
                 handleChangeStatus,
-                value
+                value,
+                num,
+                handleChange
             };
         },
     });
