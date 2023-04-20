@@ -97,7 +97,7 @@
                 const useParams = {
                     params:{
                         area:label,
-                        keyword:key + ''
+                        keyword:''
                     }
                 }
                 console.log(key,label)
