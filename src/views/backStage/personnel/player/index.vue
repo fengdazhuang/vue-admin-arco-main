@@ -23,7 +23,7 @@
             :data="treeData"
         />
       </div>
-      <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
+      <a-card :style="{width:'100%'}" class="general-card card" title="运动员">
         <a-row>
           <a-col :flex="1">
             <a-form
@@ -286,7 +286,7 @@
       </a-card>
     </div>
 
-    
+
   </div>
 </template>
 
@@ -420,7 +420,7 @@ export default defineComponent({
                 });
             });
     };
-    
+
     const handleClick1 = (row) => {
       isImg.value = true
       imgSrc.value = row.photo
@@ -433,7 +433,7 @@ export default defineComponent({
       ctx.$nextTick(() => {
         Object.assign(form, row);
       });
-      
+
     };
     const handleDelete = async (row)=>{
       const useParams={
@@ -699,7 +699,7 @@ export default defineComponent({
           form.photo = '@/assets/images/img1.jpg'
           isImg.value = true
       }
-    
+
     const search = async () => {
         const items = node.map(item=>{
             return item.title

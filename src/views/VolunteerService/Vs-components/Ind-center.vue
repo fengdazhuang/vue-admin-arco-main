@@ -1,22 +1,41 @@
 <template>
   <div class="common">
     <div class="container">
-      <div class="head">
-        <div class="head-left">
-          <p style="font-size: 24px; margin-top: 0.1rem; margin-left: 20px">
-            个人中心
-          </p>
-          <div class="user">
-            <el-icon style="font-size: 24px"><User /></el-icon>
-            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号</p>
-              <p style="font-size: 14px; margin-top: 0.1rem" @click="previewResume">简历预览</p>
-          </div>
+        <div class="head">
+            <div class="head-left">
+                <div class="vol">
+                    <p style="font-size: 20px; margin-top: 0.1rem; margin-left: 20px">
+                        个人中心
+                    </p>
+                    <div class="user">
+                        <div class="user-icon">
+                            <el-icon style="font-size: 20px"><User /></el-icon>
+                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号</p>
+                        </div>
+                        <p style="font-size: 12px">志愿者类型</p>
+                        <span @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.9rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
+                    </div>
+                </div>
+                <div class="vol-list">
+                    <a href="" style="color: rgb(23, 159, 255);" class="vli">首页</a>
+                    <ul class="list">
+                        <li @click="previewResume">简历预览</li>
+                        <li style="width: 1px; height: 12px; background: #000" class="Ver-line"></li>
 
+<!--                        <li>注册账号</li>-->
+<!--                        <li style="width: 1px; height: 12px; background: #000" class="Ver-line"></li>-->
+
+                        <li @click="OpenPage()">修改密码</li>
+                        <li style="width: 1px; height: 12px; background: #000" class="Ver-line"></li>
+
+                        <li @click="handleLogout">退出登录</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="head-right">
+                <p></p>
+            </div>
         </div>
-        <div class="head-right">
-          <p></p>
-        </div>
-      </div>
       <div class="main">
         <div class="main-up">
           <span style="font-size: 24px">招募进展</span>
@@ -33,71 +52,12 @@
         </div>
       </div>
     </div>
-      <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel" @ok="handleConfirm($refs,'edit')"  unmountOnClose>
-          <template #title>
-              简介预览
-          </template>
-          <div>
-
-              <a-form setFields="" ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}" @submit="handleSubmit">
-                  <a-form-item field="name" label="姓名"
-                               :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
-                               :validate-trigger="['change','input']"
-                  >
-                      <a-input v-model="form.name" placeholder="请输入你的姓名" />
-                  </a-form-item>
-                  <a-form-item field="competitionName" label="参赛项目"
-                               :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
-                               :validate-trigger="['change','input']"
-                  >
-                      <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择参赛项目"/>
-                  </a-form-item>
-                  <a-form-item field="photo" label="上传照片">
-                      <a-space direction="vertical" :style="{ width: '100%' }">
-                          <div class="choose-cover">
-                              <div class="uploader-comp">
-                                  <div id="block-choose" class="block-choose" :style="coverStyle">
-                                      <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
-                                  </div>
-                                  <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
-                              </div>
-                              <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
-                          </div>
-                      </a-space>
-                  </a-form-item>
-                  <a-form-item field="email" label="电子邮箱"
-                               :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
-                               :validate-trigger="['change','input']"
-                  >
-                      <a-input v-model="form.email" placeholder="请输入电子邮箱" />
-                  </a-form-item>
-                  <a-form-item field="country" label="国籍" :rules="[{required:true,message:'国籍不能为空'}]">
-                      <a-select v-model="form.country" placeholder="请选择国籍" allow-clear>
-                          <a-option value="中国">中国</a-option>
-                          <a-option value="巴基斯坦">巴基斯坦</a-option>
-                          <a-option value="韩国">韩国</a-option>
-                      </a-select>
-                  </a-form-item>
-                  <a-form-item field="sex" label="性别" :rules="[{required:true,message:'不能为空'}]">
-                      <a-radio-group v-model="form.sex">
-                          <a-radio value="1">男</a-radio>
-                          <a-radio value="0">女</a-radio>
-                      </a-radio-group>
-                  </a-form-item>
-                  <a-form-item>
-                      <a-space>
-                          <!-- <a-button html-type="submit" type="primary">提交</a-button> -->
-                          <a-button type="primary" status="danger" @click="$refs.formRef.resetFields()">重置</a-button>
-                      </a-space>
-                  </a-form-item>
-              </a-form>
-          </div>
-      </a-modal>
   </div>
 </template>
 
 <script>
     import {reactive, ref} from 'vue'
+    import {logout} from '@/api/volunteer'
 
 export default {
   name: "ind-center",
@@ -121,12 +81,30 @@ export default {
           window.open('#/resume')
           // showModel.value = !showModel.value
       }
+        const OpenPage=()=>{
+            window.open('#/Ch-psw')
+        }
+        const handleSelectType = ()=>{
+            window.open('#/selectType')
+        }
+        const handleLogout = async ()=>{
+          const useParams = {
+              params:{
+                  id:111
+              }
+          }
+          await logout(useParams)
+        }
         return {
           previewResume,
+            handleLogout,
             showModel,
             form,
             handleCancel,
-            handleConfirm
+            handleConfirm,
+            OpenPage,
+            handleSelectType
+
         }
     }
 };
@@ -162,15 +140,61 @@ body {
         height: 1.5rem;
         background-color: rgb(255, 255, 255);
         display: flex;
-
         flex-direction: column;
-        .user {
+        .vol {
+          width: 100%;
           display: flex;
-          height: 0.5rem;
-          align-items: center;
-          flex-direction: row;
-          margin-top: 10px;
-          margin-left: 20px;
+          justify-content: space-between;
+          // align-items: center;
+          flex-direction: column;
+          .user {
+            display: flex;
+            height: 0.5rem;
+            width: 80%;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            margin-left: 20px;
+            .user-icon {
+              display: flex;
+              flex-direction: row;
+              .el-icon {
+                width: 26px;
+                height: 26px;
+                background-color: rgb(162, 168, 184);
+                border-radius: 50%;
+              }
+            }
+          }
+        }
+        .vol-list {
+          position: relative;
+          font-size: 12px;
+          color: rgb(23, 159, 255);
+          .Ver-line{
+            position: relative;
+            top: 0.02rem;
+            margin: 0 10px;
+          }
+          .vli{
+            position: absolute;
+            top: .1rem;
+            left: 0.2rem;
+          }
+          .list{
+            position: absolute;
+            top: 0.1rem;
+            left: 1.3rem;
+          }
+          ul {
+            list-style: none;
+            li {
+              list-style: none;
+              display: inline-block;
+              cursor: pointer;
+              // margin-right: 0.2rem;
+            }
+          }
         }
       }
       .head-right {

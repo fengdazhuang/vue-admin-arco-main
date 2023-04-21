@@ -103,7 +103,19 @@ const router = createRouter({
           name: "re-register",
           component: () =>
               import("@/views/VolunteerService/Vs-components/re-register.vue"),
-        }
+        },
+        {
+          path: "Ch-psw",
+          name: "Ch-psw",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/Ch-psw.vue"),
+        },
+        {
+          path: "selectType",
+          name: "selectType",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/selectType.vue"),
+        },
       ],
     },
     {
@@ -141,7 +153,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const userStore = useUserStore();
-  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume']
+  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume','Ch-psw','selectType']
   // to.name === 'index' || to.name === 'information' || to.name === 'competition'|| to.name==='volunteerService' || to.name==='ind-index' || to.name==='re-login' || to.name==='re-register'
   if (unGuardRoute.includes(to.name)) {
     next()

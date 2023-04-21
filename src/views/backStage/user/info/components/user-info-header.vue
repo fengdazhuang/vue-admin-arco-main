@@ -8,7 +8,7 @@
         <img :src="userInfo.avatar" />
       </a-avatar>
       <a-typography-title :heading="6" style="margin: 0">
-        {{ userInfo.name }}
+        {{ adminInfo.username }}
       </a-typography-title>
       <div class="user-msg">
         <a-space :size="18">
@@ -39,8 +39,10 @@ import { useUserStore } from '@/store';
 export default defineComponent({
   setup() {
     const userStore = useUserStore();
+    const adminInfo = JSON.parse(window.sessionStorage.getItem('adminInfo'))
     return {
       userInfo: userStore,
+        adminInfo
     };
   },
 });

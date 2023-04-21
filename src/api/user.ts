@@ -63,6 +63,9 @@ export  function updateJudge(data) {
 }
 
 // 管理员
+export function modifyInfo(data){
+  return axios.put('/api1/admin/modifyInfo',data)
+}
 export function addAdmin(data) {
   return axios.post('/api1/admin/addAdmin',data)
 }

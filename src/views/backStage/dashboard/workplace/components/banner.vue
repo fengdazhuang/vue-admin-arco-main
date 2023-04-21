@@ -2,7 +2,7 @@
   <a-col class="banner">
     <a-col :span="8">
       <a-typography-title :heading="5" style="margin-top: 0">
-        {{ $t('workplace.welcome') }} {{ userInfo.name }}
+        {{ $t('workplace.welcome') }}  {{adminInfo.username}}
       </a-typography-title>
     </a-col>
     <a-divider class="panel-border" />
@@ -16,6 +16,7 @@ import { useUserStore } from '@/store';
 export default defineComponent({
   setup() {
     const userStore = useUserStore();
+    const adminInfo = JSON.parse(window.sessionStorage.getItem('adminInfo'))
     const userInfo = computed(() => {
       return {
         name: userStore.name,
@@ -23,6 +24,7 @@ export default defineComponent({
     });
     return {
       userInfo,
+        adminInfo
     };
   },
 });

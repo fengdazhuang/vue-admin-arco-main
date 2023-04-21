@@ -137,6 +137,7 @@ export default defineComponent({
         setLoading(true);
         try {
           const  res =  await userStore.login(values);
+          window.sessionStorage.setItem('adminInfo',JSON.stringify(res.data))
           if(res.code===200) {
             const { redirect, ...othersQuery } = router.currentRoute.value.query;
             router.push({

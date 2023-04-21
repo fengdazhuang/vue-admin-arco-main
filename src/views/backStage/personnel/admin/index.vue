@@ -3,7 +3,7 @@
     <div class="container">
         <Breadcrumb :items="['menu.person', 'menu.exception.admin']" />
         <div class="main">
-            <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
+            <a-card :style="{width:'100%'}" class="general-card card" title="管理员">
                 <a-row>
                     <a-col :flex="1">
                         <a-form

@@ -2,19 +2,7 @@
     <div>
         <Breadcrumb :items="['menu.list', 'menu.list.address']" />
         <div class="tab-container">
-        <el-tag>mounted times ：{{ createdTimes }}</el-tag>
-        <el-alert :closable="false" style="width:200px;display:inline-block;vertical-align: middle;margin-left:30px;" title="Tab with keep-alive" type="success" />
-        <div class="create">
-            <a-input-search v-model="zone" :style="{width:'320px'}" placeholder="请输入新增赛区" search-button>
-                <!--                        <div @click="handleSearch" ></div>-->
-
-                <template #button-default>
-                    <span :style="{ display:'block',width:'50px'}" @click="handleCreateArea"> + </span>
-                </template>
-            </a-input-search>
-<!--            <a-input-search :style="{width:'320px'}" @click="handleCreateArea" v-model="zone" placeholder="请输入添加的赛区" button-text="+" search-button/>-->
-        </div>
-
+        <div @click="handleGetServicePoint">点我</div>
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
                 <el-tab-pane v-for="item in tabMapOptions"  :key="item.key">
                     <template #label>
@@ -34,6 +22,7 @@
 <script>
     import {ref} from 'vue'
     import {getComAreas,addComArea,getComPositions} from '@/api/CompetitionArea'
+    import {pageVolPositions} from '@/api/volunteer'
     import TabPane from './components/TabPane.vue'
 
     /* eslint-disable */
@@ -76,6 +65,15 @@
                 })
                 tabMapOptions.value = useData
             }
+            const handleGetServicePoint = async ()=>{
+                const useParams = {
+                    params:{
+                        pageNumber:1,
+                        pageSize:10
+                    }
+                }
+                await pageVolPositions(useParams)
+            }
             const handleCreateArea = async ()=>{
                 const body = {
                     comArea:zone.value
@@ -103,7 +101,8 @@
                 tabMapOptions,
                 handleGetComPositions,
                 list,
-                activeName
+                activeName,
+                handleGetServicePoint
             }
         }
     }

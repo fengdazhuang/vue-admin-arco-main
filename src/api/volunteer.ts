@@ -22,3 +22,24 @@ export function doReview(data){
 export function resetRisk(data){
     return axios.put('/api3/volunteer/resetRisk',data)
 }
+export function modifyInfo(data){
+    return axios.put('/api3/volunteer/modifyInfo',data)
+}
+export function modifyPassword(data){
+    return axios.put('/api3/volunteer/modifyPassword',data)
+}
+export function forgetPassword(data){
+    return axios.put('/api3/volunteer/forgetPassword',data)
+}
+export function logout(params){
+    return axios.get('/api3/volunteer/logout',params)
+}
+export function getVolDirections(params){
+    return axios.get('/api3/volunteer/getVolDirections',params)
+}
+export function pageVolPositions(params) {
+    return axios.get('/api3/volunteer/pageVolPositions',params)
+}
+export function chooseVolType(data,params){
+    return axios.put('/api3/volunteer/chooseVolType',data,params)
+}

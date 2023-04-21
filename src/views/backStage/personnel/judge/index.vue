@@ -23,7 +23,7 @@
                         :data="treeData"
                 />
             </div>
-            <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
+            <a-card :style="{width:'100%'}" class="general-card card" title="裁判">
                 <a-row>
                     <a-col :flex="1">
                         <a-form

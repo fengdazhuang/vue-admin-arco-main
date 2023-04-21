@@ -23,7 +23,7 @@
         <div class="content">
             <div class="re-con">
                 <div class="content">
-                    <h1 style="font-size: 32px" class="txt">登录</h1>
+                    <h1 style="font-size: 32px" class="txt">简介预览</h1>
                     <el-row :gutter="15">
                         <el-form
                                 ref="elForm"
@@ -34,7 +34,9 @@
                                 label-position="left"
                         >
                             <el-col :span="24">
-                                <el-form-item label="姓名" prop="name">
+                                <el-form-item label="姓名" prop="name"
+                                              :rules="[{required:true,message:'请输入姓名'}]"
+                                >
                                     <el-input
                                             v-model="userInfo.name"
                                             clearable
@@ -45,17 +47,20 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="照片" prop="photo">
-                                    <el-input
-                                            v-model="userInfo.photo"
-                                            clearable
-                                            :style="{ width: '5rem' }"
-                                    >
-                                    </el-input>
+                                <el-form-item label="照片" prop="photo" :rules="[{required:true,message:'请选择照片'}]">
+                                        <div class="choose-cover">
+                                            <div class="uploader-comp">
+                                                <div id="block-choose" class="block-choose" :style="coverStyle">
+                                                    <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                                </div>
+                                                <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
+                                            </div>
+                                            <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
+                                        </div>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="电子邮箱" prop="email">
+                                <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入电子邮箱'}]">
                                     <el-input
                                             v-model="userInfo.email"
                                             placeholder="请输入电子邮箱"
@@ -66,7 +71,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="性别" prop="sex">
+                                <el-form-item label="性别" prop="sex" :rules="[{required:true,message:'请选择性别'}]">
                                     <el-radio-group v-model="userInfo.sex" class="ml-4">
                                         <el-radio label="1" size="large">男</el-radio>
                                         <el-radio label="2" size="large">女</el-radio>
@@ -74,18 +79,16 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="年龄" prop="age">
-                                    <el-input
-                                            v-model="userInfo.age"
-                                            placeholder="请输入年龄"
-                                            clearable
-                                            :style="{ width: '5rem' }"
-                                    >
-                                    </el-input>
-                                </el-form-item>
+                                <a-form-item prop="age" label="年龄"
+                                             :rules="[{required:true,message:'请输入年龄'}]"
+                                             :placeholder="请输入年龄"
+                                             :validate-trigger="['change','input']"
+                                >
+                                    <el-input-number v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="10" @change="handleChange" />
+                                </a-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="职业" prop="profession">
+                                <el-form-item label="职业" prop="profession" :rules="[{required:true,message:'请输入职业'}]">
                                     <el-input
                                             v-model="userInfo.profession"
                                             placeholder="请输入职业"
@@ -96,21 +99,22 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="身份证类型" prop="certificateType">
-                                    <el-input
-                                            v-model="userInfo.certificateType"
-                                            placeholder="请选择证件类型"
-                                            clearable
-                                            :style="{ width: '5rem' }"
-                                    >
-                                    </el-input>
+                                <el-form-item label="证件类型" prop="certificateType" :rules="[{required:true,message:'请选择证件类型'}]">
+                                    <el-select v-model="value" class="m-2" placeholder="请选择证件类型" size="large">
+                                        <el-option
+                                                v-for="item in certificateTypes"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value"
+                                        />
+                                    </el-select>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="身份证号" prop="certificateNumber">
+                                <el-form-item label="身份证号" prop="certificateNumber" :rules="[{required:true,message:'请输入身份证号'}]">
                                     <el-input
                                             v-model="userInfo.certificateNumber"
-                                            placeholder="请输入身份号"
+                                            placeholder="请输入身份证号"
                                             clearable
                                             :style="{ width: '5rem' }"
                                     >
@@ -118,7 +122,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="地址" prop="address">
+                                <el-form-item label="地址" prop="address" :rules="[{required:true,message:'请输入家庭地址'}]">
                                     <el-input
                                             v-model="userInfo.address"
                                             placeholder="请输入家庭地址"
@@ -143,7 +147,7 @@
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item label="" prop="field107">
-                                        <el-button @click="handleLogin" type="primary" size="medium" class="re-login">
+                                        <el-button @click="handleChangeInfo" type="primary" size="medium" class="re-login">
                                             提交
                                         </el-button>
                                     </el-form-item>
@@ -160,6 +164,7 @@
 
 <script>
     import {reactive, ref} from "vue";
+    import {modifyInfo} from'@/api/volunteer'
 
     export default {
         name: "VolunteerService",
@@ -178,14 +183,82 @@
                 certificateNumber:'',
                 address:''
             });
+            const value = ref('')
+            const certificateTypes = [
+                {
+                    value: '中华人民共和国居民身份证',
+                    label: '中华人民共和国居民身份证',
+                },
+                {
+                    value: '台湾居民往来大陆通行证',
+                    label: '台湾居民往来大陆通行证',
+                },
+                {
+                    value: '港澳居民来往内地通行证',
+                    label: '港澳居民来往内地通行证',
+                },
+                {
+                    value: '护照',
+                    label: '护照',
+                },
+                {
+                    value: '香港身份证',
+                    label: '香港身份证',
+                },
+                {
+                    value: '澳门身份证',
+                    label: '澳门身份证',
+                },
+                {
+                    value: '港澳居民居住证',
+                    label: '港澳居民居住证',
+                },
+                {
+                    value: '台湾居民居住证',
+                    label: '台湾居民居住证',
+                },
+                {
+                    value: '中华人民共和国外国人永久居留身份证',
+                    label: '中华人民共和国外国人永久居留身份证',
+                },
+
+            ]
+            const imgSrc = ref('@/assets/images/img1.jpg')
+            const isImg = ref(false)
+            const inputPic = ref(null)
             const activeIndex = ref("0");
             const handleSelect = (key, keyPath) => {
                 console.log(key, keyPath);
             };
+            const uploadCover = (e)=> {
+                imgSrc.value='@/assets/images/img1.jpg'
+                userInfo.photo = '@/assets/images/img1.jpg'
+                isImg.value = true
+            }
+            const handleChangeInfo = async ()=>{
+                const body = {
+                    address:'111',
+                    age:18,
+                    certificateNumber:'111',
+                    certificateType:'111',
+                    comment:'111',
+                    id:111,
+                    name:'111',
+                    photo:'111',
+                    profession:'111',
+                    sex:'1'
+                }
+                await modifyInfo(body)
+            }
             return {
                 activeIndex,
                 handleSelect,
-                userInfo
+                userInfo,
+                uploadCover,
+                inputPic,
+                certificateTypes,
+                value,
+                handleChangeInfo
             };
         },
     };
