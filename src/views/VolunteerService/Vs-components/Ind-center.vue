@@ -58,6 +58,7 @@
 <script>
     import {reactive, ref} from 'vue'
     import {logout} from '@/api/volunteer'
+    import {useRouter} from 'vue-router'
 
 export default {
   name: "ind-center",
@@ -70,6 +71,7 @@ export default {
             sex:1,
             email:''
         });
+        const router = useRouter()
       const showModel= ref(false)
         const handleCancel=()=>{
             showModel.value = false
@@ -94,6 +96,8 @@ export default {
               }
           }
           await logout(useParams)
+            window.localStorage.removeItem('volunteertoken')
+            router.push('/re-login')
         }
         return {
           previewResume,

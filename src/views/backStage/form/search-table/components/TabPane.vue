@@ -1,71 +1,55 @@
 <template>
-    <div class="create">
-        <a-form :model="form" :style="{ width: '600px' }">
-            <a-form-item  field="position" label="比赛会场" :rules="[{required:true,message:'请选择比赛会场'}]">
-                <a-input
-                        v-model="form.position"
-                        placeholder="请输入比赛会场"
-                />
-            </a-form-item>
-            <a-form-item field="isCG" label="具体地址" >
-                <a-radio-group v-model.number="form.isCG">
-                    <a-radio :value="1">有</a-radio>
-                    <a-radio :value="2">无</a-radio>
-                </a-radio-group>
-            </a-form-item>
-            <a-form-item v-show="form.isCG === 1 ? 1:0"   field="specificPosition" label="具体地址" :rules="[{required:true,message:'请输入具体地址'}]">
-                <a-input
-                        v-model="form.specificPosition"
-                        placeholder="请输入具体地址"
-                />
-            </a-form-item>
-            <a-form-item label="比赛项目" :rules="[{required:true,message:'请选择比赛场馆'}]">
-                <a-tree-select
-                        v-model="form.competitionItem"
-                        :multiple="true"
-                        :allow-clear="true"
-                        :allow-search="true"
-                        :data="treeData"
-                        placeholder="请选择比赛项目"
-                        style="width: 300px"
-                ></a-tree-select>
-                <span @click="handleCreateComPosition" :style="{display:'block',width:'50px',height:'30px',lineHeight:'30px',cursor:'pointer',color:'#fff',textAlign:'center',background:'#165DFF'}">+</span>
-<!--                <a-input-search @click="handleCreateComPosition" :style="{width:'320px'}" v-model="form.competition_item" placeholder="请输入比赛项目" button-text="+" search-button/>-->
-            </a-form-item>
-        </a-form>
+    <div>
+        <div class="demo-collapse">
+            <el-collapse v-model="activeNames" @change="handleChange">
+                <el-collapse-item title="Consistency" name="1">
+                    <div>
+                        Consistent with real life: in line with the process and logic of real
+                        life, and comply with languages and habits that the users are used to;
+                    </div>
+                    <div>
+                        Consistent within interface: all elements should be consistent, such
+                        as: design style, icons and texts, position of elements, etc.
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="Feedback" name="2">
+                    <div>
+                        Operation feedback: enable the users to clearly perceive their
+                        operations by style updates and interactive effects;
+                    </div>
+                    <div>
+                        Visual feedback: reflect current state by updating or rearranging
+                        elements of the page.
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="Efficiency" name="3">
+                    <div>
+                        Simplify the process: keep operating process simple and intuitive;
+                    </div>
+                    <div>
+                        Definite and clear: enunciate your intentions clearly so that the
+                        users can quickly understand and make decisions;
+                    </div>
+                    <div>
+                        Easy to identify: the interface should be straightforward, which helps
+                        the users to identify and frees them from memorizing and recalling.
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="Controllability" name="4">
+                    <div>
+                        Decision making: giving advices about operations is acceptable, but do
+                        not make decisions for the users;
+                    </div>
+                    <div>
+                        Controlled consequences: users should be granted the freedom to
+                        operate, including canceling, aborting or terminating current
+                        operation.
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
     </div>
 
-  <el-table :data="list" border fit highlight-current-row style="width: 100%">
-
-    <el-table-column
-      align="center"
-      label="ID"
-      width="65"
-      prop="id"
-    ></el-table-column>
-
-    <el-table-column prop="area" width="180px" align="center" label="赛区">
-<!--      <template slot-scope="scope">-->
-<!--        <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
-<!--      </template>-->
-    </el-table-column>
-
-    <el-table-column  min-width="110px" align="center" prop="position" label="会场">
-    </el-table-column>
-
-    <el-table-column  min-width="200px" align="center" prop="specificPosition" label="具体地址">
-    </el-table-column>
-
-    <el-table-column min-width="120px" label="比赛项目" prop="competitionItem">
-    </el-table-column>
-      <el-table-column width="100px" align="center" label="操作">
-          <template #default="scope">
-              <el-button type="danger"  @click="handleDelete(scope.row)">删除</el-button>
-          </template>
-
-      </el-table-column>
-
-  </el-table>
 </template>
 
 <script>

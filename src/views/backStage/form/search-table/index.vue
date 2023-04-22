@@ -4,7 +4,7 @@
         <div class="tab-container">
         <div @click="handleGetServicePoint">点我</div>
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
-                <el-tab-pane v-for="item in tabMapOptions"  :key="item.key">
+                <el-tab-pane v-for="item in tabOptions"  :name="item.label" :key="item.key">
                     <template #label>
                         <span class="custom-tabs-label" @click="handleGetComPositions(item.label)">
                             <span>{{item.label}}</span>
@@ -54,7 +54,18 @@
         setup(){
             const list = ref([])
             const zone = ref('')
-            const activeName = '杭州赛区'
+            const activeName = '赛会志愿'
+            const tabOptions = [
+                {
+                    key:'赛会志愿',
+                    label:'赛会志愿'
+                },
+                {
+                    key:'城市志愿',
+                    label:'城市志愿'
+                },
+
+            ]
             const handleGetComAreas = async ()=>{
                 const {data} =  await getComAreas()
                 const useData = data.map(item=>{
@@ -102,7 +113,8 @@
                 handleGetComPositions,
                 list,
                 activeName,
-                handleGetServicePoint
+                handleGetServicePoint,
+                tabOptions
             }
         }
     }

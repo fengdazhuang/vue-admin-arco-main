@@ -1,6 +1,6 @@
 <template>
     <div class="create">
-        <a-form :model="form" :style="{ width: '600px' }">
+        <a-form :model="form" :style="{ width: '600px' }" ref="formRef">
             <a-form-item  field="position" label="比赛会场" :rules="[{required:true,message:'请选择比赛会场'}]">
                 <a-input
                         v-model="form.position"
@@ -29,7 +29,7 @@
                         placeholder="请选择比赛项目"
                         style="width: 300px"
                 ></a-tree-select>
-                <span @click="handleCreateComPosition" :style="{display:'block',width:'50px',height:'30px',lineHeight:'30px',cursor:'pointer',color:'#fff',textAlign:'center',background:'#165DFF'}">+</span>
+                <span @click="handleCreateComPosition($refs)" :style="{display:'block',width:'50px',height:'30px',lineHeight:'30px',cursor:'pointer',color:'#fff',textAlign:'center',background:'#165DFF'}">+</span>
 <!--                <a-input-search @click="handleCreateComPosition" :style="{width:'320px'}" v-model="form.competition_item" placeholder="请输入比赛项目" button-text="+" search-button/>-->
             </a-form-item>
         </a-form>
@@ -71,7 +71,7 @@
 <script>
     /* eslint-disable */
 import {addComPosition,deleteComPosition,getComPositions} from '@/api/CompetitionArea'
-    import {reactive,ref} from "vue";
+    import {reactive,ref,watch} from "vue";
 
 export default {
   props: {
@@ -103,6 +103,10 @@ export default {
     setup(props){
       let list = ref([])
         list.value = props.initList
+        watch(()=>props.initList,()=>{
+            list.value = props.initList
+        })
+        const formRef = ref();
       const form = reactive({
           isCG:2,
           area:'',
@@ -129,7 +133,7 @@ export default {
           await deleteComPosition(useParams)
             await handleGetComPositions(props.area)
         }
-      const handleCreateComPosition = async ()=>{
+      const handleCreateComPosition = async ($refs)=>{
           form.area=props.area
           form.competitionItem = form.competitionItem.join(',')
           const body = {
@@ -139,7 +143,9 @@ export default {
               specificPosition:form.specificPosition
           }
           const res = await addComPosition(body)
+          $refs.formRef.resetFields()
           await handleGetComPositions(props.area)
+
 
       }
         const treeData = [
@@ -201,7 +207,8 @@ export default {
           treeData,
           form,
           list,
-          handleDelete
+          handleDelete,
+          formRef
       }
     }
 }

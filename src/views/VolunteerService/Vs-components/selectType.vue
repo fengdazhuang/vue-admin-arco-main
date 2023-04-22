@@ -12,9 +12,10 @@
                         label-width="150px"
                         label-position="left"
                 >
-                    <div class="container">
+                    <el-form-item prop="volunteerType" :rules="[{required:true,message:'请选择志愿者类型'}]">
+                        <div class="container">
                         <el-col :span="24">
-                            <el-select :style="{width:'6rem'}" v-model="value" class="m-2" placeholder="请选择志愿者类型" size="large">
+                            <el-select :style="{width:'6rem'}" v-model="formData.volunteerType" class="m-2" placeholder="请选择志愿者类型" size="large">
                                 <el-option
                                         v-for="item in options"
                                         :key="item.value"
@@ -24,6 +25,7 @@
                             </el-select>
                         </el-col>
                     </div>
+                    </el-form-item>
                     <div class="btn">
                         <el-col :span="12">
                             <el-form-item label="" prop="field118">
@@ -58,11 +60,7 @@
         data() {
             return {
                 formData: {
-                    field114: undefined,
-                    field115: undefined,
-                    field116: undefined,
-                    field117: undefined,
-                    field118: undefined,
+                    volunteerType: ''
                 },
                 rules: {
                     field114: [

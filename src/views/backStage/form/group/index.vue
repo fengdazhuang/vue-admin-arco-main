@@ -97,21 +97,18 @@
                                 <a-input v-model="form.name"  placeholder="请输入你的姓名" />
                                 <span v-show="isRepeat">{{message}}</span>
                             </a-form-item>
-                            <a-form-item field="photo" label="照片">
-                                <template #cell="{ record }">
-                                    <a-space>
-                                        <a-avatar
-                                                :size="40"
-                                                shape="square"
-                                        >
-                                            <img
-                                                    alt="avatar"
-                                                    :src="record.photo"
-                                            />
-                                        </a-avatar>
-                                        <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
-                                    </a-space>
-                                </template>
+                            <a-form-item field="photo" label="上传照片">
+                                <a-space direction="vertical" :style="{ width: '100%' }">
+                                    <div class="choose-cover">
+                                        <div class="uploader-comp">
+                                            <div id="block-choose" class="block-choose" :style="coverStyle">
+                                                <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                            </div>
+                                            <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
+                                        </div>
+                                        <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
+                                    </div>
+                                </a-space>
                             </a-form-item>
                             <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
                                 <a-radio-group v-model="form.sex">
@@ -221,10 +218,12 @@
             const treeRef = ref()
             const data = ref({})
             const PlayerList = ref([])
-            const inputPic = ref(null)
             const competitions = ref('')
             const message = ref('')
             const isRepeat = ref(false)
+            const imgSrc = ref('@/assets/images/img1.jpg')
+            const isImg = ref(false)
+            const inputPic = ref(null)
             let node
             const num = ref(1)
             const handleChange = (value: number) => {
@@ -330,10 +329,49 @@
                 showCheckedAll: true,
                 onlyCurrent: false
             });
-            // const handleBeforeOk = async () => {
-            //   await new Promise(resolve => setTimeout(resolve, 3000));
-            //   return true;
-            // };
+            // const uploadCover = (e)=> {
+            //   var me = ctx1.ctx;
+            //
+            //   let f = inputPic.value.files[0];
+            //
+            //   let multiForm = new FormData() ; 		//创建一个form对象
+            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+            //
+            //   // 请求后端获得最新数据
+            //   var fsServerUrl = 'http://localhost:8009';
+            //   axios.defaults.withCredentials = true;
+            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+            //
+            //   axios.post(
+            //       fileServer,
+            //       multiForm,
+            //       {
+            //         headers: {
+            //           'Content-Type': 'multipart/form-data',
+            //         }
+            //       })
+            //       .then(res => {
+            //         console.log('resImg',res)
+            //         if (res.code === 200) {
+            //           var imagesList = res.data;
+            //           if (imagesList.length < 1) {
+            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
+            //           } else {
+            //             imgSrc.value = imagesList[0];
+            //             form.photo = imagesList[0]
+            //             isImg.value = true
+            //           }
+            //         } else {
+            //           alert(res.data.msg);
+            //         }
+            //       });
+            // }
+            const uploadCover = (e)=> {
+                imgSrc.value='@/assets/images/img1.jpg'
+                form.photo = '@/assets/images/img1.jpg'
+                isImg.value = true
+                console.log('isImg.value',isImg.value)
+            }
             const handleCancel1 = () => {
                 showModel.value = false;
                 ctx.$nextTick(() => {
@@ -505,47 +543,6 @@
             const checkStrictly = ref(false);
 
 
-            // const uploadCover = (e)=> {
-            //   var me = ctx1.ctx;
-            //
-            //   let f = inputPic.value.files[0];
-            //
-            //   let multiForm = new FormData() ; 		//创建一个form对象
-            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
-            //
-            //   // 请求后端获得最新数据
-            //   var fsServerUrl = 'http://localhost:8009';
-            //   axios.defaults.withCredentials = true;
-            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
-            //
-            //   axios.post(
-            //       fileServer,
-            //       multiForm,
-            //       {
-            //         headers: {
-            //           'Content-Type': 'multipart/form-data',
-            //         }
-            //       })
-            //       .then(res => {
-            //         console.log('resImg',res)
-            //         if (res.code === 200) {
-            //           var imagesList = res.data;
-            //           if (imagesList.length < 1) {
-            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
-            //           } else {
-            //             imgSrc.value = imagesList[0];
-            //             form.photo = imagesList[0]
-            //             isImg.value = true
-            //           }
-            //         } else {
-            //           alert(res.data.msg);
-            //         }
-            //       });
-            // }
-            // const uploadCover = (e)=> {
-            //     imgSrc.value='@/assets/images/img1.jpg'
-            //     isImg.value = true
-            // }
 
             const onPageChange = (pageNumber: number) => {
                 fetchData({ ...basePagination, pageNumber });
@@ -599,6 +596,11 @@
                 num,
                 handleChange,
                 handleOrderType,
+                isRepeat,
+                uploadCover,
+                isImg,
+                imgSrc,
+
             };
         },
     });

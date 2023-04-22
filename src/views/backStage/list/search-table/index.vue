@@ -6,17 +6,13 @@
         <el-alert :closable="false" style="width:200px;display:inline-block;vertical-align: middle;margin-left:30px;" title="Tab with keep-alive" type="success" />
         <div class="create">
             <a-input-search v-model="zone" :style="{width:'320px'}" placeholder="请输入新增赛区" search-button>
-                <!--                        <div @click="handleSearch" ></div>-->
-
                 <template #button-default>
                     <span :style="{ display:'block',width:'50px'}" @click="handleCreateArea"> + </span>
                 </template>
             </a-input-search>
-<!--            <a-input-search :style="{width:'320px'}" @click="handleCreateArea" v-model="zone" placeholder="请输入添加的赛区" button-text="+" search-button/>-->
         </div>
-
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
-                <el-tab-pane v-for="item in tabMapOptions"  :key="item.key">
+                <el-tab-pane v-for="item in tabMapOptions" :name="item.label" :key="item.key">
                     <template #label>
                         <span class="custom-tabs-label" @click="handleGetComPositions(item.label)">
                             <span>{{item.label}}</span>
@@ -65,7 +61,7 @@
         setup(){
             const list = ref([])
             const zone = ref('')
-            const activeName = '杭州赛区'
+            const activeName = ref('杭州赛区')
             const handleGetComAreas = async ()=>{
                 const {data} =  await getComAreas()
                 const useData = data.map(item=>{
@@ -96,7 +92,7 @@
                 const {data} = await getComPositions(useParams)
                 list.value = data
             }
-            handleGetComPositions(activeName)
+            handleGetComPositions(activeName.value)
             return {
                 handleCreateArea,
                 zone,

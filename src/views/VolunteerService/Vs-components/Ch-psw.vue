@@ -14,9 +14,9 @@
         >
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="密码" prop="field115">
+              <el-form-item label="密码" prop="password">
                 <el-input
-                  v-model="formData.field102"
+                  v-model="formData.password"
                   placeholder="请输入密码"
                   clearable
                   show-password
@@ -28,9 +28,9 @@
 
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="新密码" prop="field116">
+              <el-form-item label="新密码" prop="newPassword">
                 <el-input
-                  v-model="formData.field114"
+                  v-model="formData.newPassword"
                   placeholder="请输入新密码"
                   clearable
                   show-password
@@ -44,9 +44,9 @@
           </div>
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="请确认密码" prop="field117">
+              <el-form-item label="请确认密码" prop="confirmPassword">
                 <el-input
-                  v-model="formData.field103"
+                  v-model="formData.confirmPassword"
                   placeholder="请输入确认密码"
                   clearable
                   show-password
@@ -59,7 +59,7 @@
 
           <div class="btn">
             <el-col :span="12">
-              <el-form-item label="" prop="field118">
+              <el-form-item label="">
                 <el-button type="primary" size="medium" class="re-return">
                   返回
                 </el-button>
@@ -88,48 +88,35 @@
 <script>
     /* eslint-disable */
     import {modifyPassword} from '@/api/volunteer'
-export default {
+    import {getCurrentInstance} from "vue";
+    import { Message } from '@arco-design/web-vue';
+
+    export default {
   components: {},
   props: [],
   data() {
     return {
       formData: {
-        field114: undefined,
-        field115: undefined,
-        field116: undefined,
-        field117: undefined,
-        field118: undefined,
+        password: undefined,
+          newPassword: undefined,
+          confirmPassword: undefined,
       },
       rules: {
-        field114: [
+        password: [
           {
             required: true,
             message: "请输入密码",
             trigger: "blur",
           },
         ],
-        field115: [
+          newPassword: [
           {
             required: true,
             message: "请输入新密码",
             trigger: "blur",
           },
         ],
-        field116: [
-          {
-            required: true,
-            message: "请输入确认密码",
-            trigger: "blur",
-          },
-        ],
-        field117: [
-          {
-            required: true,
-            message: "请输入确认密码",
-            trigger: "blur",
-          },
-        ],
-        field118: [
+        confirmPassword: [
           {
             required: true,
             message: "请输入确认密码",
@@ -144,13 +131,24 @@ export default {
   created() {},
   mounted() {},
   setup() {
-      const handleChangePassword =  async ()=>{
-          const body = {
-              id:111,
-              newPassword:'admin',
-              oldPassword:'admin'
-          }
-          await modifyPassword(body)
+      const {ctx} = getCurrentInstance()
+      const handleChangePassword =   ()=>{
+          ctx.$refs.elForm.validate(async (validata)=>{
+              console.log('validata',validata)
+              if (validata) {
+                  const body = {
+                      id:111,
+                      newPassword:'admin',
+                      oldPassword:'admin'
+                  }
+                  await modifyPassword(body)
+                  ctx.$refs.elForm.resetFields()
+                  Message.success('修改成功')
+              } else {
+                  Message.error('修改失败')
+              }
+          })
+
       }
     const OpenPage = () => {
       window.open("#/re-login");

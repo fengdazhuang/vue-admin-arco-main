@@ -114,11 +114,19 @@
                     title="修改个人信息"
                     width="50%"
             >
-                <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+                <el-form :model="form"  label-width="100px">
                     <div class="updateinfo">
                         <div class="left">
-                            <el-form-item label="头像" prop="avatar">
-                                <img style="width:150px;height:110px" :src="form.avatar" />
+                            <el-form-item label="头像" prop="photo">
+                                <div class="choose-cover">
+                                    <div class="uploader-comp">
+                                        <div id="block-choose" class="block-choose" :style="coverStyle">
+                                            <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                        </div>
+                                        <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
+                                    </div>
+                                    <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
+                                </div>
                             </el-form-item>
                             <el-form-item label="账号密码" prop="password">
                                 <el-input v-model="form.password"></el-input>
@@ -198,9 +206,12 @@
                 isShow.value = true
                 console.log('isshow',isShow.value)
             }
+            const imgSrc = ref('@/assets/images/img1.jpg')
+            const isImg = ref(false)
+            const inputPic = ref(null)
             const adminInfo = JSON.parse(window.sessionStorage.getItem('adminInfo'))
             const form =  reactive({
-                avatar: adminInfo.picture,
+                photo: adminInfo.picture,
                 password: adminInfo.password,
                 age: adminInfo.age,
                 email:adminInfo.email,
@@ -241,6 +252,48 @@
                 }
                 await modifyInfo(body)
             }
+            // const uploadCover = (e)=> {
+            //   var me = ctx1.ctx;
+            //
+            //   let f = inputPic.value.files[0];
+            //
+            //   let multiForm = new FormData() ; 		//创建一个form对象
+            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+            //
+            //   // 请求后端获得最新数据
+            //   var fsServerUrl = 'http://localhost:8009';
+            //   axios.defaults.withCredentials = true;
+            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+            //
+            //   axios.post(
+            //       fileServer,
+            //       multiForm,
+            //       {
+            //         headers: {
+            //           'Content-Type': 'multipart/form-data',
+            //         }
+            //       })
+            //       .then(res => {
+            //         console.log('resImg',res)
+            //         if (res.code === 200) {
+            //           var imagesList = res.data;
+            //           if (imagesList.length < 1) {
+            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
+            //           } else {
+            //             imgSrc.value = imagesList[0];
+            //             form.photo = imagesList[0]
+            //             isImg.value = true
+            //           }
+            //         } else {
+            //           alert(res.data.msg);
+            //         }
+            //       });
+            // }
+            const uploadCover = (e)=> {
+                imgSrc.value='@/assets/images/img1.jpg'
+                form.photo = '@/assets/images/img1.jpg'
+                isImg.value = true
+            }
             const handleClose = (done: () => void) => {
                 ElMessageBox.confirm('Are you sure to close this dialog?')
                     .then(() => {
@@ -256,7 +309,11 @@
                 dialogVisible,
                 handleClose,
                 form,
-                handleChangeUserInfo
+                handleChangeUserInfo,
+                uploadCover,
+                inputPic,
+                imgSrc,
+                isImg
             }
         }
     }

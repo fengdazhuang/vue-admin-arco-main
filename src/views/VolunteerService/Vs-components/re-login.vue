@@ -12,7 +12,7 @@
           label-position="left"
         >
           <el-col :span="24">
-            <el-form-item label="电子邮箱" prop="field101">
+            <el-form-item label="电子邮箱" prop="email">
               <el-input
                 v-model="userInfo.email"
                 placeholder="请输入电子邮箱"
@@ -23,7 +23,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="密码" prop="field102">
+            <el-form-item label="密码" prop="password">
               <el-input
                 v-model="userInfo.password"
                 placeholder="请输入密码"
@@ -34,7 +34,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="验证码" prop="field103">
+            <el-form-item label="验证码" prop="validateCode">
               <el-input
                 v-model="userInfo.validateCode"
                 placeholder="请输入验证码"
@@ -71,12 +71,6 @@
             </el-col>
           </div>
 
-          <!-- <el-col :span="24">
-          <el-form-item size="large">
-            <el-button type="primary" @click="submitForm">提交</el-button>
-            <el-button @click="resetForm">重置</el-button>
-          </el-form-item>
-        </el-col> -->
         </el-form>
       </el-row>
     </div>
@@ -86,35 +80,35 @@
     /* eslint-disable */
     import { useUserStore } from '@/store';
     import {useRouter} from 'vue-router'
-    import {reactive, ref} from "_vue@3.2.47@vue";
+    import {reactive, ref,getCurrentInstance} from "_vue@3.2.47@vue";
+    import { Message } from '@arco-design/web-vue';
+
 export default {
   components: {},
   props: [],
   data() {
     return {
       formData: {
-        field101: undefined,
-        field102: undefined,
-        field103: undefined,
-        field106: undefined,
-        field107: undefined,
+          email: undefined,
+          password: undefined,
+          validateCode: undefined,
       },
       rules: {
-        field101: [
+          email: [
           {
             required: true,
             message: "请输入电子邮箱",
             trigger: "blur",
           },
         ],
-        field102: [
+          password: [
           {
             required: true,
             message: "请输入密码",
             trigger: "blur",
           },
         ],
-        field103: [
+          validateCode: [
           {
             required: true,
             message: "请输入验证码",
@@ -125,6 +119,7 @@ export default {
     };
   },
   setup() {
+      const {ctx} = getCurrentInstance()
       const userStore = useUserStore();
       const img = ref('')
       const userInfo = reactive({
@@ -134,11 +129,18 @@ export default {
           key:''
       });
       const router = useRouter();
-      const handleLogin = async ()=>{
-          const  res =  await userStore.loginVolunteer(userInfo);
-          if (res.code === 200) {
-              router.push('/ind-center')
-          }
+      const handleLogin = ()=>{
+          ctx.$refs.elForm.validate(async (validate)=>{
+              if (validate) {
+                  ctx.$refs.elForm.resetFields()
+                  Message.success('登录成功')
+                  const  res =  await userStore.loginVolunteer(userInfo);
+                  if (res.code === 200) {
+                      router.push('/ind-center')
+                  }
+              }
+          })
+
       }
     const OpenPage = () => {
       window.open("#/ind-index");

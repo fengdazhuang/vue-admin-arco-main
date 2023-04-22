@@ -20,7 +20,7 @@
                 </el-menu-item>
             </el-menu>
         </div>
-        <div class="content">
+        <div class="content" :style="{height:'11rem'}">
             <div class="re-con">
                 <div class="content">
                     <h1 style="font-size: 32px" class="txt">简介预览</h1>
@@ -47,11 +47,11 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="照片" prop="photo" :rules="[{required:true,message:'请选择照片'}]">
+                                <el-form-item label="照片" >
                                         <div class="choose-cover">
                                             <div class="uploader-comp">
                                                 <div id="block-choose" class="block-choose" :style="coverStyle">
-                                                    <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                                    <img :src="imgSrc"   style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
                                                 </div>
                                                 <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
                                             </div>
@@ -100,7 +100,7 @@
                             </el-col>
                             <el-col :span="24">
                                 <el-form-item label="证件类型" prop="certificateType" :rules="[{required:true,message:'请选择证件类型'}]">
-                                    <el-select v-model="value" class="m-2" placeholder="请选择证件类型" size="large">
+                                    <el-select v-model="userInfo.certificateType" class="m-2" placeholder="请选择证件类型" size="large">
                                         <el-option
                                                 v-for="item in certificateTypes"
                                                 :key="item.value"
@@ -159,16 +159,24 @@
                 </div>
             </div>
         </div>
+        <div class="footer">
+            <Bottom></Bottom>
+        </div>
     </div>
 </template>
 
 <script>
-    import {reactive, ref} from "vue";
+    import {reactive, ref,getCurrentInstance} from "vue";
     import {modifyInfo} from'@/api/volunteer'
+    import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
+    import { Message } from '@arco-design/web-vue';
 
     export default {
         name: "VolunteerService",
+        components:{Bottom},
         setup() {
+            const {ctx} = getCurrentInstance()
+            const elForm = ref(null)
             const userInfo = reactive({
                 email: 'admin@qq.com',
                 password: 'admin',
@@ -235,20 +243,29 @@
                 userInfo.photo = '@/assets/images/img1.jpg'
                 isImg.value = true
             }
-            const handleChangeInfo = async ()=>{
-                const body = {
-                    address:'111',
-                    age:18,
-                    certificateNumber:'111',
-                    certificateType:'111',
-                    comment:'111',
-                    id:111,
-                    name:'111',
-                    photo:'111',
-                    profession:'111',
-                    sex:'1'
-                }
-                await modifyInfo(body)
+            const handleChangeInfo =  ()=>{
+                ctx.$refs.elForm.validate(async (validate)=>{
+                    if (validate) {
+                        const body = {
+                            address:'111',
+                            age:18,
+                            certificateNumber:'111',
+                            certificateType:'111',
+                            comment:'111',
+                            id:111,
+                            name:'111',
+                            photo:'111',
+                            profession:'111',
+                            sex:'1'
+                        }
+                        await modifyInfo(body)
+                        ctx.$refs.elForm.resetFields()
+                        Message.success('提交成功')
+                    } else {
+                        Message.error('提交失败')
+                    }
+                })
+
             }
             return {
                 activeIndex,
@@ -258,7 +275,10 @@
                 inputPic,
                 certificateTypes,
                 value,
-                handleChangeInfo
+                handleChangeInfo,
+                elForm,
+                isImg,
+                imgSrc
             };
         },
     };
@@ -303,99 +323,6 @@
     .content {
       background-color: rgb(248, 248, 248);
     }
-    .footer {
-      height: px2rem(242px);
-      background-image: url("../assets/footerbgc.png");
-      background-position: center center;
-      // background-repeat: no-repeat;
-      background-size: cover;
-      background-color: rgb(244, 244, 244);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 5rem;
-      position: relative;
-      .footer-left {
-        font-size: 14px;
-        width: 50%;
-        height: 80%;
-        position: relative;
-        .mgs {
-          display: block;
-          position: absolute;
-          margin: px2rem(30px) 0px px2rem(20px) px2rem(120px);
-
-          li {
-            line-height: px2rem(35px);
-            margin: px2rem(10px);
-          }
-        }
-        .icon {
-          list-style: none;
-          position: absolute;
-          margin: px2rem(250px) 0px 0px px2rem(130px);
-          li {
-            display: inline;
-            margin-right: px2rem(10px);
-            img {
-              width: 50px;
-              height: 50px;
-            }
-          }
-        }
-      }
-      .footer-right {
-        font-size: 14px;
-        width: 50%;
-        height: 5rem;
-        list-style: none;
-        position: relative;
-        .Re_link {
-          position: absolute;
-          margin: px2rem(100px) 0px 0px px2rem(130px);
-          dt {
-            font-size: 16px;
-            font-weight: 900;
-            padding-bottom: px2rem(30px);
-          }
-          li {
-            a {
-              display: block;
-              color: #000;
-              padding-top: px2rem(15px);
-            }
-          }
-        }
-        .Pr_events {
-          position: absolute;
-
-          margin: px2rem(100px) 0px 0px px2rem(430px);
-
-          dt {
-            font-size: 16px;
-            font-weight: 900;
-            padding-bottom: px2rem(30px);
-          }
-          li {
-            a {
-              display: block;
-              color: #000;
-              padding-top: px2rem(15px);
-            }
-          }
-        }
-        .right-bot {
-          margin: 4rem 2rem 0 0rem;
-          p {
-            display: block;
-            text-align: right;
-            font-size: 12px;
-            line-height: px2rem(30px);
-            color: #929292;
-          }
-        }
-      }
-    }
   }
   // 设置文字不能选中
   body {
@@ -406,7 +333,7 @@
   }
   .re-con {
     width: 100%;
-    height: 7rem;
+    //height: 7rem;
     background-color: rgb(255, 255, 255);
     display: flex;
     justify-content: center;
@@ -414,7 +341,7 @@
     margin-top: 1rem;
     .content {
       width: 60%;
-      height: 10rem;
+      height: 11rem;
       display: flex;
       position: relative;
       justify-content: center;

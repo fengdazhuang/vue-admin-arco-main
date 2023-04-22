@@ -1,48 +1,69 @@
 <template>
-  <el-row class="row-bg" justify="space-evenly" wrap>
-    <el-col :span="8"
-      ><div class="grid-content ep-bg-purple" />
-      <img src="src\assets\game-img\Water\帆船.jpg" alt="" />
-    </el-col>
-    <el-col :span="8"
-      ><div class="grid-content ep-bg-purple-light" />
-      <img src="src\assets\game-img\Water\帆船.jpg" alt="" />
-    </el-col>
-    <el-col :span="8"
-      ><div class="grid-content ep-bg-purple" />
-      <img src="src\assets\game-img\Water\帆船.jpg" alt="" />
-    </el-col>
-    <el-col :span="8"
-      ><div class="grid-content ep-bg-purple" />
-      <img src="src\assets\game-img\Water\帆船.jpg" alt="" />
-    </el-col>
-  </el-row>
+    <div class="row-container">
+
+        <ul class="ul">
+            <li calss="item" v-for="item in data" :key="item.id">
+                <a @click="handleInfo(item)" class="item-link">
+                    <img :src="item.picture" alt="" />
+                </a>
+            </li>
+
+        </ul>
+    </div>
 </template>
 
-<style scoped>
-body{
-background-color: rgb(248,248,248);
-}
-.el-row {
-  margin-bottom: 20px;
-}
-.el-row:last-child {
-  margin-bottom: 0;
-}
-.el-col {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  border-radius: 4px;
-}
-img {
-  width: 420px;
-    height: 520px;
+<script>
+    export default {
+        name:'Water',
+        props:{
+            data:Array
+        },
+        setup(props){
+            const handleInfo = (item)=>{
+                console.log('item',item)
+                window.sessionStorage.setItem('item',JSON.stringify(item))
+                window.open('#/preview')
+            }
+            return {
+                handleInfo
+            }
+        }
+    }
+</script>
 
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
+<style lang="scss" scoped>
+  @import "@/assets/style/global.scss";
+  body{
+    background-color: rgb(248,248,248);
+  }
+
+  .row-container {
+    .ul{
+      display: flex;
+      flex-wrap: wrap;
+      width: 1400px;
+      justify-content: space-between;
+      margin: 0 auto;
+      .item {
+        margin-right: 70px;
+        margin-bottom: 30px;
+        .item-link {
+          width: 420px;
+          height: 5200px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+      }
+      //.row-item:nth-child(3n+3) {
+      //  margin-right: 0!important;
+      //}
+    }
+  }
+
+  ul li:nth-child(3n+3) {
+    margin-right: 0;
+  }
 </style>

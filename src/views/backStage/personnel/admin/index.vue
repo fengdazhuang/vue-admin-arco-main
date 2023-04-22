@@ -127,11 +127,12 @@
                                 :title="$t('searchTable.columns.status')"
                                 data-index="status"
                         >
-
+<!-- eslint-disable -->
                             <template #cell="{ record }">
                                 <a-space style="margin-bottom: 20px;">
-                                    <a-switch  @click="handleChangeStatus(record,disabled)" checked-value="1" unchecked-value="0" v-model="value" />
-                                    Current Value: {{ value }}
+                                    <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
+<!--                                    <a-switch  @click="handleChangeStatus(record,disabled)" checked-value="1" unchecked-value="0" v-model="value" />-->
+<!--                                    Current Value: {{ value }}-->
                                 </a-space>
 <!--                                <span v-if="record.status === 'offline'" class="circle"></span>-->
 <!--                                <span v-else class="circle pass"></span>-->
@@ -279,6 +280,7 @@
                     value: 'offline',
                 },
             ]);
+            const open = ref(true)
             const isAbled = ref(false)
             const visible = ref(false);
             const showModel = ref(false)
@@ -314,7 +316,7 @@
             const fetchData = async (
                 params = {name:'',pageNumber: 1, pageSize: 20 }
             ) => {
-                setLoading(true);
+                // setLoading(true);
                 try {
                     let useParams = {
                         params:{...params}
@@ -329,9 +331,9 @@
                     })
                     data.records.forEach(item=>{
                         if (item.status) {
-                            item.status = 1
+                            item.status = true
                         } else {
-                            item.status = 0
+                            item.status = false
                         }
                     })
                     PlayerList.value = data.records
@@ -593,19 +595,19 @@
                     email:row.email
                 })
             }
-            const handleChangeStatus = async (row,disabled)=>{
-                if (disabled) {
-                    disabled = 1
+            const handleChangeStatus = async (row)=>{
+                console.log('row',row)
+                if (row.status) {
+                    row.status = 0
                 } else {
-                    disabled = 0
+                    row.status = 1
                 }
                 const params = {
                     id:row.id,
-                    status:disabled
+                    status:row.status
                 }
                 const res = await updateStatus(params)
-                console.log('update',res)
-                disabled = !disabled
+                fetchData()
             }
             const handleLeave = async ()=>{
                 const  useParams = {
@@ -741,7 +743,8 @@
                 message,
                 handleReset,
                 handleChangeStatus,
-                value
+                value,
+                open
             };
         },
     });

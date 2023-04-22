@@ -14,7 +14,7 @@
         >
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="电子邮箱" prop="email">
+              <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入电子邮箱'}]">
                 <el-input
                   v-model="formData.email"
                   placeholder="请输入电子邮箱"
@@ -31,7 +31,7 @@
           <div class="container">
             <div class="verification">
               <el-col :span="20">
-                <el-form-item label="邮箱验证码" prop="code">
+                <el-form-item label="邮箱验证码" prop="code" :rules="[{required:true,message:'请输入验证码'}]">
                   <el-input
                     v-model="formData.code"
                     placeholder="请输入邮箱验证码"
@@ -51,7 +51,7 @@
           </div>
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="密码" prop="password">
+              <el-form-item label="密码" prop="password" :rules="[{required:true,message:'请输入密码'}]">
                 <el-input
                   v-model="formData.password"
                   placeholder="请输入密码"
@@ -67,7 +67,7 @@
           </div>
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="确认密码" prop="confirmPassword">
+              <el-form-item label="确认密码" prop="confirmPassword" :rules="[{required:true,message:'请输入确认密码'}]">
                 <el-input
                   v-model="formData.confirmPassword"
                   placeholder="请输入确认密码"
@@ -86,7 +86,7 @@
             >
           </div>
           <div class="read2">
-            <input type="radio" name="" id="" value="2" />
+            <input type="radio" name="" value="2" />
             <span>我同意使用注册的电子邮箱接收杭州亚组委相关信息</span>
           </div>
           <div class="btn">
@@ -125,7 +125,7 @@
 <script>
     /* eslint-disable */
     import {sendCode,register} from '@/api/volunteer'
-    import {reactive} from "vue";
+    import {reactive,getCurrentInstance} from "vue";
 export default {
   components: {},
   props: [],
@@ -168,6 +168,7 @@ export default {
   created() {},
   mounted() {},
   setup() {
+      const {ctx} = getCurrentInstance()
       const formData= reactive({
           email: '',
           code: '',
@@ -176,13 +177,19 @@ export default {
           field106: undefined,
           field107: undefined,
       })
-      const handleSubmit = async ()=>{
-          const body = {
-              email:formData.email,
-              password:formData.password,
-              validateCode:formData.code
-          }
-          const res = await register(body)
+      const handleSubmit = ()=>{
+          ctx.$refs.elForm.validate(async (validate)=>{
+              if (validate) {
+                  const body = {
+                      email:formData.email,
+                      password:formData.password,
+                      validateCode:formData.code
+                  }
+                  const res = await register(body)
+                  ctx.$refs.elForm.resetFields()
+              }
+          })
+
       }
     const OpenPage = () => {
       window.open("#/re-login");

@@ -186,11 +186,6 @@ router.beforeEach(async (to, from, next) => {
     }
     NProgress.done();
   }
-  // if(isVolunteerLogin()) {
-  //     next()
-  // } else {
-  //   next('/re-login')
-  // }
   if (isLogin()) {
     if (userStore.role) {
       crossroads();
