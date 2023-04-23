@@ -12,7 +12,9 @@ export interface LoginRes {
 export function login(data: LoginData) {
   return axios.post<LoginRes>('/api1/admin/login', data);
 }
-
+export function loginVolunteer (data) {
+  return axios.post('/api3/volunteer/login',data)
+}
 export function getValidateCode() {
   return axios.get<LoginRes>('/api1/admin/getCodeImage');
 }
@@ -61,6 +63,9 @@ export  function updateJudge(data) {
 }
 
 // 管理员
+export function modifyInfo(data){
+  return axios.put('/api1/admin/modifyInfo',data)
+}
 export function addAdmin(data) {
   return axios.post('/api1/admin/addAdmin',data)
 }

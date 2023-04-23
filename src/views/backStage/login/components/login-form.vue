@@ -114,6 +114,7 @@ export default defineComponent({
       console.log(res)
       img.value = res.data.validateCode
       userInfo.key=res.data.key
+        console.log(userInfo)
     }
     getValidateCode()
     console.log('img',img)
@@ -136,6 +137,7 @@ export default defineComponent({
         setLoading(true);
         try {
           const  res =  await userStore.login(values);
+          window.sessionStorage.setItem('adminInfo',JSON.stringify(res.data))
           if(res.code===200) {
             const { redirect, ...othersQuery } = router.currentRoute.value.query;
             router.push({

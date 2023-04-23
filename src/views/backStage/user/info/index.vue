@@ -23,6 +23,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import {modifyInfo} from '@/api/user'
 import UserInfoHeader from './components/user-info-header.vue';
 // import LatestNotification from './components/latest-notification.vue';
 // import MyProject from './components/my-project.vue';

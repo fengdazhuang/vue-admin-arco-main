@@ -1,6 +1,6 @@
 <template>
     <div class="subscribe-container">
-        <Breadcrumb :items="['menu.result', 'menu.result.success']" />
+        <Breadcrumb :items="['资讯管理', '查看资讯']" />
         <div class="subscribe-header-container">
             <div class="subscribe-header">
                 <div class="subscribe-left">
@@ -58,15 +58,13 @@
                         show-time
                         :time-picker-props="{ defaultValue: ['00:00:00', '09:09:06'] }"
                         format="YYYY-MM-DD HH:mm"
-                        @change="onChange"
-                        @select="onSelect"
                         @ok="onOk"
                 />
             </div>
         </div>
         <div class="subscribe-content-container">
-            <div class="subscribe-content" @click="handlePreview(item)" v-for="item in articleList" :key="item.id">
-                <div class="subscribe-content-card">
+            <div class="subscribe-content"  v-for="item in articleList" :key="item.id">
+                <div class="subscribe-content-card" @click="handlePreview(item)">
                 <div class="subscribe-content-card-img">
                     <img src="@/assets/images/img1.jpg" />
                 </div>
@@ -76,14 +74,14 @@
                         <span>阅读 0 </span>
                         <span>评论 0</span>
                     </div>
-                    <div class="publish" v-show="publish" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(184,254,184)',color:'rgb(79,152,83)'}">已发布</div>
-                    <div class="publish" v-show="prepublish" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'#ff7d00',color:''}">未发布</div>
-                    <div class="publish" v-show="canceled" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(214,214,214)',color:'rgb(145,145,145)'}">已撤回</div>
+                    <div class="publish" v-show="item.articleStatus === 1 ? true:false" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(184,254,184)',color:'rgb(79,152,83)'}">已发布</div>
+                    <div class="publish" v-show="item.articleStatus === 3 ? true:false" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'#ff7d00',color:''}">未发布</div>
+                    <div class="publish" v-show="item.articleStatus === 2 ? true:false" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(214,214,214)',color:'rgb(145,145,145)'}">已撤回</div>
                     <div class="createTime" >{{item.createTime}}</div>
                 </div>
             </div>
                 <div class="subscribe-content-operate">
-                <a-space direction="vertical" class="btns">
+                    <a-space direction="vertical" class="btns">
                     <div>
                         <a-button  v-show="item.articleStatus === 1 ? true:false" @click="handleWithDraw(item.id)" type="text" status="warning">
                                 <template #icon>
@@ -100,7 +98,7 @@
                         删除
                     </a-button>
                 </a-space>
-            </div>
+                </div>
             </div>
         </div>
 
@@ -159,6 +157,7 @@
                     //     item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
                     // })
                     articleList.value = data.records
+                    console.log('articleList.value',articleList.value)
                     // renderData.value = data.list;
                     pagination.pageNumber = params.pageNumber;
                     pagination.total = data.total;
@@ -279,7 +278,7 @@
       cursor: pointer;
       .subscribe-content-card {
         display: flex;
-
+        flex: 1;
         &-img {
           img {
             display: inline-block;
@@ -294,7 +293,12 @@
           justify-content: space-around;
         }
       }
+      .subscribe-content-operate {
+
+      }
       .btns {
+        width: 111px;
+        height: 152px;
         padding: 30px 30px 0 0;
       }
     }

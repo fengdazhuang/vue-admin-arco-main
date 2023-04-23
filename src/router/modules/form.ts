@@ -13,7 +13,7 @@ export default {
       name: 'step',
       component: () => import('@/views/backStage/form/step/index.vue'),
       meta: {
-        locale: 'menu.form.step',
+        locale: '志愿者管理',
         requiresAuth: true,
         roles: ['admin'],
       },
@@ -23,7 +23,17 @@ export default {
       name: 'group',
       component: () => import('@/views/backStage/form/group/index.vue'),
       meta: {
-        locale: 'menu.form.group',
+        locale: '志愿者审核',
+        requiresAuth: true,
+        roles: ['admin'],
+      },
+    },
+    {
+      path: 'VolunteerServicePoints',
+      name: 'VolunteerServicePoints',
+      component: () => import('@/views/backStage/form/search-table/index.vue'),
+      meta: {
+        locale: '志愿服务点',
         requiresAuth: true,
         roles: ['admin'],
       },

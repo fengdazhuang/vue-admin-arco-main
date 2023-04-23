@@ -1,0 +1,131 @@
+<template>
+    <div>
+        <Breadcrumb :items="['menu.list', 'menu.list.address']" />
+        <div class="tab-container">
+        <div >点我</div>
+        <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
+                <el-tab-pane v-for="item in tabOptions"  :name="item.label" :key="item.key">
+                    <template #label>
+                        <span class="custom-tabs-label" @click="handleGetServicePoint(item.label)">
+                            <span>{{item.label}}</span>
+                        </span>
+                    </template>
+                    <keep-alive>
+                        <tab-pane  :area="item.label" :id="item.key" :initList="list" />
+                    </keep-alive>
+                </el-tab-pane>
+        </el-tabs>
+    </div>
+    </div>
+</template>
+
+<script>
+    import {ref} from 'vue'
+    import {getComAreas,addComArea,getComPositions} from '@/api/CompetitionArea'
+    import {pageVolPositions} from '@/api/volunteer'
+    import TabPane from './components/TabPane.vue'
+
+    /* eslint-disable */
+    export default {
+        name: 'Tab',
+        components: { TabPane },
+        data() {
+            return {
+                createdTimes: 0
+            }
+        },
+        watch: {
+            activeName(val) {
+                this.$router.push(`${this.$route.path}?tab=${val}`)
+            }
+        },
+        created() {
+            // init the default selected tab
+            const tab = this.$route.query.tab
+            if (tab) {
+                this.activeName = tab
+            }
+        },
+        methods: {
+            showCreatedTimes() {
+                this.createdTimes = this.createdTimes + 1
+            }
+        },
+        setup(){
+            const list = ref([])
+            const zone = ref('')
+            const activeName = '赛会志愿'
+            const tabOptions = [
+                {
+                    key:0,
+                    label:'赛会志愿'
+                },
+                {
+                    key:1,
+                    label:'城市志愿'
+                },
+
+            ]
+            const handleGetComAreas = async ()=>{
+                const {data} =  await getComAreas()
+                const useData = data.map(item=>{
+                    return {
+                        label:item.name,
+                        key:item.id
+                    }
+                })
+                tabMapOptions.value = useData
+            }
+            const handleGetServicePoint = async (label)=>{
+                const useParams = {
+                    params:{
+                        pageNumber:1,
+                        pageSize:10
+                    }
+                }
+                await pageVolPositions(useParams)
+            }
+            const handleCreateArea = async ()=>{
+                const body = {
+                    comArea:zone.value
+                }
+                const res =  await addComArea(JSON.stringify(body))
+                handleGetComAreas()
+            }
+            const tabMapOptions = ref([])
+
+            handleGetComAreas()
+            const handleGetComPositions = async (label)=>{
+                const useParams = {
+                    params:{
+                        area:label,
+                        keyword: ''
+                    }
+                }
+                const {data} = await getComPositions(useParams)
+                list.value = data
+            }
+            handleGetComPositions(activeName)
+            return {
+                handleCreateArea,
+                zone,
+                tabMapOptions,
+                handleGetComPositions,
+                list,
+                activeName,
+                handleGetServicePoint,
+                tabOptions
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .tab-container {
+        margin: 30px;
+        .create {
+            background: #ffffff;
+            height: 50px;
+        }
+    }
+</style>

@@ -1,17 +1,17 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.list', 'menu.list.cardList']" />
+    <Breadcrumb :items="['赛事管理', '项目分类']" />
     <a-row :gutter="20" align="stretch">
       <a-col :span="24">
-        <a-card class="general-card" :title="$t('menu.list.cardList')">
+        <a-card class="general-card" title="项目分类">
           <a-row justify="space-between">
             <a-col :span="24">
               <a-tabs :default-active-tab="1" type="rounded">
-                <a-tab-pane key="1" :title="$t('cardList.tab.title.all')">
+                <a-tab-pane key="1" title="全部">
                   <a-col :span="6" class="list-col" @click="handleCreate()">
                     <div class="card-wrap empty-wrap">
                       <a-card :bordered="false" hoverable>
-                        <a-result :status="null" :title="$t('cardList.content.action')">
+                        <a-result :status="null" title="点击创建比赛项目">
                           <template #icon>
                             <icon-plus style="font-size: 20px" />
                           </template>
@@ -25,22 +25,22 @@
                   <WaterCompetition :data="dataWaterCompetition" />
                 </a-tab-pane>
 
-                <a-tab-pane key="2" :title="$t('cardList.tab.title.competitiveCompetition')">
+                <a-tab-pane key="2" title="竞技性比赛">
                   <QualityInspection :data="dataCompetitive"/>
                 </a-tab-pane>
-                <a-tab-pane key="3" :title="$t('cardList.tab.title.ballGames')">
+                <a-tab-pane key="3" title="球类比赛">
                   <TheService :data="dataBall"/>
                 </a-tab-pane>
-                <a-tab-pane key="4" :title="$t('cardList.tab.title.adversarialCompetition')">
+                <a-tab-pane key="4" title="对抗性比赛">
                   <RulesPreset :data="dataAdversarial"/>
                 </a-tab-pane>
-                <a-tab-pane key="5" :title="$t('cardList.tab.title.waterCompetition')">
+                <a-tab-pane key="5" title="水上比赛">
                   <WaterCompetition :data="dataWaterCompetition" />
                 </a-tab-pane>
               </a-tabs>
             </a-col>
             <a-input-search
-              :placeholder="$t('cardList.searchInput.placeholder')"
+              placeholder="搜索"
               style="width: 240px; position: absolute; top: 60px; right: 20px"
             />
           </a-row>
@@ -70,7 +70,7 @@
             <a-space direction="vertical" :style="{ width: '100%' }">
               <div class="choose-cover">
                 <div class="uploader-comp">
-                  <div id="block-choose" class="block-choose" :style="coverStyle">
+                  <div id="block-choose" class="block-choose">
                     <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
                   </div>
                   <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">

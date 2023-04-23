@@ -10,7 +10,7 @@ import 'nprogress/nprogress.css';
 import usePermission from '@/hooks/permission';
 import { useUserStore } from '@/store';
 import PageLayout from '@/layout/page-layout.vue';
-import { isLogin } from '@/utils/auth';
+import { isLogin,isVolunteerLogin } from '@/utils/auth';
 import Login from './modules/login';
 import appRoutes from './modules';
 
@@ -23,7 +23,7 @@ const router = createRouter({
       path: '/',
       name:'home',
       component:()=>import("@/views/Home.vue"),
-      redirect: 'index',
+      redirect: '/index',
       children:[
         {
             path:'index',
@@ -50,7 +50,7 @@ const router = createRouter({
         {
             path:'volunteerService',
             name:'volunteerService',
-            component:()=>import("@/views/VolunteerService.vue")
+            component:()=>import("@/views/VolunteerService/VolunteerService.vue"),
         }
         // {
         //     path:'backStage',
@@ -58,7 +58,7 @@ const router = createRouter({
         //     component: PageLayout,
         //     // component:()=>import("@/views/BackStage.vue"),
         //     redirect:'login',
-            
+
         //     children: appRoutes,
         // }
     ]
@@ -69,12 +69,67 @@ const router = createRouter({
       component:()=>import("@/views/backStage/result/error/info.vue")
     },
     {
+      path: "/",
+      name: "VolunteerService",
+      component: () => import("@/views/VolunteerService/VolunteerService.vue"),
+      redirect: "/ind-index",
+      children: [
+        {
+          path: "volunteerService",
+          name: "volunteerService",
+          component: () =>
+              import("@/views/VolunteerService/VolunteerService.vue"),
+        },
+        {
+          path: "ind-index",
+          name: "ind-index",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/ind-index.vue"),
+        },
+        {
+          path: "Ind-center",
+          name: "Ind-center",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/Ind-center.vue"),
+        },
+        {
+          path: "re-login",
+          name: "re-login",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/re-login.vue"),
+        },
+        {
+          path: "re-register",
+          name: "re-register",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/re-register.vue"),
+        },
+        {
+          path: "Ch-psw",
+          name: "Ch-psw",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/Ch-psw.vue"),
+        },
+        {
+          path: "selectType",
+          name: "selectType",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/selectType.vue"),
+        },
+      ],
+    },
+    {
+      name:'resume',
+      path:'/resume',
+      component:()=>import('@/views/resume.vue')
+    },
+    {
       path:'/backStage',
       name:'backStage',
       component: PageLayout,
       // component:()=>import("@/views/BackStage.vue"),
       redirect:'login',
-      
+
       children: appRoutes,
   },
     Login,
@@ -98,6 +153,25 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const userStore = useUserStore();
+  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume','Ch-psw','selectType']
+  // to.name === 'index' || to.name === 'information' || to.name === 'competition'|| to.name==='volunteerService' || to.name==='ind-index' || to.name==='re-login' || to.name==='re-register'
+  if (unGuardRoute.includes(to.name)) {
+    next()
+    NProgress.done();
+    return
+  }
+
+  if(to.name==='Ind-center' && !localStorage.getItem('volunteertoken')) {
+    next('re-login')
+    NProgress.done();
+    return
+  }
+
+  if (to.name==='Ind-center' && localStorage.getItem('volunteertoken')) {
+    next()
+    NProgress.done();
+    return
+  }
   async function crossroads() {
     const Permission = usePermission();
     if (Permission.accessRouter(to)) await next();
@@ -135,6 +209,14 @@ router.beforeEach(async (to, from, next) => {
       next();
       NProgress.done();
       return;
+    } else if(to.name === 'ind-center') {
+      next({
+        name: 're-login',
+        query: {
+          redirect: to.name,
+          ...to.query,
+        } as LocationQueryRaw,
+      });
     }
     next({
       name: 'login',

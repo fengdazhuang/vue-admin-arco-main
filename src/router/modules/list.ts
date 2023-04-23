@@ -13,7 +13,7 @@ export default {
       name: 'searchTable',
       component: () => import('@/views/backStage/list/search-table/index.vue'),
       meta: {
-        locale: 'menu.list.searchTable',
+        locale: '比赛场地',
         requiresAuth: true,
         roles: ['*'],
       },
@@ -23,7 +23,7 @@ export default {
       name: 'card',
       component: () => import('@/views/backStage/list/card/index.vue'),
       meta: {
-        locale: 'menu.list.cardList',
+        locale: '项目分类',
         requiresAuth: true,
         roles: ['*'],
       },

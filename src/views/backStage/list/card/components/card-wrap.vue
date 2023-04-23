@@ -106,7 +106,7 @@ export default defineComponent({
       default: '',
     },
     createTime:{
-      type:Number
+      type:String
     },
     actionType: {
       type: String,

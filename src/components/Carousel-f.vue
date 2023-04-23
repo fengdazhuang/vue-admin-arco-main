@@ -1,5 +1,6 @@
 <template>
-    <swiper :speed="1500" clickableClass="my-pagination-clickable" :pagination="{type:'progressbar'}" :autoplay="{delay:16000}" :loop="true" :navigation="true" :modules="modules" class="mySwiper">
+    <div class="swiper-container">
+        <swiper :speed="1500" clickableClass="my-pagination-clickable" :pagination="{type:'progressbar'}" :autoplay="{delay:16000}" :loop="true" :navigation="true" :modules="modules" class="mySwiper">
         <swiper-slide>
             <video src="@/assets/images/杭州轮播1.mp4" style="width: 100%;" autoplay="" muted="" loop="" webkit-playsinline="" playsinline="" x5-playsinline="" x-webkit-airplay="allow">
                 <!-- <source  type="video/mp4"> -->
@@ -19,11 +20,15 @@
             <img src="@/assets/images/banner5.jpg" alt="">
         </swiper-slide>
     </swiper>
+        <div class="count-down">
+            <animateClock :terminalTime="'2023-07-11 23:27:00'"></animateClock>
+        </div>
+    </div>
 </template>
   <script>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
-
+import animateClock from '@/components/CountDown/animateClock.vue'
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -38,6 +43,7 @@ export default {
     components: {
         Swiper,
         SwiperSlide,
+        animateClock
     },
     setup () {
         return {
@@ -49,6 +55,16 @@ export default {
 
   <style lang="scss">
 @import '@/assets/style/global.scss';
+.swiper-container {
+  position: relative;
+  .count-down {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+}
 .swiper {
     width: 100%;
     height: 100%;

@@ -3,9 +3,9 @@
     <div class="logo">
       <img
         alt="logo"
-        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
+        src="@/assets/images/logo1.png"
       />
-      <div class="logo-text">vue-admin-arco</div>
+<!--      <div class="logo-text">杭州亚运会管理系统</div>-->
     </div>
     <LoginBanner />
     <div class="content">

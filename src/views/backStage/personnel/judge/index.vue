@@ -1,19 +1,19 @@
 <template>
     <div class="container">
-        <Breadcrumb :items="['menu.person', 'menu.exception.judge']" />
+        <Breadcrumb :items="['人员管理', '裁判']" />
         <div class="main">
 
             <div class="tree-container">
                 <div class="tree-search">
-                    <h3>赛事筛选</h3>
-                    <a-input class="inputCSS" :style="{width:'230px'}" placeholder="Please enter something" allow-clear>
-                        <template #prefix>
-                            <icon-user />
-                        </template>
-                    </a-input>
+                    <h3 :style="{margin:'20px 0 20px 20px'}">赛事筛选</h3>
+<!--                    <a-input class="inputCSS" :style="{width:'230px'}" placeholder="Please enter something" allow-clear>-->
+<!--                        <template #prefix>-->
+<!--                            <icon-user />-->
+<!--                        </template>-->
+<!--                    </a-input>-->
                 </div>
                 <a-tree
-                        multiple="true"
+                        :multiple="true"
                         ref="treeRef"
                         @click="handlegetData($refs.treeRef)"
                         class="tree"
@@ -23,7 +23,7 @@
                         :data="treeData"
                 />
             </div>
-            <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
+            <a-card :style="{width:'100%'}" class="general-card card" title="裁判">
                 <a-row>
                     <a-col :flex="1">
                         <a-form
@@ -33,10 +33,10 @@
                                 label-align="left"
                         >           <a-row :gutter="16">
                             <a-col :span="6">
-                                <a-form-item field="name"  :label="$t('searchTable.form.name')">
+                                <a-form-item field="name"  label="姓名">
                                     <a-input
                                             v-model="formModel.name"
-                                            :placeholder="$t('searchTable.form.name.placeholder')"
+                                            placeholder="请输入姓名"
                                     />
                                 </a-form-item>
                             </a-col>
@@ -51,13 +51,13 @@
                                         <template #icon>
                                             <icon-search />
                                         </template>
-                                        {{ $t('searchTable.form.search') }}
+                                        查询
                                     </a-button>
                                     <a-button @click="reset">
                                         <template #icon>
                                             <icon-refresh />
                                         </template>
-                                        {{ $t('searchTable.form.reset') }}
+                                        重置
                                     </a-button>
                                 </a-space>
                             </a-col>
@@ -127,13 +127,6 @@
                                     </a-form>
                                 </div>
                             </a-modal>
-                            <!-- <a-upload action="/">
-                              <template #upload-button>
-                                <a-button>
-                                  {{ $t('searchTable.operation.import') }}
-                                </a-button>
-                              </template>
-                            </a-upload> -->
                         </a-space>
                     </a-col>
                 </a-row>
@@ -148,13 +141,13 @@
                 >
                     <template #columns>
                         <a-table-column
-                                width="100"
-                                :title="$t('searchTable.columns.name')"
+                                :width="100"
+                                title="姓名"
                                 data-index="name"
                         />
                         <a-table-column
-                                width="80"
-                                :title="$t('searchTable.columns.image')"
+                                :width="80"
+                                title="照片"
                                 data-index="photo"
                         >
                             <template #cell="{ record }">
@@ -168,18 +161,17 @@
                                                 :src="record.photo"
                                         />
                                     </a-avatar>
-                                    <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
                                 </a-space>
                             </template>
                         </a-table-column>
                         <a-table-column
-                                width="80"
-                                :title="$t('searchTable.columns.contentType')"
+                                :width="80"
+                                title="性别"
                                 data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                width="100"
+                                :width="100"
                                 title="负责项目"
                                 data-index="competitionName"
                         >
@@ -187,8 +179,8 @@
 
 
                         <a-table-column
-                                width="100"
-                                :title="$t('searchTable.columns.count')"
+                                :width="100"
+                                title="国籍"
                                 data-index="country"
                         />
                         <a-table-column
@@ -196,28 +188,18 @@
                                 data-index="email"
                         />
                         <a-table-column
-                                :title="$t('searchTable.columns.createdTime')"
+                                title="创建时间"
                                 data-index="createTime"
                         />
-                        <!-- <a-table-column
-                          :title="$t('searchTable.columns.status')"
-                          data-index="status"
-                        >
-                          <template #cell="{ record }">
-                            <span v-if="record.status === 'offline'" class="circle"></span>
-                            <span v-else class="circle pass"></span>
-                            {{ $t(`searchTable.form.status.${record.status}`) }}
-                          </template>
-                        </a-table-column> -->
                         <a-table-column
-                                :title="$t('searchTable.columns.operations')"
+                                title="操作"
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
                                 <a-button @click="handleClick1(record)" type="text">编辑</a-button>
 
                                 <a-button @click="handleDelete(record)" v-permission="['admin']" type="text" status="danger" size="small">
-                                    {{ $t('searchTable.columns.operations.delete') }}
+                                    删除
                                 </a-button>
                             </template>
                         </a-table-column>

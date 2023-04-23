@@ -1,5 +1,5 @@
 export default {
-  'login.form.title': '登录 vue-admin-arco',
+  'login.form.title': '杭州亚运会管理系统',
   'login.form.userName.errMsg': '用户名不能为空',
   'login.form.validateCode.errMsg': '验证码不能为空',
   'login.form.password.errMsg': '密码不能为空',

@@ -18,6 +18,7 @@ import App from './App.vue';
 import '@arco-design/web-vue/dist/arco.css';
 import '@/assets/style/global.less';
 import '@/api/interceptor';
+import 'animate.css';
 // import ElementPlus from "element-plus";
 // import "element-plus/dist/index.css";
 // import * as ElementPlusIconsVue from "@element-plus/icons-vue";

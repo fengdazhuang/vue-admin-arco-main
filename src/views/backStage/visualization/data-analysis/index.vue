@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Breadcrumb
-      :items="['menu.visualization', 'menu.visualization.dataAnalysis']"
+      :items="['数据可视化', '分析页']"
     />
     <a-space direction="vertical" :size="12" fill>
       <a-space direction="vertical" :size="16" fill>

@@ -155,8 +155,41 @@ export default {
     margin: px2rem(50px) 0 px2rem(50px) 0;
   }
 }
+li {
+  list-style: none;
+}
+//.footer {
+//  display: flex;
+//  .footer-left {
+//    width: 50%;
+//    .mgs {
+//      margin: 30px 0px 20px 120px;
+//      li {
+//        line-height: 35px;
+//        margin: 10px;
+//      }
+//    }
+//    .icon {
+//      margin: 30px 0px 20px 120px;
+//      display: flex;
+//      li {
+//        margin-right: 10px;
+//      }
+//    }
+//  }
+//  .footer-right {
+//    .Re_link {
+//      dt {
+//        font-size: 16px;
+//        font-weight: 900;
+//        padding-bottom: 30px;
+//      }
+//    }
+//
+//  }
+//}
   .footer {
-    height: px2rem(242px) !important;
+    height: px2rem(242px);
     background-image: url("@/assets/footerbgc.png");
     background-position: center center;
     // background-repeat: no-repeat;
@@ -165,7 +198,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5rem;
+    height: 500px;
     position: relative;
     .footer-left {
       font-size: 14px;
@@ -175,20 +208,20 @@ export default {
       .mgs {
         display: block;
         position: absolute;
-        margin: px2rem(30px) 0px px2rem(20px) px2rem(120px);
+        margin: 30px 0px 20px 120px;
 
         li {
-          line-height: px2rem(35px);
-          margin: px2rem(10px);
+          line-height: 35px;
+          margin: 10px;
         }
       }
       .icon {
         list-style: none;
         position: absolute;
-        margin: px2rem(250px) 0px 0px px2rem(130px);
+        margin: 250px 0px 0px 130px;
         li {
           display: inline;
-          margin-right: px2rem(10px);
+          margin-right: 10px;
           img {
             width: 50px;
             height: 50px;
@@ -199,50 +232,50 @@ export default {
     .footer-right {
       font-size: 14px;
       width: 50%;
-      height: 5rem;
+      height: 500px;
       list-style: none;
       position: relative;
       .Re_link {
         position: absolute;
-        margin: px2rem(100px) 0px 0px px2rem(130px);
+        margin: 100px 0px 0px 130px;
         dt {
           font-size: 16px;
           font-weight: 900;
-          padding-bottom: px2rem(30px);
+          padding-bottom: 30px;
         }
         li {
           a {
             display: block;
             color: #000;
-            padding-top: px2rem(15px);
+            padding-top: 15px;
           }
         }
       }
       .Pr_events {
         position: absolute;
 
-        margin: px2rem(100px) 0px 0px px2rem(430px);
+        margin: 100px 0px 0px 430px;
 
         dt {
           font-size: 16px;
           font-weight: 900;
-          padding-bottom: px2rem(30px);
+          padding-bottom: 30px;
         }
         li {
           a {
             display: block;
             color: #000;
-            padding-top: px2rem(15px);
+            padding-top: 15px;
           }
         }
       }
       .right-bot {
-        margin: 4rem 2rem 0 0rem;
+        margin: 400px 200px 0 0;
         p {
           display: block;
           text-align: right;
           font-size: 12px;
-          line-height: px2rem(30px);
+          line-height: 30px;
           color: #929292;
         }
       }

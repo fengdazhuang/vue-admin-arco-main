@@ -5,23 +5,13 @@ import localeWorkplace from '@/views/backStage/dashboard/workplace/locale/zh-CN'
 /** simple */
 import localeMonitor from '@/views/backStage/dashboard/monitor/locale/zh-CN';
 
-import localeSearchTable from '@/views/backStage/list/search-table/locale/zh-CN';
-import localeCardList from '@/views/backStage/list/card/locale/zh-CN';
-
-import localeStepForm from '@/views/backStage/form/step/locale/zh-CN';
-import localeGroupForm from '@/views/backStage/form/group/locale/zh-CN';
 
 import localeBasicProfile from '@/views/backStage/profile/basic/locale/zh-CN';
 
 import localeDataAnalysis from '@/views/backStage/visualization/data-analysis/locale/zh-CN';
 import localeMultiDAnalysis from '@/views/backStage/visualization/multi-dimension-data-analysis/locale/zh-CN';
 
-import localeSuccess from '@/views/backStage/result/success/locale/zh-CN';
-import localeError from '@/views/backStage/result/error/locale/zh-CN';
 
-import localeplayer from '@/views/backStage/personnel/player/locale/zh-CN';
-import localejudge from '@/views/backStage/personnel/judge/locale/zh-CN';
-import localeadmin from '@/views/backStage/personnel/admin/locale/zh-CN';
 
 import localeUserInfo from '@/views/backStage/user/info/locale/zh-CN';
 import localeUserSetting from '@/views/backStage/user/setting/locale/zh-CN';
@@ -46,18 +36,9 @@ export default {
   ...localeWorkplace,
   /** simple */
   ...localeMonitor,
-  ...localeSearchTable,
-  ...localeCardList,
-  ...localeStepForm,
-  ...localeGroupForm,
   ...localeBasicProfile,
   ...localeDataAnalysis,
   ...localeMultiDAnalysis,
-  ...localeSuccess,
-  ...localeError,
-  ...localeplayer,
-  ...localejudge,
-  ...localeadmin,
   ...localeUserInfo,
   ...localeUserSetting,
   /** simple end */

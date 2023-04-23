@@ -1,7 +1,7 @@
 <template>
-    <Breadcrumb :items="['menu.result', 'menu.result.error']" />
+    <Breadcrumb :items="['资讯管理', '发布资讯']" />
         <div class="textEdit">
-            <a-form  ref="articleRef" :model="form" :style="{width:'100%'}" @submit="handleSubmit">
+            <a-form  ref="articleRef" :model="form" :style="{width:'100%'}">
                 <div class="textEdit-title">
                     <a-input label="资讯标题" v-model="form.title"  :style="{width:'100%',height:'80px',background:'#fff',border:0}" placeholder="请输入资讯标题" allow-clear />
                 </div>
@@ -26,7 +26,7 @@
                                 <a-space direction="vertical" :style="{ width: '100%' }">
                                     <div class="choose-cover">
                                         <div class="uploader-comp">
-                                            <div id="block-choose" class="block-choose" :style="coverStyle">
+                                            <div id="block-choose" class="block-choose">
                                                 <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
                                             </div>
                                             <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
@@ -41,7 +41,7 @@
             </div>
                 <div class="textEdit-footer">
                 <div class="textEdit-footer-btns">
-                <a-button class="btns-common" type="primary">返回</a-button>
+                <a-button class="btns-common" type="primary" @click="handleBack">返回</a-button>
                 <a-button class="btns-common" type="primary" @click="handlePreview">预览</a-button>
                 <a-button class="btns-common" @click="handleIsAppoint" type="primary">
                     定时发布
@@ -58,8 +58,6 @@
                                 show-time
                                 :time-picker-props="{ defaultValue: '09:09:06' }"
                                 format="YYYY-MM-DD HH:mm:ss"
-                                @change="onChange"
-                                @select="onSelect"
                                 @ok="onOk"
                         />
                 </div>
@@ -90,6 +88,7 @@
         ['link', 'image', 'video'] // 链接、图片、视频
     ]
  import {  computed, ref, reactive,getCurrentInstance } from 'vue';
+ import  {useRouter} from 'vue-router'
  import { addNews} from '@/api/user';
     import {QuillEditor, Quill } from '@vueup/vue-quill'
     import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
@@ -153,6 +152,7 @@
             }
         },
         setup(){
+            const router = useRouter()
             const time = ref()
             const articleRef = ref(null)
             const form = reactive({
@@ -261,6 +261,9 @@
                 window.sessionStorage.setItem('item',JSON.stringify(form))
                 window.open('#/preview')
             }
+            const handleBack = ()=>{
+                router.go(-1)
+            }
             const onOk = ()=>{
 
             }
@@ -274,7 +277,9 @@
                 handleIsAppoint,
                 time,
                 handlePreview,
-                articleRef
+                articleRef,
+                handleBack,
+                router
             }
         }
     }

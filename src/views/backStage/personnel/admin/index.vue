@@ -1,9 +1,9 @@
 
 <template>
     <div class="container">
-        <Breadcrumb :items="['menu.person', 'menu.exception.admin']" />
+        <Breadcrumb :items="['人员管理', '管理员']" />
         <div class="main">
-            <a-card :style="{width:'100%'}" class="general-card card" :title="$t('menu.list.searchTable')">
+            <a-card :style="{width:'100%'}" class="general-card card" title="管理员">
                 <a-row>
                     <a-col :flex="1">
                         <a-form
@@ -26,13 +26,13 @@
                                         <template #icon>
                                             <icon-search />
                                         </template>
-                                        {{ $t('searchTable.form.search') }}
+                                        删除
                                     </a-button>
                                     <a-button @click="reset">
                                         <template #icon>
                                             <icon-refresh />
                                         </template>
-                                        {{ $t('searchTable.form.reset') }}
+                                        重置
                                     </a-button>
                                 </a-space>
                             </a-col>
@@ -81,13 +81,6 @@
                                     </a-form>
                                 </div>
                             </a-modal>
-                            <!-- <a-upload action="/">
-                              <template #upload-button>
-                                <a-button>
-                                  {{ $t('searchTable.operation.import') }}
-                                </a-button>
-                              </template>
-                            </a-upload> -->
                         </a-space>
                     </a-col>
                 </a-row>
@@ -103,57 +96,58 @@
                 >
                     <template #columns>
                         <a-table-column
-                                width="100"
+                                :width="100"
                                 title="用户名"
                                 data-index="username"
                         />
                         <a-table-column
-                                width="100"
+                                :width="100"
                                 title="昵称"
                                 data-index="name"
                         />
                         <a-table-column
-                                width="80"
+                                :width="80"
                                 title="性别"
                                 data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                width="200"
+                                :width="200"
                                 title="电子邮箱"
                                 data-index="email"
                         />
                         <a-table-column
-                                :title="$t('searchTable.columns.status')"
+                                title="状态"
                                 data-index="status"
                         >
-
+<!-- eslint-disable -->
                             <template #cell="{ record }">
                                 <a-space style="margin-bottom: 20px;">
-                                    <a-switch  @click="handleChangeStatus(record,disabled)" checked-value="1" unchecked-value="0" v-model="value" />
-                                    Current Value: {{ value }}
+                                    <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
+
                                 </a-space>
-<!--                                <span v-if="record.status === 'offline'" class="circle"></span>-->
-<!--                                <span v-else class="circle pass"></span>-->
-<!--                                {{ $t(`searchTable.form.status.${record.status}`) }}-->
                             </template>
                         </a-table-column>
                         <a-table-column
-                                width="220"
-                                :title="$t('searchTable.columns.createdTime')"
+                                title="状态显示"
+                                data-index="statusText"
+                        >
+                            <template #cell="{ record }">
+                                <span :style="{color:(record.status===true? 'green':'red')}">{{record.statusText}}</span>
+                            </template>
+                        </a-table-column>>
+                        <a-table-column
+                                :width="220"
+                                title="创建时间"
                                 data-index="createTime"
                         />
 
                         <a-table-column
-                                :title="$t('searchTable.columns.operations')"
+                                title="操作"
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
-<!--                                <a-button @click="handleClick1(record)" type="text">编辑</a-button>-->
                                 <a-button @click="handleReset(record)" type="text"  status="danger" size="small">重置</a-button>
-<!--                                <a-button @click="handleDelete(record)" v-permission="['admin']" type="text" status="danger" size="small">-->
-<!--                                    {{ $t('searchTable.columns.operations.delete') }}-->
-<!--                                </a-button>-->
                             </template>
                         </a-table-column>
                     </template>
@@ -279,6 +273,7 @@
                     value: 'offline',
                 },
             ]);
+            const open = ref(true)
             const isAbled = ref(false)
             const visible = ref(false);
             const showModel = ref(false)
@@ -292,19 +287,6 @@
             const message = ref('')
             const isRepeat = ref(false)
             let node
-            // const form = reactive({
-            //     pageNumber:1,
-            //     pageSize:20,
-            //     name: '',
-            // });
-            // const form = reactive({
-            //     usename:'',
-            //     name: '',
-            //     status: 1,
-            //     country: '',
-            //     sex:1,
-            //     email:''
-            // });
             const form = reactive({
                 username:'',
                 sex:1,
@@ -314,7 +296,7 @@
             const fetchData = async (
                 params = {name:'',pageNumber: 1, pageSize: 20 }
             ) => {
-                setLoading(true);
+                // setLoading(true);
                 try {
                     let useParams = {
                         params:{...params}
@@ -329,9 +311,11 @@
                     })
                     data.records.forEach(item=>{
                         if (item.status) {
-                            item.status = 1
+                            item.status = true
+                            item.statusText = '已启用'
                         } else {
-                            item.status = 0
+                            item.status = false
+                            item.statusText = '已禁用'
                         }
                     })
                     PlayerList.value = data.records
@@ -593,19 +577,19 @@
                     email:row.email
                 })
             }
-            const handleChangeStatus = async (row,disabled)=>{
-                if (disabled) {
-                    disabled = 1
+            const handleChangeStatus = async (row)=>{
+                console.log('row',row)
+                if (row.status) {
+                    row.status = 0
                 } else {
-                    disabled = 0
+                    row.status = 1
                 }
                 const params = {
                     id:row.id,
-                    status:disabled
+                    status:row.status
                 }
                 const res = await updateStatus(params)
-                console.log('update',res)
-                disabled = !disabled
+                fetchData()
             }
             const handleLeave = async ()=>{
                 const  useParams = {
@@ -741,7 +725,8 @@
                 message,
                 handleReset,
                 handleChangeStatus,
-                value
+                value,
+                open
             };
         },
     });
@@ -782,5 +767,11 @@
         margin-left: 16px;
       }
     }
+  }
+  .red {
+    color: red;
+  }
+  .green {
+    color:green;
   }
 </style>

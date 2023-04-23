@@ -37,18 +37,17 @@
       </div>
       <div>
           <div v-show="isCompetitive">
-              <Competitive></Competitive>
+              <Competitive :data="dataCompetitive"></Competitive>
           </div>
           <div v-show="isBall">
               <Ball :data="dataBall"></Ball>
           </div>
           <div v-show="isRivalry">
-              <Rivalry></Rivalry>
+              <Rivalry :data="dataAdversarial"></Rivalry>
           </div>
           <div v-show="isWater">
-              <Water></Water>
+              <Water :data="dataWaterCompetition"></Water>
           </div>
-
       </div>
     </div>
   </div>
