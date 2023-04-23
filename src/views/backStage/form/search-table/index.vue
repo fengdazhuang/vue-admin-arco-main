@@ -2,16 +2,16 @@
     <div>
         <Breadcrumb :items="['menu.list', 'menu.list.address']" />
         <div class="tab-container">
-        <div @click="handleGetServicePoint">点我</div>
+        <div >点我</div>
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
                 <el-tab-pane v-for="item in tabOptions"  :name="item.label" :key="item.key">
                     <template #label>
-                        <span class="custom-tabs-label" @click="handleGetComPositions(item.label)">
+                        <span class="custom-tabs-label" @click="handleGetServicePoint(item.label)">
                             <span>{{item.label}}</span>
                         </span>
                     </template>
                     <keep-alive>
-                        <tab-pane :area="item.label" :id="item.key" :initList="list" />
+                        <tab-pane  :area="item.label" :id="item.key" :initList="list" />
                     </keep-alive>
                 </el-tab-pane>
         </el-tabs>
@@ -57,11 +57,11 @@
             const activeName = '赛会志愿'
             const tabOptions = [
                 {
-                    key:'赛会志愿',
+                    key:0,
                     label:'赛会志愿'
                 },
                 {
-                    key:'城市志愿',
+                    key:1,
                     label:'城市志愿'
                 },
 
@@ -76,7 +76,7 @@
                 })
                 tabMapOptions.value = useData
             }
-            const handleGetServicePoint = async ()=>{
+            const handleGetServicePoint = async (label)=>{
                 const useParams = {
                     params:{
                         pageNumber:1,

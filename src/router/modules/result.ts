@@ -13,7 +13,7 @@ export default {
       name: 'success',
       component: () => import('@/views/backStage/result/success/index.vue'),
       meta: {
-        locale: 'menu.result.success',
+        locale: '查看资讯',
         requiresAuth: true,
         roles: ['admin'],
       },
@@ -23,7 +23,7 @@ export default {
       name: 'error',
       component: () => import('@/views/backStage/result/error/index.vue'),
       meta: {
-        locale: 'menu.result.error',
+        locale: '发布资讯',
         requiresAuth: true,
         roles: ['admin'],
       }

@@ -17,26 +17,29 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import bannerImage from '@/assets/images/login-banner.png';
+// import bannerImage from '@/assets/images/login-banner.png';
+import lb1 from '@/assets/images/lb1.jpg'
+import lb2 from '@/assets/images/lb2.jpg'
+import lb3 from '@/assets/images/lb3.jpg'
 
 export default defineComponent({
   setup() {
     const { t } = useI18n();
     const carouselItem = computed(() => [
       {
-        slogan: t('login.banner.slogan1'),
-        subSlogan: t('login.banner.subSlogan1'),
-        image: bannerImage,
+        slogan: '象山风云“甬”动，亚运精彩同行',
+        subSlogan: '扬帆万象山海，逐梦杭州亚运',
+        image: lb1,
       },
       {
-        slogan: t('login.banner.slogan2'),
-        subSlogan: t('login.banner.subSlogan2'),
-        image: bannerImage,
+        slogan: '相约锦绣潇湘,共筑亚运辉煌',
+        subSlogan: '搏亚运荣光，“象”梦想起“杭”',
+        image: lb2,
       },
       {
-        slogan: t('login.banner.slogan3'),
-        subSlogan: t('login.banner.subSlogan3'),
-        image: bannerImage,
+        slogan: '一城亚运风，千年渔港梦',
+        subSlogan: '一幅山海画卷，万般亚运风彩',
+        image: lb3,
       },
     ]);
     return {

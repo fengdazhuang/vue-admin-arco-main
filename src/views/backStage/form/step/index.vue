@@ -1,7 +1,7 @@
 
 <template>
     <div class="container">
-        <Breadcrumb :items="['menu.form', 'menu.form.step']" />
+        <Breadcrumb :items="['志愿管理', '志愿者管理']" />
         <div class="main">
             <a-card :style="{width:'100%'}" class="general-card card" title="志愿者管理">
                 <a-space size="large" >
@@ -23,12 +23,12 @@
                 >
                     <template #columns>
                         <a-table-column
-                                width="100"
+                                :width="100"
                                 title="姓名"
                                 data-index="name"
                         />
                         <a-table-column
-                                width="100"
+                                :width="100"
                                 title="照片"
                                 data-index="photo"
                         >
@@ -43,35 +43,34 @@
                                                 :src="record.photo"
                                         />
                                     </a-avatar>
-                                    <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
                                 </a-space>
                             </template>
                         </a-table-column>>
                         <a-table-column
-                                width="80"
+                                :width="80"
                                 title="性别"
                                 data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                width="200"
+                                :width="200"
                                 title="年龄"
                                 data-index="age"
                         />
 
                         <a-table-column
-                                width="220"
+                                :width="220"
                                 title="服务方向"
                                 data-index="risk"
                         />
                         <a-table-column
-                                width="220"
+                                :width="220"
                                 title="申请时间"
                                 data-index="applyTime"
                         />
 
                         <a-table-column
-                                :title="$t('searchTable.columns.operations')"
+                                title="操作"
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
@@ -105,7 +104,6 @@
                                                     :src="record.photo"
                                             />
                                         </a-avatar>
-                                        <!--                  {{ $t(`searchTable.form.contentType.${record.contentType}`) }}-->
                                     </a-space>
                                 </template>
                             </a-form-item>

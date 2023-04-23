@@ -1,20 +1,10 @@
 <template>
   <div class="list-wrap">
     <a-typography-title class="block-title" :heading="6">
-      {{ $t('cardList.tab.title.adversarialCompetition') }}
+        对抗性比赛
     </a-typography-title>
     <a-row class="list-row" :gutter="24">
-<!--      <a-col :span="6" class="list-col" @click="handleCreate()">-->
-<!--        <div class="card-wrap empty-wrap">-->
-<!--          <a-card :bordered="false" hoverable>-->
-<!--            <a-result :status="null" :title="$t('cardList.content.action')">-->
-<!--              <template #icon>-->
-<!--                <icon-plus style="font-size: 20px" />-->
-<!--              </template>-->
-<!--            </a-result>-->
-<!--          </a-card>-->
-<!--        </div>-->
-<!--      </a-col>-->
+
       <a-col
         v-for="item in data"
         :key="item.id"
@@ -30,7 +20,7 @@
           :principal="item.principal"
           :default-value="item.enable"
           :action-type="item.actionType"
-          :tag-text="$t('cardList.preset.tag')"
+          tag-text="删除"
         >
           <template #skeleton>
             <a-skeleton :animation="true">

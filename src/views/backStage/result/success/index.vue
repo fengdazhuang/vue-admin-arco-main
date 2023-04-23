@@ -1,6 +1,6 @@
 <template>
     <div class="subscribe-container">
-        <Breadcrumb :items="['menu.result', 'menu.result.success']" />
+        <Breadcrumb :items="['资讯管理', '查看资讯']" />
         <div class="subscribe-header-container">
             <div class="subscribe-header">
                 <div class="subscribe-left">
@@ -58,8 +58,6 @@
                         show-time
                         :time-picker-props="{ defaultValue: ['00:00:00', '09:09:06'] }"
                         format="YYYY-MM-DD HH:mm"
-                        @change="onChange"
-                        @select="onSelect"
                         @ok="onOk"
                 />
             </div>

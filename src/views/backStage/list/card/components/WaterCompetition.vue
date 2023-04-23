@@ -2,7 +2,7 @@
   <div class="list-wrap">
 
     <a-typography-title class="block-title" :heading="6">
-      {{ $t('cardList.tab.title.waterCompetition') }}
+        水上比赛
     </a-typography-title>
     <a-row class="list-row" :gutter="24">
 <!--      <a-col :span="6" class="list-col" @click="handleCreate()">-->
@@ -31,8 +31,8 @@
           :default-value="item.enable"
           :action-type="item.actionType"
           :icon="item.icon"
-          :open-txt="$t('cardList.content.inspection')"
-          :close-txt="$t('cardList.content.delete')"
+          open-txt="质检"
+          close-txt="删除"
           :show-tag="false"
         >
           <a-descriptions

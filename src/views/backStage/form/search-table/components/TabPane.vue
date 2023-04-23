@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="demo-collapse">
-            <el-collapse v-model="activeNames" @change="handleChange">
+            <el-collapse>
                 <el-collapse-item title="Consistency" name="1">
                     <div>
                         Consistent with real life: in line with the process and logic of real
@@ -47,6 +47,7 @@
                     </div>
                 </el-collapse-item>
             </el-collapse>
+            <el-pagination :style="{margin:'30px 0 0 0'}" background layout=" ->,prev, pager, next" :page-size="pageSize" :total="100" />
         </div>
     </div>
 
@@ -85,6 +86,12 @@ export default {
 
   },
     setup(props){
+        const basePagination= {
+            pageNumber: 1,
+            pageSize: 10,
+        };
+        const pageSize = ref(basePagination.pageSize)
+        const pageNumber = ref(basePagination.pageNumber)
       let list = ref([])
         list.value = props.initList
       const form = reactive({
@@ -185,7 +192,9 @@ export default {
           treeData,
           form,
           list,
-          handleDelete
+          handleDelete,
+          pageSize,
+          pageNumber
       }
     }
 }

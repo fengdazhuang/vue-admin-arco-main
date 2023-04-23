@@ -9,11 +9,15 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AnimateCard: typeof import('./src/components/CountDown/animateCard.vue')['default']
+    AnimateClock: typeof import('./src/components/CountDown/animateClock.vue')['default']
     BaseScrollList: typeof import('./src/components/BaseScrollList.vue')['default']
     Block: typeof import('./src/components/global-setting/block.vue')['default']
     Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
     CarouselF: typeof import('./src/components/Carousel-f.vue')['default']
     Chart: typeof import('./src/components/chart/index.vue')['default']
+    CountDown: typeof import('./src/components/CountDown1.vue')['default']
+    CountDown1: typeof import('./src/components/CountDown1.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -32,6 +36,7 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']

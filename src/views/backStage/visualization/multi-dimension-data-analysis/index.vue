@@ -2,8 +2,8 @@
   <div class="container">
     <Breadcrumb
       :items="[
-        'menu.visualization',
-        'menu.visualization.multiDimensionDataAnalysis',
+        '数据可视化',
+        '多维数据分析',
       ]"
     />
     <a-space direction="vertical" :size="16" fill>
