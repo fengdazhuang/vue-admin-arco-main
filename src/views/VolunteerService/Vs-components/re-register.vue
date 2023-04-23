@@ -198,7 +198,7 @@ export default {
         const body = {
             email:formData.email
         }
-        await sendCode(JSON.stringify(body))
+        await sendCode(body)
     }
     return {
       OpenPage,

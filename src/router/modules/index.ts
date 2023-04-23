@@ -1,5 +1,6 @@
 import Dashboard from './dashboard';
 /** simple */
+import cooperation from './cooperation'
 import List from './list';
 import Form from './form';
 import Profile from './profile';
@@ -18,6 +19,8 @@ export default [
   Profile,
   Result,
   personnel,
-  User,
+  cooperation,
+  User
+
   /** simple end */
 ];

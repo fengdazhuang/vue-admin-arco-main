@@ -21,7 +21,7 @@
         </swiper-slide>
     </swiper>
         <div class="count-down">
-            <animateClock :terminalTime="'2023-07-11 23:27:00'"></animateClock>
+            <animateClock :terminalTime="'2023-09-23 00:00:00'"></animateClock>
         </div>
     </div>
 </template>
@@ -60,7 +60,7 @@ export default {
   .count-down {
     position: absolute;
     left: 50%;
-    top: 10%;
+    top: 5%;
     transform: translateX(-50%);
     z-index: 100;
   }

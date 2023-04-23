@@ -71,6 +71,7 @@
           <a-col :span="16">
             <a-space>
               <a-button @click="handleCreate()" type="primary">新增</a-button>
+                <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
               <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                 <template #title>
                   添加运动员
@@ -138,6 +139,7 @@
             :bordered="false"
             @page-change="onPageChange"
             :row-selection="rowSelection"
+            @selection-change="handleGetId"
         >
           <template #columns>
             <a-table-column
@@ -400,7 +402,7 @@ export default defineComponent({
       sex:1,
       email:''
     });
-
+    let ids = reactive([])
     const fetchData = async (
         params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20 }
     ) => {
@@ -466,6 +468,19 @@ export default defineComponent({
       await deletePlayer(useParams)
         fetchData()
 
+    }
+    const handleGetId = (rowKeys)=>{
+        ids = rowKeys
+    }
+    const handleManyDelete = async ()=>{
+        const str = ids.toString()
+        const useParams={
+            params:{
+                id:str
+            }
+        }
+        await deletePlayer(useParams)
+        fetchData()
     }
     const rowSelection = reactive({
       type: 'checkbox',
@@ -789,7 +804,10 @@ export default defineComponent({
       imgSrc,
       isImg,
       inputPic,
-        handleDelete
+        handleDelete,
+        handleGetId,
+        handleManyDelete,
+        ids
     };
   },
 });

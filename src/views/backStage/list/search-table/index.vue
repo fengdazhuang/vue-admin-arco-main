@@ -76,7 +76,7 @@
                 const body = {
                     comArea:zone.value
                 }
-                const res =  await addComArea(JSON.stringify(body))
+                const res =  await addComArea(body)
                 handleGetComAreas()
             }
             const tabMapOptions = ref([])

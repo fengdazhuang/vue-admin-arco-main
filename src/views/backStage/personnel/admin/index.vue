@@ -311,11 +311,11 @@
                     })
                     data.records.forEach(item=>{
                         if (item.status) {
-                            item.status = true
-                            item.statusText = '已启用'
-                        } else {
                             item.status = false
                             item.statusText = '已禁用'
+                        } else {
+                            item.status = true
+                            item.statusText = '已启用'
                         }
                     })
                     PlayerList.value = data.records

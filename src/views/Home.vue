@@ -26,6 +26,136 @@
         <div class="content">
             <router-view></router-view>
         </div>
+        <div class="hzhb">
+            <!-- 官方合作伙伴 -->
+            <div class="title-gfhzhb">
+                <img src="../assets/image/title_gfhzhb.png" alt="" />
+            </div>
+            <div class="main">
+                <ul class="gfhzhb_lists">
+                    <li>
+                        <a href="http://www.geely.com/zh-CN" target="_blank">
+                            <img src="../assets/image/logo_jlqc2.png" alt="" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.10086.cn" target="_blank">
+                            <img src="../assets/image/zgydlogo.png" alt="" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.189.cn" target="_blank">
+                            <img src="../assets/image/zgdxlogo4.png" />
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="http://www.icbc.com.cn/icbc" target="_blank">
+                            <img src="../assets/image/logo_fsyh2.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="https://www.loongair.cn/#/web/home" target="_blank">
+                            <img src="../assets/image/logo_clhk2.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="https://www.alibabagroup.com/" target="_blank">
+                            <img src="../assets/image/logo_albb2.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="https://www.antfin.com/" target="_blank">
+                            <img src="../assets/image/logo_zfb2.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="http://www.361sport.com/" target="_blank">
+                            <img src="../assets/image/logo_3612.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="http://www.cpic.com.cn/" target="_blank">
+                            <img src="../assets/image/logo_tpybx3.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="https://www.dbappsecurity.com.cn" target="_blank">
+                            <img src="../assets/image/logo_ah3.png" alt=""
+                            /></a>
+                    </li>
+                    <li>
+                        <a href="https://bornan.sport/" target="_blank">
+                            <img src="../assets/image/logo_bnty2.png"
+                            /></a>
+                    </li>
+                </ul>
+                <div class="cl"></div>
+            </div>
+            <!-- 官方赞助商 -->
+            <div class="title-gfzzs">
+                <img src="../assets/image/title_gfzzs.png" alt="" />
+            </div>
+            <div class="main">
+                <ul class="gfzzs_lists">
+                    <li>
+                        <a href="https://www.yto.net.cn" target="_blank">
+                            <img src="../assets/image/logo_yt2.png" alt="" style="" />
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://www.wahaha.com.cn/#/" target="_blank">
+                            <img src="../assets/image/logo_wahaha2.png" alt="" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.hikvision.com/cn/" target="_blank">
+                            <img src="../assets/image/logo_hkws2.png" alt="" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.canon.com.cn/" target="_blank">
+                            <img src="../assets/image/logo_canon3.png" alt="" />
+                        </a>
+                    </li>
+                </ul>
+                <div class="cl"></div>
+            </div>
+            <div class="all_zzs">
+                <a href="" target="_blank" class="hzhb-qbzzqy">
+                    <img src="../assets/image/hzhb_qbzzqy.png" alt="" />
+                </a>
+                <a href="" target="_blank" class="hzhb-swfw">
+                    <img src="../assets/image/hzhb_swfw.png" alt="" />
+                </a>
+            </div>
+            <!-- 特许经营 -->
+            <div class="title-txjy">
+                <img src="../assets/image/title_txjy.png" alt="" />
+            </div>
+            <div class="main">
+                <ul class="txjy_lists">
+                    <li>
+                        <a
+                                href="https://hzyyh.tmall.com/?spm=a1z10.1-b-s.1997427721.d4918089.5db0257eiVsQT7"
+                                target="_blank"
+                        >
+                            <img src="../assets/image/04hzhb_qjd.jpg" alt="" />
+                        </a>
+                    </li>
+                    <li style="margin-right: 0">
+                        <a href="http://tx.hangzhou2022.cn" target="_blank">
+                            <img src="../assets/image/04hzhb_fwcx.jpg" alt="" />
+                        </a>
+                    </li>
+                </ul>
+                <div class="cl"></div>
+            </div>
+            <div class="main">
+                <div class="hzhb-line"></div>
+            </div>
+        </div>
         <div class="footer">
             <div class="footer-left">
                 <!-- 文字 -->
@@ -251,6 +381,231 @@ export default {
           line-height: px2rem(30px);
           color: #929292;
         }
+      }
+    }
+  }
+}
+.hzhb {
+  color: #000000;
+  font-size: 14px;
+  font-family: "microsoft yahei", Arial, Helvetica, sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  transition: all 0.4s ease 0s;
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  font-weight: normal;
+  outline: none;
+  background: #f4f4f4;
+  padding-top: 2.9%;
+  .title-gfhzhb {
+    padding: 0;
+    font-style: normal;
+    font-weight: normal;
+    outline: none;
+    user-select: none;
+    width: auto;
+    margin: 0 auto 3.4%;
+    img {
+      color: #000000;
+
+      font-style: normal;
+      font-weight: normal;
+      user-select: none;
+      border: none;
+      outline: none;
+      display: block;
+      width: 12.96% !important;
+      height: auto;
+      margin: 0 auto 3.4%;
+    }
+  }
+  .main {
+    padding: 0;
+    font-style: normal;
+    font-weight: normal;
+    outline: none;
+    width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 3.9%;
+    border-bottom: none;
+    .gfhzhb_lists {
+      margin: 0;
+      padding: 0;
+      font-style: normal;
+      font-weight: normal;
+      list-style: none;
+      width: 1230px;
+      margin-left: 100px;
+      text-align: center;
+      li {
+        margin: 0;
+        padding: 0;
+        font-style: normal;
+        font-weight: normal;
+        list-style: none;
+        width: 220px;
+        height: 105px;
+        border: 1px solid #dad7e6;
+        text-align: center;
+        overflow: hidden;
+        background: #fff;
+        margin-bottom: 20px;
+        float: none;
+        display: inline-block;
+        margin-right: 30px;
+      }
+    }
+    .cl {
+      margin: 0;
+      padding: 0;
+      font-style: normal;
+      font-weight: normal;
+      outline: none;
+      clear: both;
+      height: 0;
+    }
+  }
+  .title-gfzzs {
+    padding: 0;
+    font-style: normal;
+    font-weight: normal;
+    outline: none;
+    user-select: none;
+    width: auto;
+    margin: 0 auto 3.4%;
+    img {
+      user-select: none;
+      border: none;
+      vertical-align: top;
+      outline: none;
+      display: block;
+      width: 10.78% !important;
+      height: auto;
+      margin: 0 auto 3.4%;
+    }
+  }
+  .gfzzs_lists {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+    font-size: 0;
+    text-align: center;
+    li {
+      font-size: 0;
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+      width: 183px;
+      height: 99px;
+      border: 1px solid #dad7e6;
+      text-align: center;
+      overflow: hidden;
+      background: #fff;
+      margin-right: 19px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+  }
+  .all_zzs {
+    padding: 0;
+
+    outline: none;
+    display: block;
+    width: 100%;
+    margin: 0 auto 3.9%;
+    text-align: center;
+    font-size: 0;
+    .hzhb-qbzzqy {
+      text-align: center;
+      font-size: 0;
+      transition: all 0.4s ease 0s;
+      color: #000000;
+      text-decoration: none;
+      outline: none;
+      display: inline-block;
+      img {
+        text-align: center;
+        font-size: 0;
+        color: #000000;
+        transition: all 0.4s ease 0s;
+        border: none;
+        vertical-align: top;
+        outline: none;
+        display: block;
+        width: 100%;
+        margin: 0;
+        height: auto;
+      }
+    }
+    .hzhb-swfw {
+      text-align: center;
+      font-size: 0;
+      transition: all 0.4s ease 0s;
+      color: #000000;
+      text-decoration: none;
+      outline: none;
+      display: inline-block;
+      img {
+        text-align: center;
+        font-size: 0;
+        color: #000000;
+        transition: all 0.4s ease 0s;
+        border: none;
+        outline: none;
+        display: block;
+        width: 100%;
+        margin: 0;
+        height: auto;
+      }
+    }
+  }
+  .title-txjy {
+    padding: 0;
+
+    outline: none;
+    user-select: none;
+    width: auto;
+    margin: 0 auto 3.4%;
+    img {
+      user-select: none;
+      transition: all 0.4s ease 0s;
+      border: none;
+      vertical-align: top;
+      outline: none;
+      display: block;
+      width: 8.69% !important;
+      height: auto;
+      margin: 0 auto 3.4%;
+    }
+  }
+  .main {
+    padding: 0;
+
+    outline: none;
+    width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 3.9%;
+    border-bottom: none;
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0;
+      text-align: center;
+      li {
+        font-size: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        width: 184px;
+        height: 100px;
+        margin-right: 40px;
+        display: inline-block;
       }
     }
   }

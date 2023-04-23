@@ -71,6 +71,7 @@
                     <a-col :span="16">
                         <a-space>
                             <a-button @click="handleCreate()" type="primary">新增</a-button>
+                            <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
                                     添加运动员
@@ -138,6 +139,7 @@
                         :bordered="false"
                         @page-change="onPageChange"
                         :row-selection="rowSelection"
+                        @selection-change="handleGetId"
                 >
                     <template #columns>
                         <a-table-column
@@ -278,7 +280,7 @@
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
     import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
-    import {addJudge, deleteJudge, listJudges, listPlayers, updateJudge} from '@/api/user';
+    import {addJudge, deleteJudge, deletePlayer, listJudges, listPlayers, updateJudge} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
         return {
@@ -352,6 +354,20 @@
             // const date = new Date()
             const competitions = ref('')
             let node
+            let ids = reactive([])
+            const handleGetId = (rowKeys)=>{
+                ids = rowKeys
+            }
+            const handleManyDelete = async ()=>{
+                const str = ids.toString()
+                const useParams={
+                    params:{
+                        id:str
+                    }
+                }
+                await deleteJudge(useParams)
+                fetchData()
+            }
             const form = reactive({
                 competitionName:'',
                 name: '',
@@ -750,7 +766,9 @@
                 imgSrc,
                 isImg,
                 inputPic,
-                handleDelete
+                handleDelete,
+                handleGetId,
+                handleManyDelete
             };
         },
     });
