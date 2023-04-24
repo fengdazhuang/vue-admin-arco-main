@@ -44,7 +44,7 @@
                                     </a-avatar>
                                 </a-space>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
                                 :width="80"
                                 title="性别"
@@ -69,7 +69,7 @@
                         />
                         <a-table-column
                                 :width="220"
-                                title="申请时间"
+                                title="审批时间"
                                 data-index="updateTime"
                         />
 

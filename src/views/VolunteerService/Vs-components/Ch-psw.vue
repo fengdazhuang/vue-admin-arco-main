@@ -88,7 +88,7 @@
 <script>
     /* eslint-disable */
     import {modifyPassword} from '@/api/volunteer'
-    import {getCurrentInstance} from "vue";
+    import {getCurrentInstance, reactive} from "vue";
     import { Message } from '@arco-design/web-vue';
 
     export default {
@@ -96,11 +96,6 @@
   props: [],
   data() {
     return {
-      formData: {
-        password: undefined,
-          newPassword: undefined,
-          confirmPassword: undefined,
-      },
       rules: {
         password: [
           {
@@ -131,15 +126,21 @@
   created() {},
   mounted() {},
   setup() {
+      const formData = reactive({
+          password: '',
+          newPassword: '',
+          confirmPassword:'',
+      })
+      const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
       const {ctx} = getCurrentInstance()
       const handleChangePassword =   ()=>{
           ctx.$refs.elForm.validate(async (validata)=>{
               console.log('validata',validata)
               if (validata) {
                   const body = {
-                      id:111,
-                      newPassword:'admin',
-                      oldPassword:'admin'
+                      id:volunteerInfo.id,
+                      newPassword:formData.newPassword,
+                      oldPassword:formData.password
                   }
                   await modifyPassword(body)
                   ctx.$refs.elForm.resetFields()
@@ -155,7 +156,8 @@
     };
     return {
       OpenPage,
-        handleChangePassword
+        handleChangePassword,
+        formData
     };
   },
   methods: {

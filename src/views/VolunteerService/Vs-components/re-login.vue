@@ -27,6 +27,7 @@
               <el-input
                 v-model="userInfo.password"
                 placeholder="请输入密码"
+                show-password
                 clearable
                 :style="{ width: '5rem' }"
               >
@@ -42,7 +43,7 @@
                 suffix-icon="el-icon-refresh-left"
                 :style="{ width: '2rem' }"
               ></el-input>
-                <el-image @click="handleChangeValidateCode" :style="{ margin:'0 0 0 .4rem',width: '1rem', height: '0.5rem'}" :src="img" :fit="fit" />
+                <el-image @click="handleChangeValidateCode" :style="{ margin:'0 0 0 .4rem',width: '1rem', height: '0.5rem'}" :src="img" />
             </el-form-item>
           </el-col>
           <div class="re-link">
@@ -51,7 +52,7 @@
           </div>
           <div class="btn">
             <el-col :span="12">
-              <el-form-item label="" prop="field106">
+              <el-form-item>
                 <el-button
                   type="primary"
                   size="medium"
@@ -63,7 +64,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="" prop="field107">
+              <el-form-item>
                 <el-button @click="handleLogin" type="primary" size="medium" class="re-login">
                   登录
                 </el-button>
@@ -88,11 +89,6 @@ export default {
   props: [],
   data() {
     return {
-      formData: {
-          email: undefined,
-          password: undefined,
-          validateCode: undefined,
-      },
       rules: {
           email: [
           {
@@ -122,9 +118,9 @@ export default {
       const {ctx} = getCurrentInstance()
       const userStore = useUserStore();
       const img = ref('')
-      const userInfo = reactive({
-          email: 'admin@qq.com',
-          password: 'admin',
+      let userInfo = reactive({
+          email: '',
+          password: '',
           validateCode:'',
           key:''
       });
@@ -132,10 +128,12 @@ export default {
       const handleLogin = ()=>{
           ctx.$refs.elForm.validate(async (validate)=>{
               if (validate) {
-                  ctx.$refs.elForm.resetFields()
+
                   Message.success('登录成功')
                   const  res =  await userStore.loginVolunteer(userInfo);
+                  window.sessionStorage.setItem('volunteerInfo',JSON.stringify(res.data))
                   if (res.code === 200) {
+                      ctx.$refs.elForm.resetFields()
                       router.push('/ind-center')
                   }
               }

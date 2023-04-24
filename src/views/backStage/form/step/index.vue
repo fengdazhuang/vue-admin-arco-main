@@ -45,7 +45,7 @@
                                     </a-avatar>
                                 </a-space>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
                                 :width="80"
                                 title="性别"

@@ -46,6 +46,7 @@
                     <a-col :span="16">
                         <a-space>
                             <a-button @click="handleCreate()" type="primary">新增</a-button>
+                            <a-button type="primary" status="danger">批量改变</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
                                     添加运动员
@@ -93,6 +94,7 @@
                         :bordered="false"
                         @page-change="onPageChange"
                         :row-selection="rowSelection"
+                        @selection-change="handleGetId"
                 >
                     <template #columns>
                         <a-table-column
@@ -124,7 +126,6 @@
                             <template #cell="{ record }">
                                 <a-space style="margin-bottom: 20px;">
                                     <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
-
                                 </a-space>
                             </template>
                         </a-table-column>
@@ -135,7 +136,7 @@
                             <template #cell="{ record }">
                                 <span :style="{color:(record.status===true? 'green':'red')}">{{record.statusText}}</span>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
                                 :width="220"
                                 title="创建时间"
@@ -350,16 +351,6 @@
                 });
 
             };
-            const handleDelete = async (row)=>{
-                const useParams={
-                    params:{
-                        id:row.id
-                    }
-                }
-                await deleteJudge(useParams)
-                fetchData()
-
-            }
             const rowSelection = reactive({
                 type: 'checkbox',
                 showCheckedAll: true,
@@ -378,6 +369,9 @@
                         email:''
                     });
                 });
+            }
+            const handleGetId = (rowKeys) =>{
+
             }
             const handleCancel1 = () => {
                 showModel.value = false;
@@ -719,14 +713,14 @@
                 treeDataCountry,
                 // uploadCover,
                 inputPic,
-                handleDelete,
                 isAbled,
                 handleLeave,
                 message,
                 handleReset,
                 handleChangeStatus,
                 value,
-                open
+                open,
+                handleGetId
             };
         },
     });

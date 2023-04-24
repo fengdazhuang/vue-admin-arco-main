@@ -10,10 +10,10 @@
                     <div class="user">
                         <div class="user-icon">
                             <el-icon style="font-size: 20px"><User /></el-icon>
-                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号</p>
+                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号 {{volunteerInfo.id.slice(0,6)}}</p>
                         </div>
                         <p style="font-size: 12px">志愿者类型</p>
-                        <span @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.9rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
+                        <span @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.5rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
                     </div>
                 </div>
                 <div class="vol-list">
@@ -72,6 +72,7 @@ export default {
             email:''
         });
         const router = useRouter()
+        const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
       const showModel= ref(false)
         const handleCancel=()=>{
             showModel.value = false
@@ -107,7 +108,8 @@ export default {
             handleCancel,
             handleConfirm,
             OpenPage,
-            handleSelectType
+            handleSelectType,
+            volunteerInfo
 
         }
     }

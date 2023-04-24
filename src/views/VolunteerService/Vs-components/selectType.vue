@@ -50,7 +50,7 @@
 </template>
 <script>
     /* eslint-disable */
-    import { ref } from 'vue'
+    import {reactive, ref} from 'vue'
     import {chooseVolType} from '@/api/volunteer'
     import {useRouter} from "vue-router";
 
@@ -59,9 +59,6 @@
         props: [],
         data() {
             return {
-                formData: {
-                    volunteerType: ''
-                },
                 rules: {
                     field114: [
                         {
@@ -107,16 +104,20 @@
         mounted() {},
         setup() {
 
-
+            const formData = reactive({
+                volunteerType: ''
+            })
+            const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
+            console.log('volunteerInfo',volunteerInfo)
             const value = ref('')
 
             const options = [
                 {
-                    value: '赛会志愿者',
+                    value: '0',
                     label: '赛会志愿者',
                 },
                 {
-                    value: '城市志愿者',
+                    value: '1',
                     label: '城市志愿者',
                 }
             ]
@@ -124,8 +125,8 @@
             const handleSubmit = async ()=>{
                 const useParams = {
                     params:{
-                        id:111,
-                        volunteerType:1
+                        id:volunteerInfo.id,
+                        volunteerType:formData.volunteerType
                     }
                 }
                 await chooseVolType({},useParams)
@@ -141,7 +142,8 @@
                 options,
                 value,
                 handleSubmit,
-                handleJump
+                handleJump,
+                formData
             };
         },
         methods: {

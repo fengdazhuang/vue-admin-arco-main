@@ -70,7 +70,7 @@
 <!--        </a-space>-->
         <div>
           <a-space>
-            <a-button @click="handleDelete()">
+            <a-button @click="handleDelete(id)">
               {{ closeTxt }}
             </a-button>
             <a-button type="primary" @click="handleEdit()">
@@ -86,9 +86,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useToggle } from '@vueuse/core';
+import {deleteComInfo} from '@/api/list'
 
 export default defineComponent({
   props: {
+      id:{
+        type:Number
+      },
     img:{
       type:String,
       default:'../../../../../src/assets/images/img1.jpg'
@@ -156,8 +160,13 @@ export default defineComponent({
       isExpires.value = false;
     };
     const date = new Date()
-    const handleDelete = ()=>{
-      console.log('delete')
+    const handleDelete = async (id)=>{
+        const useParams = {
+            params:{
+                id
+            }
+        }
+      await deleteComInfo(useParams)
     }
     const handleEdit = ()=>{
       console.log('edit')

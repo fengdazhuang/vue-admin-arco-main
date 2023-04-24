@@ -3,7 +3,7 @@
             <el-card :style="{height:'100%'}">
                 <el-descriptions class="title" title="简介" :column="2" border>
                     <template #extra>
-                        <el-button type="primary" @click="dialogVisible = true">
+                        <el-button type="primary" @click="handleEdit(updateAdminInfo)">
                             编辑
                         </el-button>
                     </template>
@@ -19,21 +19,21 @@
                             <i class="el-icon-user"></i>
                             用户名
                         </template>
-                        {{form.username}}
+                        {{updateAdminInfo.username}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-s-custom"></i>
                             昵称
                         </template>
-                        {{form.name}}
+                        {{updateAdminInfo.name}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-odometer"></i>
                             年龄
                         </template>
-                        {{form.age}}
+                        {{updateAdminInfo.age}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
@@ -41,28 +41,28 @@
                             <i class="el-icon-female"></i>
                             性别
                         </template>
-                        <el-tag size="small">{{form.sex}}</el-tag>
+                        <el-tag size="small">{{updateAdminInfo.sex}}</el-tag>
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-message"></i>
                             邮箱Email
                         </template>
-                        {{form.email}}
+                        {{updateAdminInfo.email}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-mobile-phone"></i>
                             手机号码
                         </template>
-                        {{form.phone}}
+                        {{updateAdminInfo.phone}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-location-outline"></i>
                             地区
                         </template>
-                        {{form.province}}
+                        {{updateAdminInfo.province}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
@@ -90,21 +90,21 @@
                             <i class="el-icon-date"></i>
                             登录日期
                         </template>
-                            {{form.loginTime}}
+                            {{updateAdminInfo.loginTime}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-date"></i>
                             注册日期
                         </template>
-                        {{form.createTime}}
+                        {{updateAdminInfo.createTime}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
                             <i class="el-icon-date"></i>
                             学校
                         </template>
-                        {{form.school}}
+                        {{updateAdminInfo.school}}
                     </el-descriptions-item>
                 </el-descriptions>
             </el-card>
@@ -120,7 +120,7 @@
                             <el-form-item label="头像" prop="photo">
                                 <div class="choose-cover">
                                     <div class="uploader-comp">
-                                        <div id="block-choose" class="block-choose" :style="coverStyle">
+                                        <div id="block-choose" class="block-choose">
                                             <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
                                         </div>
                                         <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
@@ -139,8 +139,8 @@
                             </el-form-item>
                             <el-form-item label="性别" prop="sex">
                                 <el-radio-group v-model="form.sex" class="ml-4">
-                                    <el-radio label="1" size="large">男</el-radio>
-                                    <el-radio label="2" size="large">女</el-radio>
+                                    <el-radio label="男"  size="large">男</el-radio>
+                                    <el-radio label="女" size="large">女</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                             <el-form-item label="邮箱" prop="email">
@@ -190,9 +190,10 @@
 </template>
 
 <script lang="ts">
+    /* eslint-disable */
     import {ref,reactive} from 'vue'
-    import {modifyInfo} from '@/api/user'
-    // import PersonalDia from './PersonalDia.vue'
+    import {modifyInfo,getInfo} from '@/api/user'
+
     import { ElMessageBox } from 'element-plus'
 
     export default {
@@ -201,16 +202,19 @@
             // PersonalDia
         },
         setup(){
-            const isShow = ref(true)
-            const handleEdit = ()=>{
-                isShow.value = true
-                console.log('isshow',isShow.value)
-            }
+            const dialogVisible = ref(false)
+
+            const updateAdminInfo = ref({})
             const imgSrc = ref('@/assets/images/img1.jpg')
             const isImg = ref(false)
             const inputPic = ref(null)
-            const adminInfo = JSON.parse(window.sessionStorage.getItem('adminInfo'))
-            const form =  reactive({
+            let adminInfo = reactive(JSON.parse(window.sessionStorage.getItem('adminInfo')))
+            if (adminInfo.sex === 1) {
+                adminInfo.sex = '男'
+            } else  {
+                adminInfo.sex = '女'
+            }
+            let form =  reactive({
                 photo: adminInfo.picture,
                 password: adminInfo.password,
                 age: adminInfo.age,
@@ -231,11 +235,57 @@
                 status:adminInfo.status,
                 username:adminInfo.username
             })
-            const dialogVisible = ref(false)
+            const handleEdit = (updateAdminInfo)=>{
+                // form = {
+                //     photo: updateAdminInfo.value.picture,
+                //     password: updateAdminInfo.value.password,
+                //     age: updateAdminInfo.value.age,
+                //     email:updateAdminInfo.value.email,
+                //     sex: updateAdminInfo.value.sex,
+                //     id: updateAdminInfo.value.id,
+                //     account: "",
+                //     area: "",
+                //     hobby: "",
+                //     work: "",
+                //     design: "",
+                //     createTime:updateAdminInfo.value.createTime,
+                //     loginTime:updateAdminInfo.value.loginTime,
+                //     name:updateAdminInfo.value.name,
+                //     phone:updateAdminInfo.value.phone,
+                //     province:updateAdminInfo.value.province,
+                //     school:updateAdminInfo.value.school,
+                //     status:updateAdminInfo.value.status,
+                //     username:updateAdminInfo.value.username
+                // }
+                dialogVisible.value = true
+            }
+            const handlGetInfo = async ()=>{
+                const useParams = {
+                    params:{
+                        id:adminInfo.id
+                    }
+                }
+                const {data} = await getInfo(useParams)
+
+                    if(data.sex===1) {
+                        data.sex = '男'
+                    } else {
+                        data.sex = '女'
+                    }
+
+                updateAdminInfo.value = data
+                adminInfo = updateAdminInfo.value
+            }
+            handlGetInfo()
             const handleChangeUserInfo = async ()=>{
-                isShow.value = false
+                dialogVisible.value = false
+                if(form.sex === '男') {
+                    form.sex = 1
+                } else {
+                    form.sex = 0
+                }
                 const body = {
-                    age:form.age,
+                    age:+form.age,
                     createTime:form.createTime,
                     email:form.email,
                     id:form.id,
@@ -243,14 +293,15 @@
                     name:form.name,
                     password:form.password,
                     phone:form.phone,
-                    picture:form.avatar,
+                    picture:form.photo,
                     province:form.province,
                     school:form.school,
                     sex:form.sex,
                     status:form.status,
                     username:form.username
                 }
-                await modifyInfo(body)
+                const res = await modifyInfo(body)
+                    handlGetInfo()
             }
             // const uploadCover = (e)=> {
             //   var me = ctx1.ctx;
@@ -305,7 +356,6 @@
             }
             return {
                 handleEdit,
-                isShow,
                 dialogVisible,
                 handleClose,
                 form,
@@ -313,7 +363,8 @@
                 uploadCover,
                 inputPic,
                 imgSrc,
-                isImg
+                isImg,
+                updateAdminInfo
             }
         }
     }

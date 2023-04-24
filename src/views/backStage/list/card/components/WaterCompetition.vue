@@ -34,6 +34,7 @@
           open-txt="质检"
           close-txt="删除"
           :show-tag="false"
+          :id="item.id"
         >
           <a-descriptions
             style="margin-top: 16px"

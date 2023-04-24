@@ -26,6 +26,7 @@
           tag-text="已开通"
           expires-tag-text="已过期"
           :icon="item.icon"
+          :id="item.id"
         >
           <template #skeleton>
             <a-skeleton :animation="true">

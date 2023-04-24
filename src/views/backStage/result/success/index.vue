@@ -19,7 +19,7 @@
                             <template #title>
                                 <div @click="handleTabName(3)">
                                     <icon-subscribe /> 未发布
-                                </div>>
+                                </div>
 
                             </template>
 
@@ -28,7 +28,7 @@
                             <template #title>
                                 <div @click="handleTabName(2)">
                                     <icon-undo /> 已撤回
-                                </div>>
+                                </div>
 
                             </template>
 

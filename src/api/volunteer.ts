@@ -43,3 +43,7 @@ export function pageVolPositions(params) {
 export function chooseVolType(data,params){
     return axios.put('/api3/volunteer/chooseVolType',data,params)
 }
+export function queryVolunteer(params){
+    return axios.get('/api3/volunteer/queryVolunteer',params)
+}
+

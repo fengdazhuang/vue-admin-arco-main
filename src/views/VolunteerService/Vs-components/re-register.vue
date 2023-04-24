@@ -91,7 +91,7 @@
           </div>
           <div class="btn">
             <el-col :span="12">
-              <el-form-item label="" prop="field106">
+              <el-form-item label="">
                 <el-button
                   type="primary"
                   size="medium"
@@ -103,7 +103,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="" prop="field107">
+              <el-form-item label="">
                 <el-button type="primary" @click="handleSubmit" size="medium" class="re-submit">
                   提交
                 </el-button>
@@ -174,8 +174,6 @@ export default {
           code: '',
           password: '',
           confirmPassword: '',
-          field106: undefined,
-          field107: undefined,
       })
       const handleSubmit = ()=>{
           ctx.$refs.elForm.validate(async (validate)=>{

@@ -21,6 +21,7 @@
           :default-value="item.enable"
           :action-type="item.actionType"
           tag-text="删除"
+          :id="item.id"
         >
           <template #skeleton>
             <a-skeleton :animation="true">

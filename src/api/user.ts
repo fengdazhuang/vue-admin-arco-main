@@ -63,6 +63,9 @@ export  function updateJudge(data) {
 }
 
 // 管理员
+export function getInfo(params){
+  return axios.get('/api1/admin/getInfo',params)
+}
 export function modifyInfo(data){
   return axios.put('/api1/admin/modifyInfo',data)
 }
