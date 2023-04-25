@@ -91,12 +91,12 @@ export default {
             window.open('#/selectType')
         }
         const handleLogout = async ()=>{
-          const useParams = {
-              params:{
-                  id:111
-              }
-          }
-          await logout(useParams)
+          // const useParams = {
+          //     params:{
+          //         id:111
+          //     }
+          // }
+          // await logout(useParams)
             window.localStorage.removeItem('volunteertoken')
             router.push('/re-login')
         }

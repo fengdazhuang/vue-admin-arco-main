@@ -128,11 +128,11 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入家庭地址'}]">
+                                <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入服务意向'}]">
                                     <el-input
                                             :disabled="isEdit"
                                             v-model="userInfo.intention"
-                                            placeholder="请输入家庭地址"
+                                            placeholder="请输入服务意向"
                                             clearable
                                             :style="{ width: '5rem' }"
                                     >
@@ -197,6 +197,7 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import {reactive, ref,getCurrentInstance} from "vue";
     import {modifyInfo,queryVolunteer} from'@/api/volunteer'
     import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
@@ -286,7 +287,7 @@
                     }
                 }
                const {data} = await queryVolunteer(useParams)
-                userInfo = data
+                // userInfo = data
             }
             handleQueryVolunteer()
             const handleEdit = () =>{
@@ -310,7 +311,9 @@
                             intention:userInfo.intention
                         }
                         await modifyInfo(body)
+
                         Message.success('提交成功')
+                        isEdit.value = true
                         const useParams = {
                             params:{
                                 id:userInfo.id

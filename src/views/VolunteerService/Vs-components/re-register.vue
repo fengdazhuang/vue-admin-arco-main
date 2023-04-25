@@ -126,6 +126,7 @@
     /* eslint-disable */
     import {sendCode,register} from '@/api/volunteer'
     import {reactive,getCurrentInstance} from "vue";
+    import {useRouter} from 'vue-router'
 export default {
   components: {},
   props: [],
@@ -175,6 +176,7 @@ export default {
           password: '',
           confirmPassword: '',
       })
+      const router = useRouter()
       const handleSubmit = ()=>{
           ctx.$refs.elForm.validate(async (validate)=>{
               if (validate) {
@@ -184,6 +186,9 @@ export default {
                       validateCode:formData.code
                   }
                   const res = await register(body)
+                  if(res.code===200) {
+                      router.push('/re-login')
+                  }
                   ctx.$refs.elForm.resetFields()
               }
           })

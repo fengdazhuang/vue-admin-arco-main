@@ -1,9 +1,9 @@
 
 <template>
     <div class="container">
-        <Breadcrumb :items="['人员管理', '管理员']" />
+        <Breadcrumb :items="['系统管理', '合作伙伴']" />
         <div class="main">
-            <a-card :style="{width:'100%'}" class="general-card card" title="管理员">
+            <a-card :style="{width:'100%'}" class="general-card card" title="合作伙伴">
                 <a-row>
                     <a-col :flex="1">
                         <a-form
@@ -49,30 +49,37 @@
                             <a-button type="primary" status="danger">批量改变</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
-                                    添加运动员
+                                    添加合作伙伴
                                 </template>
                                 <div>
-                                    <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
-                                        <a-form-item field="username" label="用户名"
-                                                     :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
+                                    <a-form ref="formRef" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
+                                        <a-form-item field="logo" label="Logo">
+                                            <div class="choose-cover">
+                                                <div class="uploader-comp">
+                                                    <div id="block-choose" class="block-choose" >
+                                                        <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                                    </div>
+                                                    <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
+                                                </div>
+                                                <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
+                                            </div>
+                                        </a-form-item>
+                                        <a-form-item field="url" label="链接"
+                                                     :rules="[{required:true,message:'请输入链接'}]"
                                                      :validate-trigger="['change','input']"
                                         >
-                                            <a-input v-model="form.username" @blur="handleLeave" placeholder="请输入你的用户名" />
-                                            <span v-show="isRepeat">{{message}}</span>
+                                            <a-input v-model="form.url" placeholder="请输入链接" />
                                         </a-form-item>
-                                        <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
-                                            <a-radio-group v-model="form.sex">
-                                                <a-radio value="1">男</a-radio>
-                                                <a-radio value="0">女</a-radio>
-                                            </a-radio-group>
-                                        </a-form-item>
-                                        <a-form-item field="email" label="电子邮箱"
-                                                     :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
+                                        <a-form-item field="status" label="状态"
+                                                     :rules="[{required:true,message:'请设置状态'}]"
                                                      :validate-trigger="['change','input']"
                                         >
-                                            <a-input v-model="form.email" placeholder="电子邮箱" />
+                                            <template #cell="{ record }">
+                                                <a-space style="margin-bottom: 20px;">
+                                                    <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
+                                                </a-space>
+                                            </template>
                                         </a-form-item>
-
                                         <a-form-item>
                                             <a-space>
                                                 <!-- <a-button html-type="submit" type="primary">提交</a-button> -->
@@ -98,29 +105,36 @@
                 >
                     <template #columns>
                         <a-table-column
-                                :width="100"
-                                title="用户名"
-                                data-index="username"
+                                title="ID"
+                                data-index="id"
                         />
                         <a-table-column
-                                :width="100"
-                                title="昵称"
-                                data-index="name"
-                        />
+                                :width="150"
+                                title="logo"
+                                data-index="logo"
+                        >
+                            <template #cell="{ record }">
+                                <a-space>
+                                    <a-avatar
+                                            :size="40"
+                                            shape="square"
+                                    >
+                                        <img
+                                                alt="avatar"
+                                                :src="record.url"
+                                        />
+                                    </a-avatar>
+                                </a-space>
+                            </template>
+                        </a-table-column>
                         <a-table-column
-                                :width="80"
-                                title="性别"
-                                data-index="sex"
+                                title="链接"
+                                data-index="url"
                         >
                         </a-table-column>
                         <a-table-column
-                                :width="200"
-                                title="电子邮箱"
-                                data-index="email"
-                        />
-                        <a-table-column
-                                title="状态"
-                                data-index="status"
+                                title="状态控制"
+                                data-index="createTime"
                         >
                             <!-- eslint-disable -->
                             <template #cell="{ record }">
@@ -148,48 +162,44 @@
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
-                                <a-button @click="handleReset(record)" type="text"  status="danger" size="small">重置</a-button>
+                                <a-button @click="handleEdit(record)" type="text"  size="small">编辑</a-button>
                             </template>
                         </a-table-column>
                     </template>
                 </a-table>
                 <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs,'edit')"  unmountOnClose>
                     <template #title>
-                        编辑管理员信息
+                        编辑合作伙伴信息
                     </template>
                     <div>
 
                         <a-form setFields="" ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}" @submit="handleSubmit">
-                            <a-form-item field="name" label="姓名"
-                                         :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
+                            <a-form-item field="logo" label="Logo">
+                                <div class="choose-cover">
+                                    <div class="uploader-comp">
+                                        <div id="block-choose" class="block-choose" :style="coverStyle">
+                                            <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                        </div>
+                                        <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
+                                    </div>
+                                    <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
+                                </div>
+                            </a-form-item>
+                            <a-form-item field="url" label="链接"
+                                         :rules="[{required:true,message:'请输入链接'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <a-input v-model="form.name" placeholder="请输入你的姓名" />
+                                <a-input v-model="form.url" placeholder="请输入链接" />
                             </a-form-item>
-                            <a-form-item field="competitionName" label="管理项目"
-                                         :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
+                            <a-form-item field="status" label="状态"
+                                         :rules="[{required:true,message:'请设置状态'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择管理项目"/>
-                            </a-form-item>
-                            <a-form-item field="email" label="电子邮箱"
-                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
-                                         :validate-trigger="['change','input']"
-                            >
-                                <a-input v-model="form.email" placeholder="请输入电子邮箱" />
-                            </a-form-item>
-                            <a-form-item field="country" label="国籍" :rules="[{required:true,message:'国籍不能为空'}]">
-                                <a-select v-model="form.country" placeholder="请选择国籍" allow-clear>
-                                    <a-option value="中国">中国</a-option>
-                                    <a-option value="巴基斯坦">巴基斯坦</a-option>
-                                    <a-option value="韩国">韩国</a-option>
-                                </a-select>
-                            </a-form-item>
-                            <a-form-item field="sex" label="性别" :rules="[{required:true,message:'不能为空'}]">
-                                <a-radio-group v-model="form.sex">
-                                    <a-radio value="1">男</a-radio>
-                                    <a-radio value="0">女</a-radio>
-                                </a-radio-group>
+                                <template #cell="{ record }">
+                                    <a-space style="margin-bottom: 20px;">
+                                        <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
+                                    </a-space>
+                                </template>
                             </a-form-item>
                             <a-form-item>
                                 <a-space>
@@ -214,7 +224,7 @@
     import useLoading from '@/hooks/loading';
     import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
-    import {getFriendLinks,addFriendLink} from '@/api/system'
+    import {getFriendLinks,addFriendLink,modifyFriendLink,modifyFriendLinkStatus} from '@/api/system'
     const generateFormModel = () => {
         return {
             name: '',
@@ -229,6 +239,9 @@
             const { loading, setLoading } = useLoading(true);
             const { t } = useI18n();
             const renderData = ref<PolicyRecord[]>([]);
+            const imgSrc = ref('@/assets/images/img1.jpg')
+            const isImg = ref(false)
+            const inputPic = ref(null)
             const formModel = ref(generateFormModel());
             const basePagination: Pagination = {
                 pageNumber: 1,
@@ -283,16 +296,17 @@
             const treeRef = ref()
             const data = ref({})
             const PlayerList = ref([])
-            const inputPic = ref(null)
             // const date = new Date()
             const competitions = ref('')
             const message = ref('')
             const isRepeat = ref(false)
             let node
-            const form = reactive({
-                username:'',
-                sex:1,
-                email:''
+            let form = reactive({
+                id:'',
+                url:'',
+                logo:'',
+                status:0,
+                createTime:''
             });
 
             // const fetchData = async (
@@ -337,15 +351,9 @@
                     let useParams = {
                         params:{...params}
                     }
+                    console.log(2222)
                     const { data } = await getFriendLinks();
-                    data.records.forEach(item =>{
-                        if(item.sex===1) {
-                            item.sex = '男'
-                        } else {
-                            item.sex = '女'
-                        }
-                    })
-                    data.records.forEach(item=>{
+                    data.forEach(item=>{
                         if (item.status) {
                             item.status = false
                             item.statusText = '已禁用'
@@ -354,9 +362,9 @@
                             item.statusText = '已启用'
                         }
                     })
-                    PlayerList.value = data.records
-                    pagination.pageNumber = params.pageNumber;
-                    pagination.total = data.total;
+                    PlayerList.value = data
+                    console.log(1111)
+                    // PlayerList.value = data.records
                 } catch (err) {
                     // you can report use errorHandler or other
                 } finally {
@@ -367,9 +375,11 @@
                 visible.value = true;
                 ctx.$nextTick(() => {
                     Object.assign(form, {
-                        username:'',
-                        sex:1,
-                        email:''
+                        id:'',
+                        url:'',
+                        logo:'',
+                        status:0,
+                        createTime:''
                     });
                 });
             };
@@ -391,17 +401,20 @@
                 showCheckedAll: true,
                 onlyCurrent: false
             });
-            // const handleBeforeOk = async () => {
-            //   await new Promise(resolve => setTimeout(resolve, 3000));
-            //   return true;
-            // };
+            const uploadCover = (e)=> {
+                imgSrc.value='@/assets/images/img1.jpg'
+                form.photo = '@/assets/images/img1.jpg'
+                isImg.value = true
+            }
             const handleCancel = () => {
                 visible.value = false;
                 ctx.$nextTick(() => {
                     Object.assign(form, {
-                        username:'',
-                        sex:1,
-                        email:''
+                        id:'',
+                        url:'',
+                        logo:'',
+                        status:0,
+                        createTime:''
                     });
                 });
             }
@@ -412,29 +425,35 @@
                 showModel.value = false;
                 ctx.$nextTick(() => {
                     Object.assign(form, {
-                        competitionName:'',
-                        name: '',
-                        country: '',
-                        sex:1,
-                        email:''
+                        id:'',
+                        url:'',
+                        logo:'',
+                        status:0,
+                        createTime:''
                     });
                 });
+            }
+            const handleEdit = (row)=>{
+                console.log('row',row)
+                ctx.$nextTick(() => {
+                    Object.assign(form, row);
+                });
+
+                showModel.value = true
+
+                // modifyFriendLink ()
             }
             const handleSubmit = async ({values, errors}) => {
                 visible.value = false
             }
-            // PlayerList.value = [{
-            //     competitionName:'111',
-            //     name: '111',
-            //     country: '111',
-            //     sex:1,
-            //     email:'',
-            //     status:0
-            // }]
             const handleConfirm = async ($ref,type)=> {
                 /* eslint-disable */
-                const res = await addAdmin(form)
-                console.log('resAdmin',res)
+                const body = {
+                    url:form.url,
+                    logo:form.logo,
+                    status:1
+                }
+                const res = await addFriendLink(body)
                 visible.value = false
                 fetchData()
                 $ref.formRef.validate((valid)=>{
@@ -458,7 +477,12 @@
             }
             const handleConfirm1 = async ($ref,type)=> {
                 /* eslint-disable */
-                const res = await updateJudge(form)
+                const body = {
+                    id:form.id,
+                    url:form.url,
+                    logo:form.logo
+                }
+                const res = await modifyFriendLink(body)
                 visible.value = false
                 fetchData()
                 $ref.formRef.validate((valid)=>{
@@ -600,12 +624,6 @@
             const checkedKeys = ref([]);
             const checkStrictly = ref(false);
 
-            const handleReset = async (row)=>{
-                await resetPassword({
-                    id:row.id,
-                    email:row.email
-                })
-            }
             const handleChangeStatus = async (row)=>{
                 console.log('row',row)
                 if (row.status) {
@@ -613,11 +631,11 @@
                 } else {
                     row.status = 1
                 }
-                const params = {
+                const params = [{
                     id:row.id,
                     status:row.status
-                }
-                const res = await updateStatus(params)
+                }]
+                const res = await modifyFriendLinkStatus(params)
                 fetchData()
             }
             const handleLeave = async ()=>{
@@ -691,6 +709,7 @@
                     }
                 }
                 const {data} = await listAdmins(useParams)
+
                 PlayerList.value = data.records
                 // renderData.value = data.list;
                 // pagination.pageNumber = params.pageNumber;
@@ -746,16 +765,18 @@
                 checkStrictly,
                 treeRef,
                 treeDataCountry,
-                // uploadCover,
-                inputPic,
+                uploadCover,
                 isAbled,
                 handleLeave,
                 message,
-                handleReset,
                 handleChangeStatus,
                 value,
                 open,
-                handleGetId
+                handleGetId,
+                handleEdit,
+                imgSrc,
+                isImg,
+                inputPic
             };
         },
     });

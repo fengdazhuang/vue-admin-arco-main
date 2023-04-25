@@ -39,7 +39,6 @@
                         </a-row>
                         </a-form>
                     </a-col>
-
                 </a-row>
                 <a-divider style="margin-top: 0" />
                 <a-row style="margin-bottom: 16px">
@@ -49,7 +48,7 @@
                             <a-button type="primary" status="danger">批量改变</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
-                                    添加运动员
+                                    添加管理员
                                 </template>
                                 <div>
                                     <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
@@ -578,10 +577,10 @@
                 } else {
                     row.status = 1
                 }
-                const params = {
+                const params = [{
                     id:row.id,
                     status:row.status
-                }
+                }]
                 const res = await updateStatus(params)
                 fetchData()
             }

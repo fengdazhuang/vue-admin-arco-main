@@ -33,9 +33,9 @@
             </div>
             <div class="main">
                 <ul class="gfhzhb_lists">
-                    <li>
-                        <a href="http://www.geely.com/zh-CN" target="_blank">
-                            <img src="../assets/image/logo_jlqc2.png" alt="" />
+                    <li v-for="item in FriendLinksList" :key="item.id">
+                        <a :href="item.url" target="_blank">
+                            <img :src="item.logo" alt="" />
                         </a>
                     </li>
                     <li>
@@ -93,43 +93,43 @@
                 <div class="cl"></div>
             </div>
             <!-- 官方赞助商 -->
-            <div class="title-gfzzs">
-                <img src="../assets/image/title_gfzzs.png" alt="" />
-            </div>
-            <div class="main">
-                <ul class="gfzzs_lists">
-                    <li>
-                        <a href="https://www.yto.net.cn" target="_blank">
-                            <img src="../assets/image/logo_yt2.png" alt="" style="" />
-                        </a>
-                    </li>
+<!--            <div class="title-gfzzs">-->
+<!--                <img src="../assets/image/title_gfzzs.png" alt="" />-->
+<!--            </div>-->
+<!--            <div class="main">-->
+<!--                <ul class="gfzzs_lists">-->
+<!--                    <li>-->
+<!--                        <a href="https://www.yto.net.cn" target="_blank">-->
+<!--                            <img src="../assets/image/logo_yt2.png" alt="" style="" />-->
+<!--                        </a>-->
+<!--                    </li>-->
 
-                    <li>
-                        <a href="https://www.wahaha.com.cn/#/" target="_blank">
-                            <img src="../assets/image/logo_wahaha2.png" alt="" />
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.hikvision.com/cn/" target="_blank">
-                            <img src="../assets/image/logo_hkws2.png" alt="" />
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.canon.com.cn/" target="_blank">
-                            <img src="../assets/image/logo_canon3.png" alt="" />
-                        </a>
-                    </li>
-                </ul>
-                <div class="cl"></div>
-            </div>
-            <div class="all_zzs">
-                <a href="" target="_blank" class="hzhb-qbzzqy">
-                    <img src="../assets/image/hzhb_qbzzqy.png" alt="" />
-                </a>
-                <a href="" target="_blank" class="hzhb-swfw">
-                    <img src="../assets/image/hzhb_swfw.png" alt="" />
-                </a>
-            </div>
+<!--                    <li>-->
+<!--                        <a href="https://www.wahaha.com.cn/#/" target="_blank">-->
+<!--                            <img src="../assets/image/logo_wahaha2.png" alt="" />-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="https://www.hikvision.com/cn/" target="_blank">-->
+<!--                            <img src="../assets/image/logo_hkws2.png" alt="" />-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="https://www.canon.com.cn/" target="_blank">-->
+<!--                            <img src="../assets/image/logo_canon3.png" alt="" />-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--                <div class="cl"></div>-->
+<!--            </div>-->
+<!--            <div class="all_zzs">-->
+<!--                <a href="" target="_blank" class="hzhb-qbzzqy">-->
+<!--                    <img src="../assets/image/hzhb_qbzzqy.png" alt="" />-->
+<!--                </a>-->
+<!--                <a href="" target="_blank" class="hzhb-swfw">-->
+<!--                    <img src="../assets/image/hzhb_swfw.png" alt="" />-->
+<!--                </a>-->
+<!--            </div>-->
             <!-- 特许经营 -->
             <div class="title-txjy">
                 <img src="../assets/image/title_txjy.png" alt="" />
@@ -214,22 +214,31 @@
 
   <script>
   /* eslint-disable */
-import { ref } from 'vue'
-
+  import {reactive, ref} from 'vue'
+import {getFriendLinks} from '@/api/system'
 export default {
     name: 'home',
     setup () {
+        let FriendLinksList = ref([])
         const activeIndex = ref('0')
         const handleSelect = (key, keyPath) => {
             console.log(key, keyPath)
         }
+        const handleGetFriendLinks = async ()=>{
+            const {data} = await getFriendLinks()
+            FriendLinksList.value = data
+            console.log('FriendLinksList.value',FriendLinksList.value)
+            console.log('FriendLinksList',FriendLinksList.value)
+        }
+        handleGetFriendLinks()
         const PageOpen = () => {
             window.open("#/ind-index");
         };
         return {
             activeIndex,
             handleSelect,
-            PageOpen
+            PageOpen,
+            FriendLinksList
         }
     }
 
@@ -455,6 +464,11 @@ export default {
         float: none;
         display: inline-block;
         margin-right: 30px;
+        a {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     .cl {
