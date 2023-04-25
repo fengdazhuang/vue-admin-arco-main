@@ -25,6 +25,9 @@
         <CardWrap
           :loading="loading"
           :name="item.name"
+          :type="item.type"
+          :info="item.info"
+          :picture="item.picture"
           :img="item.picture"
           :createTime="item.createTime"
           :principal="item.principal"

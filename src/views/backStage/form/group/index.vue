@@ -280,18 +280,20 @@
             ) => {
                 setLoading(true);
                 try {
-                    console.log(1111)
+
                     let useParams = {
                         params:{...params}
                     }
                     const { data } = await pagePreVolunteers(useParams);
-                    console.log(2222)
                     data.records.forEach(item =>{
                         if(item.sex===1) {
                             item.sex = '男'
                         } else {
                             item.sex = '女'
                         }
+                    })
+                    data.records.filter((item)=>{
+                        return item.status !=3
                     })
                     data.records.forEach(item=>{
                         if (item.status) {
@@ -301,7 +303,7 @@
                         }
                     })
                     // PlayerList.value = data.records
-                    PlayerList.value = [{name:'哈哈哈',photo:'111',sex:1,age:18,risk:'哪都行',applyTime:'2023-4-19'}]
+                    PlayerList.value = data.records
                     pagination.pageNumber = params.pageNumber;
                     pagination.total = data.total;
                 } catch (err) {

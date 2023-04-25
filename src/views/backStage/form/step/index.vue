@@ -285,6 +285,9 @@
                             item.sex = '女'
                         }
                     })
+                    // data.records.filter((item)=>{
+                    //     return item.status =='index'
+                    // })
                     data.records.forEach(item=>{
                         if (item.status) {
                             item.status = 1

@@ -9,6 +9,7 @@ import globalComponents from '@/components';
 import 'echarts'
 import ECharts from 'vue-echarts'
 
+import mitt from 'mitt'
 import router from './router';
 import store from './store';
 import i18n from './locale';
@@ -24,6 +25,7 @@ import 'animate.css';
 // import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const app = createApp(App);
 app.component('VueEcharts', ECharts)
+app.config.globalProperties.$EventBus = new mitt()
 app.use(ArcoVue, {});
 app.use(ArcoVueIcon);
 
