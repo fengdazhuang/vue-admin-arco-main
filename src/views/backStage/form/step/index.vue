@@ -58,9 +58,8 @@
                                 data-index="age"
                         />
                         <a-table-column
-                                :width="160"
                                 title="审批状态"
-                                data-index="risk"
+                                data-index="processText"
                         />
                         <a-table-column
                                 :width="160"
@@ -317,7 +316,20 @@
                         } else {
                             item.status = 0
                         }
+                        if(item.process === 0 || item.process==null) {
+                            item.processText = '未申请'
+
+                        } else if(item.process === 1) {
+                            item.processText = '已申请，未审核，未分配'
+                        } else if(item.process === 2) {
+                            item.processText = '已申请，已审核，未分配'
+                        } else if(item.process === 3) {
+                            item.processText = '已申请，已审核，已分配'
+                        } else if(item.process === 4){
+                            item.processText = '未通过'
+                        }
                     })
+
                     PlayerList.value = data.records
                     pagination.pageNumber = params.pageNumber;
                     pagination.total = data.total;

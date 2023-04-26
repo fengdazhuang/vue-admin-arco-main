@@ -29,7 +29,6 @@
                         <el-form
                                 ref="elForm"
                                 :model="userInfo"
-                                :rules="rules"
                                 size="medium"
                                 label-width="100px"
                                 label-position="left"
@@ -129,14 +128,14 @@
                             </el-col>
                             <el-col :span="24">
                                 <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入服务意向'}]">
-                                    <el-input
-                                            :disabled="isEdit"
+                                    <a-tree-select
                                             v-model="userInfo.intention"
-                                            placeholder="请输入服务意向"
-                                            clearable
-                                            :style="{ width: '5rem' }"
-                                    >
-                                    </el-input>
+                                            :allow-clear="true"
+                                            :allow-search="true"
+                                            :data="treeDataService"
+                                            placeholder="请选择服务方向"
+                                            style="width: 300px"
+                                    ></a-tree-select>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
@@ -202,6 +201,7 @@
     import {modifyInfo,queryVolunteer} from'@/api/volunteer'
     import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
     import { Message } from '@arco-design/web-vue';
+    import {getVolDirections} from "@/api/volunteer";
 
     export default {
         name: "VolunteerService",
@@ -272,9 +272,25 @@
             const isImg = ref(false)
             const inputPic = ref(null)
             const activeIndex = ref("0");
+            const treeDataService = ref([])
             const handleSelect = (key, keyPath) => {
                 console.log(key, keyPath);
             };
+            const handleGetVolDirections = async (volunteerType)=>{
+                const useParams = {
+                    params:{
+                        volunteerType
+                    }
+                }
+                const {data} = await getVolDirections(useParams)
+                data.forEach(item=>{
+                    treeDataService.value.push({
+                        key:item.name,
+                        title:item.name
+                    })
+                })
+            }
+            handleGetVolDirections(1)
             const uploadCover = (e)=> {
                 imgSrc.value='@/assets/images/img1.jpg'
                 userInfo.photo = '@/assets/images/img1.jpg'
@@ -340,7 +356,8 @@
                 isImg,
                 imgSrc,
                 isEdit,
-                handleEdit
+                handleEdit,
+                treeDataService
             };
         },
     };
