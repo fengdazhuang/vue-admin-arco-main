@@ -46,4 +46,7 @@ export function chooseVolType(data,params){
 export function queryVolunteer(params){
     return axios.get('/api3/volunteer/queryVolunteer',params)
 }
+export function applyVolunteer(data) {
+    return axios.post('/api3/volunteer/applyVolunteer',data)
+}
 

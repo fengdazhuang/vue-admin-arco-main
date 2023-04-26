@@ -45,6 +45,16 @@
                                     <a-tree-select :data="treeDataCountry" v-model="formModel.country" placeholder="请选择国家"/>
                                 </a-form-item>
                             </a-col>
+                            <a-col :span="10">
+                                <a-form-item field="arrivalStatus"  label="抵达情况">
+                                    <a-tree-select :data="treeArrivalStatus" v-model="formModel.arrivalStatus" placeholder="请选择抵达情况"/>
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="10">
+                                <a-form-item field="healthyStatus"  label="健康状况">
+                                    <a-tree-select :data="treeHealthyStatus" v-model="formModel.healthyStatus" placeholder="请选择健康情况"/>
+                                </a-form-item>
+                            </a-col>
                             <a-col :flex="'86px'" style="text-align: right">
                                 <a-space  :size="18">
                                     <a-button type="primary" :style="{margin:'0 0 0 20px'}" @click="search">
@@ -186,6 +196,16 @@
                                 data-index="country"
                         />
                         <a-table-column
+                                :width="100"
+                                title="抵达情况"
+                                data-index="arrivalStatus"
+                        />
+                        <a-table-column
+                                :width="100"
+                                title="健康状况"
+                                data-index="healthyStatus"
+                        />
+                        <a-table-column
                                 title="电子邮箱"
                                 data-index="email"
                         />
@@ -287,7 +307,9 @@
             name: '',
             country:'',
             pageNumber:1,
-            pageSize:20
+            pageSize:20,
+            healthyStatus:'',
+            arrivalStatus:''
         };
     };
     export default defineComponent({
@@ -378,7 +400,7 @@
             });
 
             const fetchData = async (
-                params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20 }
+                params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:1,healthyStatus:0  }
             ) => {
                 setLoading(true);
                 try {
@@ -392,6 +414,18 @@
                             item.sex = '男'
                         } else {
                             item.sex = '女'
+                        }
+                        if (item.arrivalStatus === 0) {
+                            item.arrivalStatus = '抵达'
+                        } else {
+                            item.arrivalStatus = '未抵达'
+                        }
+                        if (item.healthyStatus=== 0) {
+                            item.healthyStatus = '健康'
+                        } else if(item.healthyStatus=== 1){
+                            item.healthyStatus = '良好'
+                        } else if (item.healthyStatus=== 2) {
+                            item.healthyStatus = '较差'
                         }
                         // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
                     })
@@ -594,6 +628,30 @@
                 }
 
             ]
+            const treeArrivalStatus = [
+                {
+                    key:'0',
+                    title:'抵达'
+                },
+                {
+                    key:'1',
+                    title:'未抵达'
+                },
+            ]
+            const treeHealthyStatus = [
+                {
+                    key:'0',
+                    title:'健康'
+                },
+                {
+                    key:'1',
+                    title:'良好'
+                },
+                {
+                    key:'2',
+                    title:'较差'
+                },
+            ]
             const treeData = [
                 {
                     key: '竞技性比赛',
@@ -768,7 +826,9 @@
                 inputPic,
                 handleDelete,
                 handleGetId,
-                handleManyDelete
+                handleManyDelete,
+                treeArrivalStatus,
+                treeHealthyStatus
             };
         },
     });

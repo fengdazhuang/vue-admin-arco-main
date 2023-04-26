@@ -129,6 +129,7 @@
                             <el-col :span="24">
                                 <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入服务意向'}]">
                                     <a-tree-select
+                                            :disabled="isEdit"
                                             v-model="userInfo.intention"
                                             :allow-clear="true"
                                             :allow-search="true"
@@ -155,7 +156,7 @@
                                     <el-input
                                             :disabled="isEdit"
                                             v-model="userInfo.comment"
-                                            placeholder="请输入家庭地址"
+                                            placeholder="请输入简介"
                                             clearable
                                             :style="{ width: '5rem' }"
                                     >
@@ -223,7 +224,7 @@
                 certificateType:volunteerInfo.certificateType,
                 certificateNumber:volunteerInfo.certificateNumber,
                 address:volunteerInfo.address,
-                comment:'hhhhh',
+                comment:volunteerInfo.comment,
                 id:volunteerInfo.id,
                 intention:volunteerInfo.intention
             });

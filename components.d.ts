@@ -62,6 +62,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SalesList: typeof import('./src/components/SalesList/index.vue')['default']
+    Sign: typeof import('./src/components/sign/index.vue')['default']
     UploadImg: typeof import('./src/components/uploadImg/uploadImg.vue')['default']
   }
   export interface ComponentCustomProperties {

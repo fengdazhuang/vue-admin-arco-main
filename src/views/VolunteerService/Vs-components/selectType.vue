@@ -53,6 +53,7 @@
     import {reactive, ref} from 'vue'
     import {chooseVolType} from '@/api/volunteer'
     import {useRouter} from "vue-router";
+    import { Message } from '@arco-design/web-vue';
 
     export default {
         components: {},
@@ -129,7 +130,11 @@
                         volunteerType:formData.volunteerType
                     }
                 }
-                await chooseVolType({},useParams)
+                const res =  await chooseVolType({},useParams)
+                if(res.code === 200) {
+                    Message.success('提交成功')
+                    router.push('/ind-center')
+                }
             }
             const handleJump = ()=>{
                 router.push('/ind-center')

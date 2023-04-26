@@ -33,7 +33,13 @@
                 </div>
             </div>
             <div class="head-right">
-                <p></p>
+                <div class="function">快捷功能</div>
+                <div class="head-right-main">
+                    <div class="apply common-right" @click="handleApply">申请志愿者</div>
+                    <div class="sign common-right" @click="handleIsShow">打卡</div>
+                    <div class="team common-right">团队</div>
+                </div>
+
             </div>
         </div>
       <div class="main">
@@ -52,6 +58,12 @@
         </div>
       </div>
     </div>
+      <div class="mask" @click="handleIsShow" v-show="isShow">
+          <div @click="handleIsShowTrue" class="sign">
+              <Sign/>
+          </div>
+
+      </div>
   </div>
 </template>
 
@@ -59,9 +71,12 @@
     import {reactive, ref} from 'vue'
     import {logout} from '@/api/volunteer'
     import {useRouter} from 'vue-router'
+    import {applyVolunteer} from '@/api/volunteer'
+    import Sign from '@/components/sign/index.vue'
 
 export default {
   name: "ind-center",
+    components:{Sign},
     setup(){
         const form = reactive({
             competitionName:'',
@@ -72,13 +87,24 @@ export default {
             email:''
         });
         const router = useRouter()
+        const isShow = ref(false)
         const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
       const showModel= ref(false)
         const handleCancel=()=>{
             showModel.value = false
         }
+        const handleIsShow = ()=>{
+            isShow.value = !isShow.value
+        }
+        const handleIsShowTrue = (e)=>{
+           e.stopPropagation()
+            isShow.value = true
+        }
         const handleConfirm = ()=>{
             showModel.value = false
+        }
+        const handleApply = ()=>{
+            router.push('/apply')
         }
       const previewResume = ()=>{
           window.open('#/resume')
@@ -109,8 +135,11 @@ export default {
             handleConfirm,
             OpenPage,
             handleSelectType,
-            volunteerInfo
-
+            volunteerInfo,
+            handleApply,
+            isShow,
+            handleIsShow,
+            handleIsShowTrue
         }
     }
 };
@@ -207,6 +236,23 @@ body {
         width: 4rem;
         height: 1.5rem;
         background-color: rgb(255, 255, 255);
+        .function{
+          margin: 20px 0 40px 20px;
+          font-size: 24px;
+        }
+        .head-right-main{
+          display: flex;
+          justify-content: space-around;
+
+          .apply {}
+          .sign {}
+          .common-right{
+            font-size: 16px;
+            color:#179fff;
+            cursor: pointer;
+          }
+        }
+
       }
     }
     .main {
@@ -236,6 +282,24 @@ body {
         top: 1rem;
       }
 
+    }
+  }
+  .mask {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .5);
+    .sign {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      z-index: 2;
+      //  width: 100%;
+      //height: 100%;
+      transform: translate(-50%,-50%);
     }
   }
 }

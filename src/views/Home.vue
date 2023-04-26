@@ -216,6 +216,7 @@
   /* eslint-disable */
   import {reactive, ref} from 'vue'
 import {getFriendLinks} from '@/api/system'
+
 export default {
     name: 'home',
     setup () {
