@@ -32,7 +32,7 @@
                                 :wrapper-col-props="{ span: 18 }"
                                 label-align="left"
                         >           <a-row :gutter="16">
-                            <a-col :span="6">
+                            <a-col :span="9">
                                 <a-form-item field="name"  label="姓名">
                                     <a-input
                                             v-model="formModel.name"
@@ -40,17 +40,17 @@
                                     />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="6">
+                            <a-col :span="9">
                                 <a-form-item field="country"  label="国家">
                                     <a-tree-select :data="treeDataCountry" v-model="formModel.country" placeholder="请选择国家"/>
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="10">
+                            <a-col :span="9">
                                 <a-form-item field="arrivalStatus"  label="抵达情况">
                                     <a-tree-select :data="treeArrivalStatus" v-model="formModel.arrivalStatus" placeholder="请选择抵达情况"/>
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="10">
+                            <a-col :span="9">
                                 <a-form-item field="healthyStatus"  label="健康状况">
                                     <a-tree-select :data="treeHealthyStatus" v-model="formModel.healthyStatus" placeholder="请选择健康情况"/>
                                 </a-form-item>

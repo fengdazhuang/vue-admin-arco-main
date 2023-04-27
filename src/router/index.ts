@@ -69,6 +69,11 @@ const router = createRouter({
       component:()=>import("@/views/backStage/result/error/info.vue")
     },
     {
+      path:'/test',
+      name:'test',
+      component:()=>import('@/views/sxt.vue')
+    },
+    {
       path: "/",
       name: "VolunteerService",
       component: () => import("@/views/VolunteerService/VolunteerService.vue"),

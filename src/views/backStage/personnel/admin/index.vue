@@ -46,7 +46,7 @@
                     <a-col :span="16">
                         <a-space>
                             <a-button @click="handleCreate()" type="primary">新增</a-button>
-                            <a-button type="primary" status="danger">批量改变</a-button>
+                            <a-button type="primary" status="danger" @click="handleChangeMany">批量改变</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
                                     添加管理员
@@ -282,6 +282,7 @@
             const treeRef = ref()
             const data = ref({})
             const PlayerList = ref([])
+            const ids = []
             const inputPic = ref(null)
             // const date = new Date()
             const competitions = ref('')
@@ -370,8 +371,22 @@
                     });
                 });
             }
+            let filterRowKeys = []
             const handleGetId = (rowKeys) =>{
+                rowKeys = rowKeys.filter(item=>{
+                    return !filterRowKeys.includes(item)
+                })
+                PlayerList.value.forEach(item=>{
+                    if (rowKeys.includes(item.id)) {
+                        filterRowKeys.push(item.id)
+                        ids.push({
+                            id:item.id,
+                            status:item.status
+                        })
+                    }
 
+                })
+                console.log('ids222',ids)
             }
             const handleCancel1 = () => {
                 showModel.value = false;
@@ -565,6 +580,21 @@
             const checkedKeys = ref([]);
             const checkStrictly = ref(false);
 
+            const handleChangeMany = async ()=>{
+                console.log('idsbe',ids)
+                ids.forEach(item=>{
+                    console.log('item.status',item.status)
+                    if (item.status) {
+                        item.status = 0
+                        console.log('item.status1111',item.status)
+                    } else {
+                        item.status = 1
+                    }
+                })
+                const body = ids
+                await updateStatus(body)
+                fetchData()
+            }
             const handleReset = async (row)=>{
                 await resetPassword({
                     id:row.id,
@@ -720,7 +750,8 @@
                 handleChangeStatus,
                 value,
                 open,
-                handleGetId
+                handleGetId,
+                handleChangeMany
             };
         },
     });

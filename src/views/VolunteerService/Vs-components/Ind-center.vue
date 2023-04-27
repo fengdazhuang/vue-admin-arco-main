@@ -45,9 +45,8 @@
       <div class="main">
         <div class="main-up">
           <span style="font-size: 24px">招募进展</span>
-          <span style="font-size: 12px; color: rgb(184, 184, 182)"
-            >选择志愿者类型后呈现</span
-          >
+          <span style="font-size: 12px; color: rgb(184, 184, 182)" v-show="volunteerInfo.volunteerType!=0 && volunteerInfo.volunteerType!=1">选择志愿者类型后呈现</span>
+            <span style="font-size: 12px; color: rgb(184, 184, 182)">{{volunteerInfo.volunteerType ===0 ? '赛会志愿者':'城市志愿者'}}</span>
         </div>
         <div style="height: 4rem" class="main-fo">
           <el-steps :active="3" direction="vertical">

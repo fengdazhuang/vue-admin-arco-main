@@ -24,7 +24,7 @@
             <div class="re-con">
                 <div class="content">
                     <h1 style="font-size: 32px" class="txt">简介预览</h1>
-                    <el-button type="primary" class="position"  @click="handleEdit">启动编辑</el-button>
+                    <el-button type="primary" class="position"  @click="handleEdit" v-show="isBtn">启动编辑</el-button>
                     <el-row :gutter="15">
                         <el-form
                                 ref="elForm"
@@ -178,7 +178,7 @@
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item label="" prop="field107">
-                                        <el-button @click="handleChangeInfo" type="primary" size="medium" class="re-login">
+                                        <el-button @click="handleChangeInfo" v-show="isBtn" type="primary" size="medium" class="re-login">
                                             提交
                                         </el-button>
                                     </el-form-item>
@@ -210,6 +210,7 @@
         setup() {
             const {ctx} = getCurrentInstance()
             const elForm = ref(null)
+            const isBtn = ref(true)
             let volunteerInfo = reactive(JSON.parse(window.sessionStorage.getItem('volunteerInfo')))
             let userInfo = reactive({
                 email: volunteerInfo.email,
@@ -304,6 +305,9 @@
                     }
                 }
                const {data} = await queryVolunteer(useParams)
+                if (data.process ===2 || data.process ===3) {
+                    isBtn.value = false
+                }
                 // userInfo = data
             }
             handleQueryVolunteer()
@@ -358,7 +362,8 @@
                 imgSrc,
                 isEdit,
                 handleEdit,
-                treeDataService
+                treeDataService,
+                isBtn
             };
         },
     };

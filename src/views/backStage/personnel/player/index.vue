@@ -32,7 +32,7 @@
                 :wrapper-col-props="{ span: 18 }"
                 label-align="left"
             >           <a-row :gutter="16">
-              <a-col :span="10">
+              <a-col :span="9">
                 <a-form-item field="name"  label="姓名">
                   <a-input
                       v-model="formModel.name"
@@ -40,22 +40,22 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="10">
+              <a-col :span="9">
                 <a-form-item field="country"  label="国家">
                   <a-tree-select :data="treeDataCountry" v-model="formModel.country" placeholder="请选择国家"/>
                 </a-form-item>
               </a-col>
-                <a-col :span="10">
+                <a-col :span="9">
                     <a-form-item field="arrivalStatus"  label="抵达情况">
                         <a-tree-select :data="treeArrivalStatus" v-model="formModel.arrivalStatus" placeholder="请选择抵达情况"/>
                     </a-form-item>
                 </a-col>
-                <a-col :span="10">
+                <a-col :span="9">
                     <a-form-item field="healthyStatus"  label="健康状况">
                         <a-tree-select :data="treeHealthyStatus" v-model="formModel.healthyStatus" placeholder="请选择健康情况"/>
                     </a-form-item>
                 </a-col>
-              <a-col :flex="'86px'" style="text-align: right">
+                <a-col :flex="'86px'" style="text-align: right">
                 <a-space  :size="18">
                   <a-button type="primary" :style="{margin:'0 0 0 20px'}" @click="search">
                     <template #icon>
@@ -94,6 +94,59 @@
                     >
                       <a-input v-model="form.name" placeholder="请输入你的姓名" />
                     </a-form-item>
+                      <a-form-item>
+                          <a-image
+                                  width="200"
+                                  :src="base64"
+                          />
+                      </a-form-item>
+                      <a-form-item>
+                          <a-space direction="vertical" :style="{ width: '100%' }">
+                              <a-upload
+                                      action="/"
+                                      :fileList="file ? [file] : []"
+                                      :show-file-list="false"
+                                      @change="onChange"
+                                      @progress="onProgress"
+                              >
+                                  <template #upload-button>
+                                      <div
+                                              :class="`arco-upload-list-item${
+            file && file.status === 'error' ? ' arco-upload-list-item-error' : ''
+          }`"
+                                      >
+                                          <div
+                                                  class="arco-upload-list-picture custom-upload-avatar"
+                                                  v-if="file && file.url"
+                                          >
+                                              <img :src="file.url" />
+                                              <div class="arco-upload-list-picture-mask">
+                                                  <IconEdit />
+                                              </div>
+                                              <a-progress
+                                                      v-if="file.status === 'uploading' && file.percent < 100"
+                                                      :percent="file.percent"
+                                                      type="circle"
+                                                      size="mini"
+                                                      :style="{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translateX(-50%) translateY(-50%)',
+              }"
+                                              />
+                                          </div>
+                                          <div class="arco-upload-picture-card" v-else>
+                                              <div class="arco-upload-picture-card-text">
+                                                  <IconPlus />
+                                                  <div style="margin-top: 10px; font-weight: 600">Upload</div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </template>
+                              </a-upload>
+                          </a-space>
+                      </a-form-item>
                     <a-form-item field="photo" label="上传照片">
                       <a-space direction="vertical" :style="{ width: '100%' }">
                         <div class="choose-cover">
@@ -302,6 +355,7 @@ import useLoading from '@/hooks/loading';
 import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
 import { addPlayer,deletePlayer,listPlayers,queryPlayer,updatePlayer} from '@/api/user';
 import { Pagination, Options } from '@/types/global';
+import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
 const generateFormModel = () => {
   return {
     name: '',
@@ -376,6 +430,28 @@ export default defineComponent({
     const date = new Date()
     const competitions = ref('')
       let node
+      const file = ref();
+        const base64 = ref()
+      const onChange = (_, currentFile) => {
+          // const blob = JSON.parse(JSON.stringify(currentFile));
+          // console.log('blob',blob)
+          const fileReader = new FileReader();
+          fileReader.onload = (e) => {
+              console.log('e.target.result',e.target.result)
+              form.photo = e.target.result
+              base64.value = e.target.result
+              console.log('base64',base64.value)
+          };
+          fileReader.readAsDataURL(currentFile.file);
+          file.value = {
+              ...currentFile,
+              // url: URL.createObjectURL(currentFile.file),
+          };
+      };
+      const onProgress = (currentFile) => {
+          file.value = currentFile;
+      };
+
       // const columns = [
       //     {
       //         width:100,
@@ -419,14 +495,14 @@ export default defineComponent({
     const form = reactive({
       competitionName:'',
       name: '',
-      photo:'@/assets/images/img1.jpg',
+      photo:'',
       country: '',
       sex:1,
-      email:''
+      email:'',
     });
     let ids = reactive([])
     const fetchData = async (
-        params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:1,healthyStatus:0 }
+        params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:1,healthyStatus:0}
     ) => {
       setLoading(true);
       try {
@@ -796,17 +872,20 @@ export default defineComponent({
       }
 
     const search = async () => {
-        const items = node.map(item=>{
-            return item.title
-        })
-        competitions.value = items.join(',')
+        if(node) {
+            const items = node.map(item=>{
+                return item.title
+            })
+            competitions.value = items.join(',')
+        }
+
         let useParams = {
             params:{
                 ...formModel.value,
                 competitionName:competitions.value
             }
         }
-        const {data} = await listPlayers(useParams)
+        const { data } = await listPlayers(useParams)
         data.records.forEach(item =>{
             // item.sex
             if(item.sex===1) {
@@ -867,7 +946,11 @@ export default defineComponent({
         handleManyDelete,
         ids,
         treeHealthyStatus,
-        treeArrivalStatus
+        treeArrivalStatus,
+        file,
+        onChange,
+        onProgress,
+        base64
     };
   },
 });

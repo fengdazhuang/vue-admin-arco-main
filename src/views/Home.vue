@@ -33,11 +33,13 @@
             </div>
             <div class="main">
                 <ul class="gfhzhb_lists">
-                    <li v-for="item in FriendLinksList" :key="item.id">
+                    <template v-for="item in FriendLinksList" :key="item.id">
+                        <li v-if="item.status===1? 0:1">
                         <a :href="item.url" target="_blank">
                             <img :src="item.logo" alt="" />
                         </a>
                     </li>
+                    </template>
                     <li>
                         <a href="http://www.10086.cn" target="_blank">
                             <img src="../assets/image/zgydlogo.png" alt="" />
