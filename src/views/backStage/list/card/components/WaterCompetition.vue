@@ -25,6 +25,9 @@
         <CardWrap
           :loading="loading"
           :name="item.name"
+          :type="item.type"
+          :info="item.info"
+          :picture="item.picture"
           :img="item.picture"
           :createTime="item.createTime"
           :principal="item.principal"
@@ -34,6 +37,7 @@
           open-txt="质检"
           close-txt="删除"
           :show-tag="false"
+          :id="item.id"
         >
           <a-descriptions
             style="margin-top: 16px"

@@ -20,6 +20,7 @@
                                     />
                                 </a-form-item>
                             </a-col>
+
                             <a-col :flex="'86px'" style="text-align: right">
                                 <a-space  :size="18">
                                     <a-button type="primary" :style="{margin:'0 0 0 20px'}" @click="search">
@@ -39,16 +40,16 @@
                         </a-row>
                         </a-form>
                     </a-col>
-
                 </a-row>
                 <a-divider style="margin-top: 0" />
                 <a-row style="margin-bottom: 16px">
                     <a-col :span="16">
                         <a-space>
                             <a-button @click="handleCreate()" type="primary">新增</a-button>
+                            <a-button type="primary" status="danger" @click="handleChangeMany">批量改变</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
-                                    添加运动员
+                                    添加管理员
                                 </template>
                                 <div>
                                     <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
@@ -93,6 +94,7 @@
                         :bordered="false"
                         @page-change="onPageChange"
                         :row-selection="rowSelection"
+                        @selection-change="handleGetId"
                 >
                     <template #columns>
                         <a-table-column
@@ -124,7 +126,6 @@
                             <template #cell="{ record }">
                                 <a-space style="margin-bottom: 20px;">
                                     <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
-
                                 </a-space>
                             </template>
                         </a-table-column>
@@ -135,7 +136,7 @@
                             <template #cell="{ record }">
                                 <span :style="{color:(record.status===true? 'green':'red')}">{{record.statusText}}</span>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
                                 :width="220"
                                 title="创建时间"
@@ -281,6 +282,7 @@
             const treeRef = ref()
             const data = ref({})
             const PlayerList = ref([])
+            const ids = []
             const inputPic = ref(null)
             // const date = new Date()
             const competitions = ref('')
@@ -311,11 +313,11 @@
                     })
                     data.records.forEach(item=>{
                         if (item.status) {
-                            item.status = true
-                            item.statusText = '已启用'
-                        } else {
                             item.status = false
                             item.statusText = '已禁用'
+                        } else {
+                            item.status = true
+                            item.statusText = '已启用'
                         }
                     })
                     PlayerList.value = data.records
@@ -350,16 +352,6 @@
                 });
 
             };
-            const handleDelete = async (row)=>{
-                const useParams={
-                    params:{
-                        id:row.id
-                    }
-                }
-                await deleteJudge(useParams)
-                fetchData()
-
-            }
             const rowSelection = reactive({
                 type: 'checkbox',
                 showCheckedAll: true,
@@ -378,6 +370,23 @@
                         email:''
                     });
                 });
+            }
+            let filterRowKeys = []
+            const handleGetId = (rowKeys) =>{
+                rowKeys = rowKeys.filter(item=>{
+                    return !filterRowKeys.includes(item)
+                })
+                PlayerList.value.forEach(item=>{
+                    if (rowKeys.includes(item.id)) {
+                        filterRowKeys.push(item.id)
+                        ids.push({
+                            id:item.id,
+                            status:item.status
+                        })
+                    }
+
+                })
+                console.log('ids222',ids)
             }
             const handleCancel1 = () => {
                 showModel.value = false;
@@ -571,6 +580,21 @@
             const checkedKeys = ref([]);
             const checkStrictly = ref(false);
 
+            const handleChangeMany = async ()=>{
+                console.log('idsbe',ids)
+                ids.forEach(item=>{
+                    console.log('item.status',item.status)
+                    if (item.status) {
+                        item.status = 0
+                        console.log('item.status1111',item.status)
+                    } else {
+                        item.status = 1
+                    }
+                })
+                const body = ids
+                await updateStatus(body)
+                fetchData()
+            }
             const handleReset = async (row)=>{
                 await resetPassword({
                     id:row.id,
@@ -584,10 +608,10 @@
                 } else {
                     row.status = 1
                 }
-                const params = {
+                const params = [{
                     id:row.id,
                     status:row.status
-                }
+                }]
                 const res = await updateStatus(params)
                 fetchData()
             }
@@ -719,14 +743,15 @@
                 treeDataCountry,
                 // uploadCover,
                 inputPic,
-                handleDelete,
                 isAbled,
                 handleLeave,
                 message,
                 handleReset,
                 handleChangeStatus,
                 value,
-                open
+                open,
+                handleGetId,
+                handleChangeMany
             };
         },
     });

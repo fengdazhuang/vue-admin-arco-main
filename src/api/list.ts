@@ -78,3 +78,12 @@ export  function getComNamesByComCategoryId () {
 export function uploadImg (data) {
   return axios.post('/api4/file/uploadFiles',data)
 }
+export function deleteComPosition(params){
+  return axios.delete('/api4/competition/deleteComPosition',params)
+}
+export function deleteComInfo(params){
+  return axios.delete('/api4/competition/deleteComInfo',params)
+}
+export function modifyComInfo(body) {
+  axios.put('/api4/competition/modifyComInfo',body)
+}

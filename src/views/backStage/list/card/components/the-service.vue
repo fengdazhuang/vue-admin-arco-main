@@ -14,6 +14,9 @@
         <CardWrap
           :loading="loading"
           :name="item.name"
+          :type="item.type"
+          :info="item.info"
+          :picture="item.picture"
           :img="item.picture"
           :createTime="item.createTime"
           :principal="item.principal"
@@ -26,6 +29,7 @@
           tag-text="已开通"
           expires-tag-text="已过期"
           :icon="item.icon"
+          :id="item.id"
         >
           <template #skeleton>
             <a-skeleton :animation="true">

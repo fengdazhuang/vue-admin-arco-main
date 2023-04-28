@@ -69,6 +69,11 @@ const router = createRouter({
       component:()=>import("@/views/backStage/result/error/info.vue")
     },
     {
+      path:'/test',
+      name:'test',
+      component:()=>import('@/views/sxt.vue')
+    },
+    {
       path: "/",
       name: "VolunteerService",
       component: () => import("@/views/VolunteerService/VolunteerService.vue"),
@@ -116,6 +121,12 @@ const router = createRouter({
           component: () =>
               import("@/views/VolunteerService/Vs-components/selectType.vue"),
         },
+        {
+          path: "apply",
+          name: "apply",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/apply.vue"),
+        },
       ],
     },
     {
@@ -153,7 +164,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const userStore = useUserStore();
-  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume','Ch-psw','selectType']
+  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume','Ch-psw','selectType','apply']
   // to.name === 'index' || to.name === 'information' || to.name === 'competition'|| to.name==='volunteerService' || to.name==='ind-index' || to.name==='re-login' || to.name==='re-register'
   if (unGuardRoute.includes(to.name)) {
     next()

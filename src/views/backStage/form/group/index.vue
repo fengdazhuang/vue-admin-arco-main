@@ -7,7 +7,7 @@
                 <a-space size="large" >
 
                     <span :style="{color:'#000'}">排序</span>
-                    <a-tree-select @change="handleOrderType(form.orderType)" :data="treeDataCountry" v-model="form.orderType"  placeholder="请选择服务方向"/>
+                    <a-tree-select @change="handleOrderType(form.orderType)" :data="treeDataSort" v-model="form.orderType"  placeholder="请选择服务方向"/>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
                 <a-table
@@ -44,7 +44,7 @@
                                     </a-avatar>
                                 </a-space>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
                                 :width="80"
                                 title="性别"
@@ -60,7 +60,7 @@
                         <a-table-column
                                 :width="220"
                                 title="服务方向"
-                                data-index="risk"
+                                data-index="intention"
                         />
                         <a-table-column
                                 :width="220"
@@ -69,7 +69,7 @@
                         />
                         <a-table-column
                                 :width="220"
-                                title="申请时间"
+                                title="审批时间"
                                 data-index="updateTime"
                         />
 
@@ -129,9 +129,24 @@
                             <a-form-item>
                                 <span :style="{color:'#000'}">审核</span>
                                 <a-radio-group v-model="form.status">
-                                    <a-radio value="1">通过</a-radio>
-                                    <a-radio value="0">拒绝</a-radio>
+                                    <a-radio @click="form.isShow=1" value="1">通过</a-radio>
+                                    <a-radio @click="form.isShow=0" value="0">拒绝</a-radio>
                                 </a-radio-group>
+                            </a-form-item>
+                            <a-form-item v-show="form.isShow === 1 ? 1:0"   field="risk" label="服务方向" :rules="[{required:true,message:'请选择服务方向'}]">
+                                <a-tree-select
+                                        v-model="form.risk"
+                                        :allow-clear="true"
+                                        :allow-search="true"
+                                        :data="treeDataService"
+                                        placeholder="请选择服务方向"
+                                        style="width: 300px"
+                                ></a-tree-select>
+                            </a-form-item>
+                            <a-form-item field="emailContent" label="备注"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <a-input v-model="form.emailContent"/>
                             </a-form-item>
                         </a-form>
                     </div>
@@ -148,7 +163,7 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import {pagePreVolunteers,doReview} from '@/api/volunteer'
+    import {pagePreVolunteers,doReview,getVolDirections} from '@/api/volunteer'
     import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
@@ -240,9 +255,25 @@
                 email:'',
                 emailContent:'',
                 risk:'',
-                status:''
+                status:'',
+                isShow:0
             });
+            const treeDataSort = [
+                {
+                    key:1,
+                    title:'年龄'
+                },
+                {
+                    key:2,
+                    title:'姓名'
+                },
+                {
+                    key:3,
+                    title:'申请时间'
+                },
 
+            ]
+            const treeDataService = ref([])
             // const fetchData = async (
             //     params = {name:'',pageNumber: 1, pageSize: 20 }
             // ) => {
@@ -280,18 +311,20 @@
             ) => {
                 setLoading(true);
                 try {
-                    console.log(1111)
+
                     let useParams = {
                         params:{...params}
                     }
                     const { data } = await pagePreVolunteers(useParams);
-                    console.log(2222)
                     data.records.forEach(item =>{
                         if(item.sex===1) {
                             item.sex = '男'
                         } else {
                             item.sex = '女'
                         }
+                    })
+                    data.records.filter((item)=>{
+                        return item.status !=3
                     })
                     data.records.forEach(item=>{
                         if (item.status) {
@@ -301,7 +334,7 @@
                         }
                     })
                     // PlayerList.value = data.records
-                    PlayerList.value = [{name:'哈哈哈',photo:'111',sex:1,age:18,risk:'哪都行',applyTime:'2023-4-19'}]
+                    PlayerList.value = data.records
                     pagination.pageNumber = params.pageNumber;
                     pagination.total = data.total;
                 } catch (err) {
@@ -310,8 +343,23 @@
                     setLoading(false);
                 }
             };
-
+            const handleGetVolDirections = async (volunteerType)=>{
+                const useParams = {
+                    params:{
+                        volunteerType
+                    }
+                }
+                const {data} = await getVolDirections(useParams)
+                data.forEach(item=>{
+                    treeDataService.value.push({
+                        key:item.id,
+                        title:item.name
+                    })
+                })
+            }
+            handleGetVolDirections(1)
             const handleClick1 = (row) => {
+                form.id = row.id
                 if (row.sex==='男') {
                     row.sex = '1'
                 } else {
@@ -373,6 +421,7 @@
             }
             const handleCancel1 = () => {
                 showModel.value = false;
+                form.isShow = 0
                 ctx.$nextTick(() => {
                     Object.assign(form, {
                         name:'',
@@ -394,9 +443,9 @@
                 const body = {
                     emailContent:form.emailContent,
                     email:form.email,
-                    id:111,
-                    risk:form.risk,
-                    status:1
+                    id:form.id,
+                    risk:form.risk + '',
+                    status:+form.status
                 }
                 await doReview(body)
                 /* eslint-disable */
@@ -470,74 +519,7 @@
                     ],
                 },
             ];
-            const treeDataCountry = [
-                {
-                    key:'111',
-                    title:'111'
-                },
-                {
-                    key:'222',
-                    title:'222'
-                },{
-                    key:'333',
-                    title:'333'
-                }
 
-            ]
-            const treeData = [
-                {
-                    key: '竞技性比赛',
-                    title: '竞技性比赛',
-                    children: [
-                        {
-                            key: '100米',
-                            title: '100米',
-                        },
-                    ],
-                },
-                {
-                    key: '球类比赛',
-                    title: '球类比赛',
-                    children: [
-                        {
-                            key: '乒乓球',
-                            title: '乒乓球',
-                        },
-                        {
-                            key: '篮球',
-                            title: '篮球',
-                        },
-                    ],
-                },
-                {
-                    key: '对抗性比赛',
-                    title: '对抗性比赛',
-                    children: [
-                        {
-                            key: '拔河',
-                            title: '拔河',
-                        },
-                        {
-                            key: '橄榄球',
-                            title: '橄榄球',
-                        },
-                    ],
-                },
-                {
-                    key: '水上比赛',
-                    title: '水上比赛',
-                    children: [
-                        {
-                            key: '划船',
-                            title: '划船',
-                        },
-                        {
-                            key: '龙舟',
-                            title: '龙舟',
-                        },
-                    ],
-                },
-            ]
             const checkedKeys = ref([]);
             const checkStrictly = ref(false);
 
@@ -575,7 +557,7 @@
                 showModel,
                 form,
                 options,
-                treeData,
+                treeDataService,
                 handleSubmit,
                 handleCancel1,
                 handleClick1,
@@ -586,7 +568,7 @@
                 checkedKeys,
                 checkStrictly,
                 treeRef,
-                treeDataCountry,
+                treeDataSort,
                 // uploadCover,
                 inputPic,
                 isAbled,
@@ -599,7 +581,6 @@
                 uploadCover,
                 isImg,
                 imgSrc,
-
             };
         },
     });

@@ -1,12 +1,11 @@
 <template>
     <div>
-        <Breadcrumb :items="['menu.list', 'menu.list.address']" />
+        <Breadcrumb :items="['志愿服务', '志愿服务点']" />
         <div class="tab-container">
-        <div >点我</div>
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
                 <el-tab-pane v-for="item in tabOptions"  :name="item.label" :key="item.key">
                     <template #label>
-                        <span class="custom-tabs-label" @click="handleGetServicePoint(item.label)">
+                        <span class="custom-tabs-label" @click="handleGetServicePoint(item.key)">
                             <span>{{item.label}}</span>
                         </span>
                     </template>
@@ -21,8 +20,7 @@
 
 <script>
     import {ref} from 'vue'
-    import {getComAreas,addComArea,getComPositions} from '@/api/CompetitionArea'
-    import {pageVolPositions} from '@/api/volunteer'
+    import {getVolDirections} from '@/api/volunteer'
     import TabPane from './components/TabPane.vue'
 
     /* eslint-disable */
@@ -53,6 +51,7 @@
         },
         setup(){
             const list = ref([])
+
             const zone = ref('')
             const activeName = '赛会志愿'
             const tabOptions = [
@@ -66,51 +65,21 @@
                 },
 
             ]
-            const handleGetComAreas = async ()=>{
-                const {data} =  await getComAreas()
-                const useData = data.map(item=>{
-                    return {
-                        label:item.name,
-                        key:item.id
-                    }
-                })
-                tabMapOptions.value = useData
-            }
-            const handleGetServicePoint = async (label)=>{
+
+            const handleGetServicePoint = async (volunteerType)=>{
                 const useParams = {
                     params:{
-                        pageNumber:1,
-                        pageSize:10
+                        volunteerType
                     }
                 }
-                await pageVolPositions(useParams)
-            }
-            const handleCreateArea = async ()=>{
-                const body = {
-                    comArea:zone.value
-                }
-                const res =  await addComArea(JSON.stringify(body))
-                handleGetComAreas()
+                const res = await getVolDirections(useParams)
+                list.value = res.data
             }
             const tabMapOptions = ref([])
-
-            handleGetComAreas()
-            const handleGetComPositions = async (label)=>{
-                const useParams = {
-                    params:{
-                        area:label,
-                        keyword: ''
-                    }
-                }
-                const {data} = await getComPositions(useParams)
-                list.value = data
-            }
-            handleGetComPositions(activeName)
+            handleGetServicePoint(0)
             return {
-                handleCreateArea,
                 zone,
                 tabMapOptions,
-                handleGetComPositions,
                 list,
                 activeName,
                 handleGetServicePoint,

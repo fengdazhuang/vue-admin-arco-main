@@ -47,12 +47,15 @@
       vertical-align: middle;
       .card-item {
         position: absolute;
-        background: #3a7fe4;
-        color: #fff;
-        width: 30px;
-        height: 40px;
+        background: rgb(59,59,59);
+        //border:1px solid #000;
+        border-radius: 5px;
+        color: rgb(228,200,75);
+        width: 50px;
+        height: 64px;
         top: -20px;
-        line-height: 40px;
+        font-size: 30px;
+        line-height: 64px;
       }
       .disabled {
         background: #ccc !important;

@@ -6,9 +6,9 @@
             <a-card :style="{width:'100%'}" class="general-card card" title="志愿者管理">
                 <a-space size="large" >
                     <span :style="{color:'#000'}">服务方向</span>
-                        <a-tree-select @change="handleSearchDirection(form.risk)" :data="treeDataCountry" v-model="form.risk"  placeholder="请选择服务方向"/>
+                        <a-tree-select @change="handleSearchDirection(form.risk)" :data="treeDataService" v-model="form.risk"  placeholder="请选择服务方向"/>
                     <span :style="{color:'#000'}">志愿类型</span>
-                    <a-tree-select @change="handleSearchType(form.volunteerType)" :data="treeDataCountry" v-model="form.volunteerType"  placeholder="请选择志愿类型"/>
+                    <a-tree-select @change="handleSearchType(form.volunteerType)" :data="treeData" v-model="form.volunteerType"  placeholder="请选择志愿类型"/>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
                 <a-table
@@ -23,12 +23,12 @@
                 >
                     <template #columns>
                         <a-table-column
-                                :width="100"
+                                :width="140"
                                 title="姓名"
                                 data-index="name"
                         />
                         <a-table-column
-                                :width="100"
+                                :width="150"
                                 title="照片"
                                 data-index="photo"
                         >
@@ -45,26 +45,29 @@
                                     </a-avatar>
                                 </a-space>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
-                                :width="80"
+                                :width="100"
                                 title="性别"
                                 data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                :width="200"
+                                :width="100"
                                 title="年龄"
                                 data-index="age"
                         />
-
                         <a-table-column
-                                :width="220"
+                                title="审批状态"
+                                data-index="processText"
+                        />
+                        <a-table-column
+                                :width="160"
                                 title="服务方向"
                                 data-index="risk"
                         />
                         <a-table-column
-                                :width="220"
+                                :width="200"
                                 title="申请时间"
                                 data-index="applyTime"
                         />
@@ -79,9 +82,9 @@
                         </a-table-column>
                     </template>
                 </a-table>
-                <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs,'edit')"  unmountOnClose>
+                <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
                     <template #title>
-                        编辑管理员信息
+                        编辑志愿者信息
                     </template>
                     <div>
                         <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
@@ -123,7 +126,14 @@
                                          :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <a-input v-model="form.risk" placeholder="服务方向" />
+                                <a-tree-select
+                                        v-model="form.risk"
+                                        :allow-clear="true"
+                                        :allow-search="true"
+                                        :data="treeDataService"
+                                        placeholder="请选择服务方向"
+                                        style="width: 300px"
+                                ></a-tree-select>
                             </a-form-item>
                             <a-form-item field="applyTime" label="申请时间"
                                          :validate-trigger="['change','input']"
@@ -145,7 +155,7 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import {pageVolunteers} from '@/api/volunteer'
+    import {getVolDirections, pageVolunteers,resetRisk} from '@/api/volunteer'
     import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
@@ -174,6 +184,17 @@
             }
             const ctx1 = getCurrentInstance()
             const {ctx} = getCurrentInstance()
+            const treeDataService = ref([])
+            const treeData = [
+                {
+                    key: '0',
+                    title: '赛会志愿者',
+                },
+                {
+                    key: '1',
+                    title: '城市志愿者',
+                }
+            ]
             const contentTypeOptions = computed<Options[]>(() => [
                 {
                     label: t('searchTable.form.contentType.img'),
@@ -221,6 +242,7 @@
             const isRepeat = ref(false)
             let node
             const num = ref(1)
+            const id = ref()
             const handleChange = (value: number) => {
                 console.log(value)
             }
@@ -285,13 +307,29 @@
                             item.sex = '女'
                         }
                     })
+                    // data.records.filter((item)=>{
+                    //     return item.status =='index'
+                    // })
                     data.records.forEach(item=>{
                         if (item.status) {
                             item.status = 1
                         } else {
                             item.status = 0
                         }
+                        if(item.process === 0 || item.process==null) {
+                            item.processText = '未申请'
+
+                        } else if(item.process === 1) {
+                            item.processText = '已申请，未审核，未分配'
+                        } else if(item.process === 2) {
+                            item.processText = '已申请，已审核，未分配'
+                        } else if(item.process === 3) {
+                            item.processText = '已申请，已审核，已分配'
+                        } else if(item.process === 4){
+                            item.processText = '未通过'
+                        }
                     })
+
                     PlayerList.value = data.records
                     pagination.pageNumber = params.pageNumber;
                     pagination.total = data.total;
@@ -303,6 +341,7 @@
             };
 
             const handleClick1 = (row) => {
+                id.value = row.id
                 if (row.sex==='男') {
                     row.sex = '1'
                 } else {
@@ -324,6 +363,21 @@
                 fetchData()
 
             }
+            const handleGetVolDirections = async (volunteerType)=>{
+                const useParams = {
+                    params:{
+                        volunteerType
+                    }
+                }
+                const {data} = await getVolDirections(useParams)
+                data.forEach(item=>{
+                    treeDataService.value.push({
+                        key:item.id,
+                        title:item.name
+                    })
+                })
+            }
+            handleGetVolDirections(1)
             const rowSelection = reactive({
                 type: 'checkbox',
                 showCheckedAll: true,
@@ -384,30 +438,34 @@
                     }
                 })
             }
-            const handleConfirm1 = async ($ref,type)=> {
+            const handleConfirm1 = async ($ref)=> {
                 /* eslint-disable */
-                const res = await updateJudge(form)
+                const body = {
+                    id:id.value,
+                    risk:form.risk
+                }
+                const res = await resetRisk(body)
                 visible.value = false
                 fetchData()
-                $ref.formRef.validate((valid)=>{
-
-                    if(type==='edit') {
-                        if(!valid ) {
-                            showModel.value = false
-                            $ref.formRef.resetFields()
-                        }else {
-                            showModel.value = true
-                        }
-                    } else {
-                        if(!valid ) {
-                            visible.value = false
-                            $ref.formRef.resetFields()
-                        }else {
-                            visible.value = true
-                        }
-                    }
-
-                })
+                // $ref.formRef.validate((valid)=>{
+                //
+                //     if(type==='edit') {
+                //         if(!valid ) {
+                //             showModel.value = false
+                //             $ref.formRef.resetFields()
+                //         }else {
+                //             showModel.value = true
+                //         }
+                //     } else {
+                //         if(!valid ) {
+                //             visible.value = false
+                //             $ref.formRef.resetFields()
+                //         }else {
+                //             visible.value = true
+                //         }
+                //     }
+                //
+                // })
 
 
             }
@@ -458,74 +516,7 @@
                     ],
                 },
             ];
-            const treeDataCountry = [
-                {
-                    key:'111',
-                    title:'111'
-                },
-                {
-                    key:'222',
-                    title:'222'
-                },{
-                    key:'333',
-                    title:'333'
-                }
 
-            ]
-            const treeData = [
-                {
-                    key: '竞技性比赛',
-                    title: '竞技性比赛',
-                    children: [
-                        {
-                            key: '100米',
-                            title: '100米',
-                        },
-                    ],
-                },
-                {
-                    key: '球类比赛',
-                    title: '球类比赛',
-                    children: [
-                        {
-                            key: '乒乓球',
-                            title: '乒乓球',
-                        },
-                        {
-                            key: '篮球',
-                            title: '篮球',
-                        },
-                    ],
-                },
-                {
-                    key: '对抗性比赛',
-                    title: '对抗性比赛',
-                    children: [
-                        {
-                            key: '拔河',
-                            title: '拔河',
-                        },
-                        {
-                            key: '橄榄球',
-                            title: '橄榄球',
-                        },
-                    ],
-                },
-                {
-                    key: '水上比赛',
-                    title: '水上比赛',
-                    children: [
-                        {
-                            key: '划船',
-                            title: '划船',
-                        },
-                        {
-                            key: '龙舟',
-                            title: '龙舟',
-                        },
-                    ],
-                },
-            ]
             const checkedKeys = ref([]);
             const checkStrictly = ref(false);
 
@@ -663,7 +654,7 @@
                 checkedKeys,
                 checkStrictly,
                 treeRef,
-                treeDataCountry,
+                treeDataService,
                 // uploadCover,
                 inputPic,
                 handleDelete,

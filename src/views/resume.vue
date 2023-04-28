@@ -20,15 +20,15 @@
                 </el-menu-item>
             </el-menu>
         </div>
-        <div class="content" :style="{height:'11rem'}">
+        <div class="content" :style="{height:'12rem'}">
             <div class="re-con">
                 <div class="content">
                     <h1 style="font-size: 32px" class="txt">简介预览</h1>
+                    <el-button type="primary" class="position"  @click="handleEdit" v-show="isBtn">启动编辑</el-button>
                     <el-row :gutter="15">
                         <el-form
                                 ref="elForm"
                                 :model="userInfo"
-                                :rules="rules"
                                 size="medium"
                                 label-width="100px"
                                 label-position="left"
@@ -38,6 +38,7 @@
                                               :rules="[{required:true,message:'请输入姓名'}]"
                                 >
                                     <el-input
+                                            :disabled="isEdit"
                                             v-model="userInfo.name"
                                             clearable
                                             placeholder="请输入姓名"
@@ -62,6 +63,7 @@
                             <el-col :span="24">
                                 <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入电子邮箱'}]">
                                     <el-input
+                                            :disabled="isEdit"
                                             v-model="userInfo.email"
                                             placeholder="请输入电子邮箱"
                                             clearable
@@ -71,25 +73,26 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="性别" prop="sex" :rules="[{required:true,message:'请选择性别'}]">
+                                <el-form-item :disabled="isEdit" label="性别" prop="sex" :rules="[{required:true,message:'请选择性别'}]">
                                     <el-radio-group v-model="userInfo.sex" class="ml-4">
-                                        <el-radio label="1" size="large">男</el-radio>
-                                        <el-radio label="2" size="large">女</el-radio>
+                                        <el-radio :label="1" size="large">男</el-radio>
+                                        <el-radio :label="0" size="large">女</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
                                 <a-form-item prop="age" label="年龄"
                                              :rules="[{required:true,message:'请输入年龄'}]"
-                                             :placeholder="请输入年龄"
+                                             placeholder="请输入年龄"
                                              :validate-trigger="['change','input']"
                                 >
-                                    <el-input-number v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="10" @change="handleChange" />
+                                    <el-input-number :disabled="isEdit" v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="10" @change="handleChange" />
                                 </a-form-item>
                             </el-col>
                             <el-col :span="24">
                                 <el-form-item label="职业" prop="profession" :rules="[{required:true,message:'请输入职业'}]">
                                     <el-input
+                                            :disabled="isEdit"
                                             v-model="userInfo.profession"
                                             placeholder="请输入职业"
                                             clearable
@@ -100,8 +103,9 @@
                             </el-col>
                             <el-col :span="24">
                                 <el-form-item label="证件类型" prop="certificateType" :rules="[{required:true,message:'请选择证件类型'}]">
-                                    <el-select v-model="userInfo.certificateType" class="m-2" placeholder="请选择证件类型" size="large">
+                                    <el-select :disabled="isEdit" v-model="userInfo.certificateType" class="m-2" placeholder="请选择证件类型" size="large">
                                         <el-option
+
                                                 v-for="item in certificateTypes"
                                                 :key="item.value"
                                                 :label="item.label"
@@ -113,6 +117,7 @@
                             <el-col :span="24">
                                 <el-form-item label="身份证号" prop="certificateNumber" :rules="[{required:true,message:'请输入身份证号'}]">
                                     <el-input
+                                            :disabled="isEdit"
                                             v-model="userInfo.certificateNumber"
                                             placeholder="请输入身份证号"
                                             clearable
@@ -122,8 +127,22 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
+                                <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入服务意向'}]">
+                                    <a-tree-select
+                                            :disabled="isEdit"
+                                            v-model="userInfo.intention"
+                                            :allow-clear="true"
+                                            :allow-search="true"
+                                            :data="treeDataService"
+                                            placeholder="请选择服务方向"
+                                            style="width: 300px"
+                                    ></a-tree-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="24">
                                 <el-form-item label="地址" prop="address" :rules="[{required:true,message:'请输入家庭地址'}]">
                                     <el-input
+                                            :disabled="isEdit"
                                             v-model="userInfo.address"
                                             placeholder="请输入家庭地址"
                                             clearable
@@ -132,9 +151,21 @@
                                     </el-input>
                                 </el-form-item>
                             </el-col>
+                            <el-col :span="24">
+                                <el-form-item label="简介" prop="comment" :rules="[{required:true,message:'请输入简介'}]">
+                                    <el-input
+                                            :disabled="isEdit"
+                                            v-model="userInfo.comment"
+                                            placeholder="请输入简介"
+                                            clearable
+                                            :style="{ width: '5rem' }"
+                                    >
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
                             <div class="btn">
                                 <el-col :span="12">
-                                    <el-form-item label="" prop="field106">
+                                    <el-form-item>
                                         <el-button
                                                 type="primary"
                                                 size="medium"
@@ -147,7 +178,7 @@
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item label="" prop="field107">
-                                        <el-button @click="handleChangeInfo" type="primary" size="medium" class="re-login">
+                                        <el-button @click="handleChangeInfo" v-show="isBtn" type="primary" size="medium" class="re-login">
                                             提交
                                         </el-button>
                                     </el-form-item>
@@ -166,10 +197,12 @@
 </template>
 
 <script>
+    /* eslint-disable */
     import {reactive, ref,getCurrentInstance} from "vue";
-    import {modifyInfo} from'@/api/volunteer'
+    import {modifyInfo,queryVolunteer} from'@/api/volunteer'
     import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
     import { Message } from '@arco-design/web-vue';
+    import {getVolDirections} from "@/api/volunteer";
 
     export default {
         name: "VolunteerService",
@@ -177,21 +210,27 @@
         setup() {
             const {ctx} = getCurrentInstance()
             const elForm = ref(null)
-            const userInfo = reactive({
-                email: 'admin@qq.com',
-                password: 'admin',
+            const isBtn = ref(true)
+            let volunteerInfo = reactive(JSON.parse(window.sessionStorage.getItem('volunteerInfo')))
+            let userInfo = reactive({
+                email: volunteerInfo.email,
+                password: volunteerInfo.password,
                 validateCode:'',
                 key:'',
-                name:'',
-                photo:'',
-                sex:'',
-                age:'',
-                profession:'',
-                certificateType:'',
-                certificateNumber:'',
-                address:''
+                name:volunteerInfo.name,
+                photo:volunteerInfo.photo,
+                sex:volunteerInfo.sex,
+                age:volunteerInfo.age,
+                profession:volunteerInfo.profession,
+                certificateType:volunteerInfo.certificateType,
+                certificateNumber:volunteerInfo.certificateNumber,
+                address:volunteerInfo.address,
+                comment:volunteerInfo.comment,
+                id:volunteerInfo.id,
+                intention:volunteerInfo.intention
             });
             const value = ref('')
+            const isEdit = ref(true)
             const certificateTypes = [
                 {
                     value: '中华人民共和国居民身份证',
@@ -235,32 +274,74 @@
             const isImg = ref(false)
             const inputPic = ref(null)
             const activeIndex = ref("0");
+            const treeDataService = ref([])
             const handleSelect = (key, keyPath) => {
                 console.log(key, keyPath);
             };
+            const handleGetVolDirections = async (volunteerType)=>{
+                const useParams = {
+                    params:{
+                        volunteerType
+                    }
+                }
+                const {data} = await getVolDirections(useParams)
+                data.forEach(item=>{
+                    treeDataService.value.push({
+                        key:item.name,
+                        title:item.name
+                    })
+                })
+            }
+            handleGetVolDirections(1)
             const uploadCover = (e)=> {
                 imgSrc.value='@/assets/images/img1.jpg'
                 userInfo.photo = '@/assets/images/img1.jpg'
                 isImg.value = true
             }
+            const handleQueryVolunteer = async ()=>{
+                const useParams = {
+                    params:{
+                        id:volunteerInfo.id
+                    }
+                }
+               const {data} = await queryVolunteer(useParams)
+                if (data.process ===2 || data.process ===3) {
+                    isBtn.value = false
+                }
+                // userInfo = data
+            }
+            handleQueryVolunteer()
+            const handleEdit = () =>{
+                isEdit.value = !isEdit.value
+                console.log('isEdit.value',isEdit.value)
+            }
             const handleChangeInfo =  ()=>{
                 ctx.$refs.elForm.validate(async (validate)=>{
                     if (validate) {
                         const body = {
-                            address:'111',
-                            age:18,
-                            certificateNumber:'111',
-                            certificateType:'111',
-                            comment:'111',
-                            id:111,
-                            name:'111',
-                            photo:'111',
-                            profession:'111',
-                            sex:'1'
+                            address:userInfo.address,
+                            age:+userInfo.age,
+                            certificateNumber:userInfo.certificateNumber,
+                            certificateType:userInfo.certificateType,
+                            comment:userInfo.comment,
+                            id:userInfo.id,
+                            name:userInfo.name,
+                            photo:userInfo.photo,
+                            profession:userInfo.profession,
+                            sex:+userInfo.sex,
+                            intention:userInfo.intention
                         }
                         await modifyInfo(body)
-                        ctx.$refs.elForm.resetFields()
+
                         Message.success('提交成功')
+                        isEdit.value = true
+                        const useParams = {
+                            params:{
+                                id:userInfo.id
+                            }
+                        }
+                        const {data} = await queryVolunteer(useParams)
+                        volunteerInfo = data
                     } else {
                         Message.error('提交失败')
                     }
@@ -278,7 +359,11 @@
                 handleChangeInfo,
                 elForm,
                 isImg,
-                imgSrc
+                imgSrc,
+                isEdit,
+                handleEdit,
+                treeDataService,
+                isBtn
             };
         },
     };
@@ -340,13 +425,19 @@
     // align-items: center;
     margin-top: 1rem;
     .content {
+      position: relative;
       width: 60%;
-      height: 11rem;
+      height: 12rem;
       display: flex;
       position: relative;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      .position {
+        position: absolute;
+        right: 5%;
+        top: 7%;
+      }
       .txt {
         position: absolute;
         left: 1.75rem;

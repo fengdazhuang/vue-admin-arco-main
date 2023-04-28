@@ -10,10 +10,10 @@
                     <div class="user">
                         <div class="user-icon">
                             <el-icon style="font-size: 20px"><User /></el-icon>
-                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号</p>
+                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号 {{volunteerInfo.id.slice(0,6)}}</p>
                         </div>
                         <p style="font-size: 12px">志愿者类型</p>
-                        <span @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.9rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
+                        <span @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.5rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
                     </div>
                 </div>
                 <div class="vol-list">
@@ -33,15 +33,20 @@
                 </div>
             </div>
             <div class="head-right">
-                <p></p>
+                <div class="function">快捷功能</div>
+                <div class="head-right-main">
+                    <div class="apply common-right" @click="handleApply">申请志愿者</div>
+                    <div class="sign common-right" @click="handleIsShow">打卡</div>
+                    <div class="team common-right">团队</div>
+                </div>
+
             </div>
         </div>
       <div class="main">
         <div class="main-up">
           <span style="font-size: 24px">招募进展</span>
-          <span style="font-size: 12px; color: rgb(184, 184, 182)"
-            >选择志愿者类型后呈现</span
-          >
+          <span style="font-size: 12px; color: rgb(184, 184, 182)" v-show="volunteerInfo.volunteerType!=0 && volunteerInfo.volunteerType!=1">选择志愿者类型后呈现</span>
+            <span style="font-size: 12px; color: rgb(184, 184, 182)">{{volunteerInfo.volunteerType ===0 ? '赛会志愿者':'城市志愿者'}}</span>
         </div>
         <div style="height: 4rem" class="main-fo">
           <el-steps :active="3" direction="vertical">
@@ -52,6 +57,12 @@
         </div>
       </div>
     </div>
+      <div class="mask" @click="handleIsShow" v-show="isShow">
+          <div @click="handleIsShowTrue" class="sign">
+              <Sign/>
+          </div>
+
+      </div>
   </div>
 </template>
 
@@ -59,9 +70,12 @@
     import {reactive, ref} from 'vue'
     import {logout} from '@/api/volunteer'
     import {useRouter} from 'vue-router'
+    import {applyVolunteer} from '@/api/volunteer'
+    import Sign from '@/components/sign/index.vue'
 
 export default {
   name: "ind-center",
+    components:{Sign},
     setup(){
         const form = reactive({
             competitionName:'',
@@ -72,12 +86,24 @@ export default {
             email:''
         });
         const router = useRouter()
+        const isShow = ref(false)
+        const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
       const showModel= ref(false)
         const handleCancel=()=>{
             showModel.value = false
         }
+        const handleIsShow = ()=>{
+            isShow.value = !isShow.value
+        }
+        const handleIsShowTrue = (e)=>{
+           e.stopPropagation()
+            isShow.value = true
+        }
         const handleConfirm = ()=>{
             showModel.value = false
+        }
+        const handleApply = ()=>{
+            router.push('/apply')
         }
       const previewResume = ()=>{
           window.open('#/resume')
@@ -90,12 +116,12 @@ export default {
             window.open('#/selectType')
         }
         const handleLogout = async ()=>{
-          const useParams = {
-              params:{
-                  id:111
-              }
-          }
-          await logout(useParams)
+          // const useParams = {
+          //     params:{
+          //         id:111
+          //     }
+          // }
+          // await logout(useParams)
             window.localStorage.removeItem('volunteertoken')
             router.push('/re-login')
         }
@@ -107,8 +133,12 @@ export default {
             handleCancel,
             handleConfirm,
             OpenPage,
-            handleSelectType
-
+            handleSelectType,
+            volunteerInfo,
+            handleApply,
+            isShow,
+            handleIsShow,
+            handleIsShowTrue
         }
     }
 };
@@ -205,6 +235,23 @@ body {
         width: 4rem;
         height: 1.5rem;
         background-color: rgb(255, 255, 255);
+        .function{
+          margin: 20px 0 40px 20px;
+          font-size: 24px;
+        }
+        .head-right-main{
+          display: flex;
+          justify-content: space-around;
+
+          .apply {}
+          .sign {}
+          .common-right{
+            font-size: 16px;
+            color:#179fff;
+            cursor: pointer;
+          }
+        }
+
       }
     }
     .main {
@@ -234,6 +281,24 @@ body {
         top: 1rem;
       }
 
+    }
+  }
+  .mask {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .5);
+    .sign {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      z-index: 2;
+      //  width: 100%;
+      //height: 100%;
+      transform: translate(-50%,-50%);
     }
   }
 }

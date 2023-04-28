@@ -91,7 +91,7 @@
           </div>
           <div class="btn">
             <el-col :span="12">
-              <el-form-item label="" prop="field106">
+              <el-form-item label="">
                 <el-button
                   type="primary"
                   size="medium"
@@ -103,7 +103,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="" prop="field107">
+              <el-form-item label="">
                 <el-button type="primary" @click="handleSubmit" size="medium" class="re-submit">
                   提交
                 </el-button>
@@ -126,6 +126,7 @@
     /* eslint-disable */
     import {sendCode,register} from '@/api/volunteer'
     import {reactive,getCurrentInstance} from "vue";
+    import {useRouter} from 'vue-router'
 export default {
   components: {},
   props: [],
@@ -174,9 +175,8 @@ export default {
           code: '',
           password: '',
           confirmPassword: '',
-          field106: undefined,
-          field107: undefined,
       })
+      const router = useRouter()
       const handleSubmit = ()=>{
           ctx.$refs.elForm.validate(async (validate)=>{
               if (validate) {
@@ -186,6 +186,9 @@ export default {
                       validateCode:formData.code
                   }
                   const res = await register(body)
+                  if(res.code===200) {
+                      router.push('/re-login')
+                  }
                   ctx.$refs.elForm.resetFields()
               }
           })
@@ -198,7 +201,7 @@ export default {
         const body = {
             email:formData.email
         }
-        await sendCode(JSON.stringify(body))
+        await sendCode(body)
     }
     return {
       OpenPage,

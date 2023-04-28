@@ -111,6 +111,8 @@ export default defineComponent({
 
     // axios.defaults.baseURL='http://localhost:8004';
     const ctx1 = getCurrentInstance()
+      const globalProperties = ctx1.appContext.config.globalProperties
+      console.log('globalProperties',globalProperties)
     const  visible = ref(false)
     let data = ref([])
     let dataCompetitive = ref([])
@@ -149,6 +151,7 @@ export default defineComponent({
 
     const imgSrc = ref('@/assets/images/img1.jpg')
     const isImg = ref(false)
+
     const handleCreate = ()=>{
       visible.value = true
       console.log('create cate')
@@ -231,6 +234,7 @@ export default defineComponent({
           form.picture = '@/assets/images/img1.jpg'
           isImg.value = true
       }
+      globalProperties.$EventBus.on('getComCategorys',getComCategorys)
     getComCategorys()
     return {
       // getComCategorys

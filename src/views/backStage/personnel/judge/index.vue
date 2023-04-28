@@ -32,7 +32,7 @@
                                 :wrapper-col-props="{ span: 18 }"
                                 label-align="left"
                         >           <a-row :gutter="16">
-                            <a-col :span="6">
+                            <a-col :span="9">
                                 <a-form-item field="name"  label="姓名">
                                     <a-input
                                             v-model="formModel.name"
@@ -40,9 +40,19 @@
                                     />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="6">
+                            <a-col :span="9">
                                 <a-form-item field="country"  label="国家">
                                     <a-tree-select :data="treeDataCountry" v-model="formModel.country" placeholder="请选择国家"/>
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="9">
+                                <a-form-item field="arrivalStatus"  label="抵达情况">
+                                    <a-tree-select :data="treeArrivalStatus" v-model="formModel.arrivalStatus" placeholder="请选择抵达情况"/>
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="9">
+                                <a-form-item field="healthyStatus"  label="健康状况">
+                                    <a-tree-select :data="treeHealthyStatus" v-model="formModel.healthyStatus" placeholder="请选择健康情况"/>
                                 </a-form-item>
                             </a-col>
                             <a-col :flex="'86px'" style="text-align: right">
@@ -71,6 +81,7 @@
                     <a-col :span="16">
                         <a-space>
                             <a-button @click="handleCreate()" type="primary">新增</a-button>
+                            <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
                                     添加运动员
@@ -138,6 +149,7 @@
                         :bordered="false"
                         @page-change="onPageChange"
                         :row-selection="rowSelection"
+                        @selection-change="handleGetId"
                 >
                     <template #columns>
                         <a-table-column
@@ -182,6 +194,16 @@
                                 :width="100"
                                 title="国籍"
                                 data-index="country"
+                        />
+                        <a-table-column
+                                :width="100"
+                                title="抵达情况"
+                                data-index="arrivalStatus"
+                        />
+                        <a-table-column
+                                :width="100"
+                                title="健康状况"
+                                data-index="healthyStatus"
                         />
                         <a-table-column
                                 title="电子邮箱"
@@ -278,14 +300,16 @@
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
     import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
-    import {addJudge, deleteJudge, listJudges, listPlayers, updateJudge} from '@/api/user';
+    import {addJudge, deleteJudge, deletePlayer, listJudges, listPlayers, updateJudge} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
         return {
             name: '',
             country:'',
             pageNumber:1,
-            pageSize:20
+            pageSize:20,
+            healthyStatus:'',
+            arrivalStatus:''
         };
     };
     export default defineComponent({
@@ -352,6 +376,20 @@
             // const date = new Date()
             const competitions = ref('')
             let node
+            let ids = reactive([])
+            const handleGetId = (rowKeys)=>{
+                ids = rowKeys
+            }
+            const handleManyDelete = async ()=>{
+                const str = ids.toString()
+                const useParams={
+                    params:{
+                        id:str
+                    }
+                }
+                await deleteJudge(useParams)
+                fetchData()
+            }
             const form = reactive({
                 competitionName:'',
                 name: '',
@@ -362,7 +400,7 @@
             });
 
             const fetchData = async (
-                params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20 }
+                params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:1,healthyStatus:0  }
             ) => {
                 setLoading(true);
                 try {
@@ -376,6 +414,18 @@
                             item.sex = '男'
                         } else {
                             item.sex = '女'
+                        }
+                        if (item.arrivalStatus === 0) {
+                            item.arrivalStatus = '抵达'
+                        } else {
+                            item.arrivalStatus = '未抵达'
+                        }
+                        if (item.healthyStatus=== 0) {
+                            item.healthyStatus = '健康'
+                        } else if(item.healthyStatus=== 1){
+                            item.healthyStatus = '良好'
+                        } else if (item.healthyStatus=== 2) {
+                            item.healthyStatus = '较差'
                         }
                         // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
                     })
@@ -578,6 +628,30 @@
                 }
 
             ]
+            const treeArrivalStatus = [
+                {
+                    key:'0',
+                    title:'抵达'
+                },
+                {
+                    key:'1',
+                    title:'未抵达'
+                },
+            ]
+            const treeHealthyStatus = [
+                {
+                    key:'0',
+                    title:'健康'
+                },
+                {
+                    key:'1',
+                    title:'良好'
+                },
+                {
+                    key:'2',
+                    title:'较差'
+                },
+            ]
             const treeData = [
                 {
                     key: '竞技性比赛',
@@ -750,7 +824,11 @@
                 imgSrc,
                 isImg,
                 inputPic,
-                handleDelete
+                handleDelete,
+                handleGetId,
+                handleManyDelete,
+                treeArrivalStatus,
+                treeHealthyStatus
             };
         },
     });

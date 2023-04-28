@@ -1,15 +1,15 @@
 <template>
     <div class="animate-clock">
         <!-- <p>{{days}}{{hours}}{{minites}}{{seconds}}</p> -->
-        <span>距杭州亚运会还剩</span>
+        <div class="title">距杭州亚运会还剩</div>
         <animate-card :val="days" :size="16" :self-disabled="disabled" />
-        <span>天</span>
+        <span class="common1">天</span>
         <animate-card :val="hours" :size="16" :self-disabled="disabled" />
-        <span>时</span>
+        <span class="common1">时</span>
         <animate-card :val="minites" :size="16" :self-disabled="disabled" />
-        <span>分</span>
+        <span class="common1">分</span>
         <animate-card :val="seconds" :size="16" :self-disabled="disabled" />
-        <span>秒</span>
+        <span class="common1">秒</span>
     </div>
 </template>
 
@@ -118,6 +118,20 @@
     text-align: center;
     font-size: 16px;
     font-weight: bold;
-    padding: 40px 0 ;
+    padding:  0 ;
+    line-height: 64px;
+    .title {
+      font-size: 28px;
+    }
+    .common1 {
+      position: relative;
+      top: 17px;
+      left: 10px;
+      display: inline-block;
+      width: 50px;
+      height: 64px;
+      color: #000;
+      font-size: 24px;
+    }
   }
 </style>

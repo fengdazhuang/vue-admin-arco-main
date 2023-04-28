@@ -15,12 +15,17 @@
         <CardWrap
           :loading="loading"
           :name="item.name"
+          :type="item.type"
+          :info="item.info"
+          :picture="item.picture"
           :img="item.picture"
           :createTime="item.createTime"
           :principal="item.principal"
           :default-value="item.enable"
           :action-type="item.actionType"
           tag-text="删除"
+          close-txt="删除"
+          :id="item.id"
         >
           <template #skeleton>
             <a-skeleton :animation="true">

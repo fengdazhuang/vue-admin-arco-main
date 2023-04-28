@@ -1,6 +1,5 @@
 <template>
   <div class="list-wrap">
-
     <a-typography-title class="block-title" :heading="6">
       竞技性比赛
     </a-typography-title>
@@ -24,7 +23,10 @@
       >
         <CardWrap
           :loading="loading"
+          :type="item.type"
+          :info="item.info"
           :name="item.name"
+          :picture="item.picture"
           :img="item.picture"
           :createTime="item.createTime"
           :principal="item.principal"
@@ -34,6 +36,7 @@
           open-txt="质检"
           close-txt="删除"
           :show-tag="false"
+          :id="item.id"
         >
           <a-descriptions
             style="margin-top: 16px"
