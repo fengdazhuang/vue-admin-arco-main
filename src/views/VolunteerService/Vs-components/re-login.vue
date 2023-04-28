@@ -80,7 +80,7 @@
     /* eslint-disable */
     import { useUserStore } from '@/store';
     import {useRouter} from 'vue-router'
-    import {reactive, ref,getCurrentInstance} from "_vue@3.2.47@vue";
+    import {reactive, ref,getCurrentInstance} from "vue";
     import { Message } from '@arco-design/web-vue';
 
 export default {
