@@ -257,12 +257,20 @@
                       :width="100"
                       title="抵达情况"
                       data-index="arrivalStatus"
-              />
+              >
+                  <template #cell="{ record }">
+                      <span :style="{color:(record.arrivalStatus===true? 'green':'red')}">{{record.arrivalStatusText}}</span>
+                  </template>
+              </a-table-column>
               <a-table-column
                       :width="100"
                       title="健康状况"
                       data-index="healthyStatus"
-              />
+              >
+                  <template #cell="{ record }">
+                      <span :style="{color:(record.healthyStatus===true? 'green':'red')}">{{record.healthyStatusText}}</span>
+                  </template>
+              </a-table-column>
               <a-table-column
                       title="电子邮箱"
                       data-index="email"
@@ -511,7 +519,7 @@ export default defineComponent({
           console.log('row',row)
       }
     const fetchData = async (
-        params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:1,healthyStatus:0}
+        params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:'',healthyStatus:''}
     ) => {
       setLoading(true);
       try {
@@ -527,20 +535,27 @@ export default defineComponent({
             item.sex = '女'
           }
           if (item.arrivalStatus === 0) {
-              item.arrivalStatus = '抵达'
+              item.arrivalStatus = true
+              item.arrivalStatusText = '已抵达'
           } else {
-              item.arrivalStatus = '未抵达'
+              item.arrivalStatus = false
+              item.arrivalStatusText = '未抵达'
           }
             if (item.healthyStatus=== 0) {
-                item.healthyStatus = '健康'
+                item.healthyStatus = true
+                item.healthyStatusText = '健康'
             } else if(item.healthyStatus=== 1){
-                item.healthyStatus = '良好'
+                item.healthyStatus = true
+                item.healthyStatusText = '良好'
             } else if (item.healthyStatus=== 2) {
-                item.healthyStatus = '较差'
+                item.healthyStatus = false
+                item.healthyStatusText = '较差'
             }
           // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
         })
+
         PlayerList.value = data.records
+          console.log('PlayerList.value',PlayerList.value)
         // renderData.value = data.list;
         pagination.pageNumber = params.pageNumber;
         pagination.total = data.total;
@@ -739,6 +754,10 @@ export default defineComponent({
       },
     ];
     const treeDataCountry = [
+        {
+            key:'',
+            title:'所有'
+        },
       {
         key:'中国',
         title:'中国'
@@ -754,6 +773,10 @@ export default defineComponent({
     ]
       const treeArrivalStatus = [
           {
+              key:'',
+              title:'所有'
+          },
+          {
               key:'0',
               title:'抵达'
           },
@@ -763,6 +786,10 @@ export default defineComponent({
           },
       ]
       const treeHealthyStatus = [
+          {
+              key:'',
+              title:'所有'
+          },
           {
               key:'0',
               title:'健康'

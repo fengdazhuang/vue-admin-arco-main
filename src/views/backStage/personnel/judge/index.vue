@@ -699,6 +699,10 @@
             ];
             const treeDataCountry = [
                 {
+                    key:'',
+                    title:'所有'
+                },
+                {
                     key:'中国',
                     title:'中国'
                 },
@@ -713,6 +717,10 @@
             ]
             const treeArrivalStatus = [
                 {
+                    key:'',
+                    title:'所有'
+                },
+                {
                     key:'0',
                     title:'抵达'
                 },
@@ -722,6 +730,10 @@
                 },
             ]
             const treeHealthyStatus = [
+                {
+                    key:'',
+                    title:'所有'
+                },
                 {
                     key:'0',
                     title:'健康'
@@ -736,6 +748,10 @@
                 },
             ]
             const treeData = [
+                {
+                    key:'',
+                    title:'所有'
+                },
                 {
                     key: '竞技性比赛',
                     title: '竞技性比赛',

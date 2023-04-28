@@ -20,6 +20,8 @@
 </template>
 <script>
     /* eslint-disable */
+    import {recognizeFace} from '@/api/user'
+    import { Message } from '@arco-design/web-vue';
 export default {
   data () {
     return {
@@ -88,6 +90,18 @@ export default {
       // 获取图片base64链接
       var image = this.thisCancas.toDataURL('image/png')
       _this.imgSrc = image
+        const body = {
+            base64:_this.imgSrc
+        }
+         const res =  recognizeFace(body)
+        res.then(res=>{
+            // console.log('res',res)
+            if (res.success) {
+                console.log(1111)
+                Message.success('人脸识别成功')
+            }
+        })
+
       this.$emit('refreshDataList', this.imgSrc)
         console.log('this.imgSrc',this.imgSrc)
     },
@@ -128,6 +142,7 @@ export default {
     width: 500px;
     z-index: 100;
     margin: 0 auto;
+    font-size: 20px;
   }
   video,canvas,.tx_img{
     -moz-transform:scaleX(-1);

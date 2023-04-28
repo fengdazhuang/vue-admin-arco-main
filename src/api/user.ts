@@ -26,6 +26,11 @@ export function getUserInfo() {
   return axios.post<UserState>('/api/user/info');
 }
 
+// 人脸识别
+export function recognizeFace(data){
+  return axios.post('/api1/player/faceSearch',data)
+}
+
 // 运动员
 export function addPlayer(data){
   return axios.post('/api1/player/addPlayer',data)
@@ -110,4 +115,7 @@ export function update(data) {
 }
 export function fetchList (data) {
   return axios.get('https://www.fastmock.site/mock/e85283acd24926300e4c1ced32faffa5/weixin/api/order',data)
+}
+export function ReadNews(params) {
+  return axios.get('/api2/news/ReadNews',params)
 }

@@ -173,7 +173,7 @@
                                 <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择管理项目"/>
                             </a-form-item>
                             <a-form-item field="email" label="电子邮箱"
-                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
+                                         :rules="[{required:true,message:'请输入电子邮箱'},{minLength:5,message:'不能少于5位数字'}]"
                                          :validate-trigger="['change','input']"
                             >
                                 <a-input v-model="form.email" placeholder="请输入电子邮箱" />
@@ -522,6 +522,10 @@
             ];
             const treeDataCountry = [
                 {
+                    key:'',
+                    title:'所有'
+                },
+                {
                     key:'中国',
                     title:'中国'
                 },
@@ -535,6 +539,10 @@
 
             ]
             const treeData = [
+                {
+                    key:'',
+                    title:'所有'
+                },
                 {
                     key: '竞技性比赛',
                     title: '竞技性比赛',

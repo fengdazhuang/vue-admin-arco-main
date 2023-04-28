@@ -71,8 +71,7 @@
                 <div class="subscribe-content-card-content">
                     <div class="title">{{item.title}}</div>
                     <div class="comment">
-                        <span>阅读 0 </span>
-                        <span>评论 0</span>
+                        <span>阅读量 {{item.readCounts}} </span>
                     </div>
                     <div class="publish" v-show="item.articleStatus === 1 ? true:false" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'rgb(184,254,184)',color:'rgb(79,152,83)'}">已发布</div>
                     <div class="publish" v-show="item.articleStatus === 3 ? true:false" :style="{width: '60px',textAlign:'center',lineHeight:'25px',height:'25px',background:'#ff7d00',color:''}">未发布</div>

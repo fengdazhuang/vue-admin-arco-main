@@ -9,7 +9,7 @@
       <a-link>{{ $t('workplace.quickOperation.setup') }}</a-link>
     </template>
     <a-row :gutter="8">
-      <a-col v-for="link in links" :key="link" :span="8" class="wrapper">
+      <a-col @click="handleToDes(link.path)" v-for="link in links" :key="link" :span="8" class="wrapper">
         <div class="icon">
           <component :is="link.icon" />
         </div>
@@ -24,19 +24,25 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import {useRouter} from 'vue-router'
 
 const links = [
-  { text: 'workplace.contentManagement', icon: 'icon-file' },
-  { text: 'workplace.contentStatistical', icon: 'icon-storage' },
-  { text: 'workplace.advanced', icon: 'icon-settings' },
-  { text: 'workplace.onlinePromotion', icon: 'icon-mobile' },
-  { text: 'workplace.contentPutIn', icon: 'icon-fire' },
+  { text: 'workplace.contentManagement', icon: 'icon-file' ,path:'/backStage/result/success'},
+  { text: 'workplace.contentStatistical', icon: 'icon-storage',path:'/backStage/visualization/data-analysis' },
+  { text: 'workplace.advanced', icon: 'icon-settings' ,path:'/backStage/form/group'},
+  { text: 'workplace.onlinePromotion', icon: 'icon-mobile',path:'/backStage/cooperation/cooperationchild' },
+  { text: 'workplace.contentPutIn', icon: 'icon-fire',path:'/backStage/result/error' },
 ];
 
 export default defineComponent({
   setup() {
+      const router = useRouter()
+      const handleToDes = (path)=>{
+          router.push(path)
+      }
     return {
       links,
+        handleToDes
     };
   },
 });
