@@ -27,7 +27,7 @@
                                         <template #icon>
                                             <icon-search />
                                         </template>
-                                        删除
+                                        搜索
                                     </a-button>
                                     <a-button @click="reset">
                                         <template #icon>
@@ -214,6 +214,7 @@
     import useLoading from '@/hooks/loading';
     import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
+    import { Message } from '@arco-design/web-vue';
     const generateFormModel = () => {
         return {
             name: '',
@@ -282,7 +283,7 @@
             const treeRef = ref()
             const data = ref({})
             const PlayerList = ref([])
-            const ids = []
+            let ids = []
             const inputPic = ref(null)
             // const date = new Date()
             const competitions = ref('')
@@ -371,14 +372,18 @@
                     });
                 });
             }
-            let filterRowKeys = []
+            // let filterRowKeys = []
             const handleGetId = (rowKeys) =>{
-                rowKeys = rowKeys.filter(item=>{
-                    return !filterRowKeys.includes(item)
-                })
+                ids = []
+                console.log('rowKeys',rowKeys)
+
+                // rowKeys = rowKeys.filter(item=>{
+                //     return !filterRowKeys.includes(item)
+                // })
+
                 PlayerList.value.forEach(item=>{
                     if (rowKeys.includes(item.id)) {
-                        filterRowKeys.push(item.id)
+                        // filterRowKeys.push(item.id)
                         ids.push({
                             id:item.id,
                             status:item.status
@@ -413,8 +418,14 @@
             // }]
             const handleConfirm = async ($ref,type)=> {
                 /* eslint-disable */
+                if (isRepeat.value) {
+                    console.log('isRepeat.value',isRepeat.value)
+                    Message.error('管理员已存在')
+                    visible.value = true
+                    return ''
+                }
                 const res = await addAdmin(form)
-                console.log('resAdmin',res)
+                console.log(11111)
                 visible.value = false
                 fetchData()
                 $ref.formRef.validate((valid)=>{
@@ -585,15 +596,23 @@
                 ids.forEach(item=>{
                     console.log('item.status',item.status)
                     if (item.status) {
-                        item.status = 0
+                        item.status = 1
                         console.log('item.status1111',item.status)
                     } else {
-                        item.status = 1
+                        item.status = 0
                     }
+                    console.log('item.status2222',item.status)
                 })
                 const body = ids
                 await updateStatus(body)
                 fetchData()
+                ids.forEach(item=>{
+                    if (item.status === 1) {
+                        item.status = false
+                    } else {
+                        item.status = true
+                    }
+                })
             }
             const handleReset = async (row)=>{
                 await resetPassword({
@@ -613,7 +632,7 @@
                     status:row.status
                 }]
                 const res = await updateStatus(params)
-                fetchData()
+                search()
             }
             const handleLeave = async ()=>{
                 const  useParams = {
@@ -621,15 +640,12 @@
                         username:form.username
                     }
                 }
-                await queryAdmin(useParams)
-
-                // if(res.code!=200) {
-                //     message.value = res.message
-                //     isRepeat.value = true
-                // } else {
-                //     isRepeat.value = false
-                // }
-                // console.log('queryAdmin',res)
+                const res = await queryAdmin(useParams)
+                if (res.code===204) {
+                    isRepeat.value = true
+                } else if(res.code===200) {
+                    isRepeat.value = false
+                }
             }
             const  handlegetData = (treeRef)=>{
                 node = treeRef.getSelectedNodes()
@@ -686,6 +702,22 @@
                     }
                 }
                 const {data} = await listAdmins(useParams)
+                data.records.forEach(item =>{
+                    if(item.sex===1) {
+                        item.sex = '男'
+                    } else {
+                        item.sex = '女'
+                    }
+                })
+                data.records.forEach(item=>{
+                    if (item.status) {
+                        item.status = false
+                        item.statusText = '已禁用'
+                    } else {
+                        item.status = true
+                        item.statusText = '已启用'
+                    }
+                })
                 PlayerList.value = data.records
                 // renderData.value = data.list;
                 // pagination.pageNumber = params.pageNumber;
@@ -751,7 +783,8 @@
                 value,
                 open,
                 handleGetId,
-                handleChangeMany
+                handleChangeMany,
+                isRepeat
             };
         },
     });

@@ -113,6 +113,7 @@ export default defineComponent({
       const  res =  await userStore.getValidateCode();
       console.log(res)
       img.value = res.data.validateCode
+        console.log('img.value111',typeof img.value)
       userInfo.key=res.data.key
         console.log(userInfo)
     }

@@ -15,7 +15,7 @@
               <img :src="userInfo.avatar" />
             </a-avatar>
             <a-typography-text>
-              {{ userInfo.name }} {{ $t('monitor.studioPreview.studio') }}
+              {{ adminInfo.name }} {{ $t('monitor.studioPreview.studio') }}
             </a-typography-text>
           </a-space>
         </div>
@@ -34,8 +34,10 @@ import { useUserStore } from '@/store';
 export default defineComponent({
   setup() {
     const userStore = useUserStore();
+    const adminInfo = JSON.parse(window.sessionStorage.getItem('adminInfo'))
     return {
       userInfo: userStore,
+        adminInfo
     };
   },
 });

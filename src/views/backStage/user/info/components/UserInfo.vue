@@ -274,7 +274,8 @@
                     }
 
                 updateAdminInfo.value = data
-                adminInfo = updateAdminInfo.value
+                console.log('updateAdminInfo.value',updateAdminInfo.value)
+                    adminInfo = updateAdminInfo.value
             }
             handlGetInfo()
             const handleChangeUserInfo = async ()=>{
