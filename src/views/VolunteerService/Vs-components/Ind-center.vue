@@ -6,8 +6,6 @@
                 <div class="vol">
                     <p style="font-size: 20px; margin-top: 0.1rem; margin-left: 20px">
                         个人中心
-<!--                        {{nowVolunteerInfo}}-->
-                        {{isShowVolunteerType}}
                     </p>
                     <div class="user">
                         <div class="user-icon">
@@ -40,7 +38,8 @@
                 <div class="head-right-main">
                     <div class="apply common-right" @click="handleApply">申请志愿者</div>
                     <div class="sign common-right" @click="handleIsShow">打卡</div>
-                    <div class="team common-right">团队</div>
+
+                    <div class="team common-right" @click="handleVolTeamInfo(nowVolunteerInfo.teamId)">团队</div>
                 </div>
 
             </div>
@@ -71,9 +70,8 @@
 
 <script>
     import {reactive, ref} from 'vue'
-    import {logout,queryVolunteer} from '@/api/volunteer'
+    import {logout,queryVolunteer,volTeamInfo,applyVolunteer} from '@/api/volunteer'
     import {useRouter} from 'vue-router'
-    import {applyVolunteer} from '@/api/volunteer'
     import Sign from '@/components/sign/index.vue'
 
 export default {
@@ -136,6 +134,15 @@ export default {
             }
 
         }
+        const handleVolTeamInfo = async (teamId) => {
+            const useParams = {
+                params:{
+                    teamId:+teamId
+                }
+            }
+          const res = await volTeamInfo(useParams)
+            console.log('resss',res)
+        }
       const previewResume = ()=>{
           window.open('#/resume')
           // showModel.value = !showModel.value
@@ -170,7 +177,8 @@ export default {
             handleIsShow,
             handleIsShowTrue,
             isShowVolunteerType,
-            nowVolunteerInfo
+            nowVolunteerInfo,
+            handleVolTeamInfo
         }
     }
 };

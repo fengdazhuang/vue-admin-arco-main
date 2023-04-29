@@ -77,31 +77,15 @@
                         志愿者审核
                     </template>
                     <div>
+
                         <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
-                            <a-form-item field="name" label="姓名"
-                                         :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
-                                         :validate-trigger="['change','input']"
-                            >
-                                <a-input v-model="form.name"  placeholder="请输入你的姓名" />
-                                <span v-show="isRepeat">{{message}}</span>
-                            </a-form-item>
-                            <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
-                                <a-radio-group v-model="form.sex">
-                                    <a-radio value="1">男</a-radio>
-                                    <a-radio value="0">女</a-radio>
-                                </a-radio-group>
-                            </a-form-item>
-                            <a-form-item field="age" label="年龄"
-                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
-                                         :validate-trigger="['change','input']"
-                            >
-                                <el-input-number v-model="num" :min="1" :max="10" @change="handleChange" />
-                            </a-form-item>
-                            <a-form-item field="applyTime" label="申请时间"
-                                         :validate-trigger="['change','input']"
-                            >
-                                <a-input v-model="form.applyTime" disabled/>
-                            </a-form-item>
+                            <a-space direction="vertical" size="large" fill>
+                                <a-descriptions :data="data"  :column="2" >
+                                    <a-descriptions-item v-for="(item,index) in userInfo"  :label="item.label" :key="index">
+                                        <a-tag>{{ item.value }}</a-tag>
+                                    </a-descriptions-item>
+                                </a-descriptions>
+                            </a-space>
                             <a-form-item>
                                 <span :style="{color:'#000'}">审核</span>
                                 <a-radio-group v-model="form.status">
@@ -109,12 +93,25 @@
                                     <a-radio @click="form.isShow=0" value="0">拒绝</a-radio>
                                 </a-radio-group>
                             </a-form-item>
-                            <a-form-item v-show="form.isShow === 1 ? 1:0"   field="risk" label="服务意向" :rules="[{required:true,message:'请选择服务方向'}]">
+                            <a-form-item v-show="form.isShow === 1 ? 1:0"   field="risk" label="服务意向" >
                                 <a-tree-select
                                         v-model="form.risk"
                                         :allow-clear="true"
                                         :allow-search="true"
                                         :data="treeDataService"
+                                        placeholder="请选择服务意向"
+                                        style="width: 300px"
+                                        @change="handleSelect"
+                                ></a-tree-select>
+                            </a-form-item>
+                            <a-form-item v-show="form.isShow === 1 ? 1:0" field="teamId" label="服务点"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <a-tree-select
+                                        v-model="positionId"
+                                        :allow-clear="true"
+                                        :allow-search="true"
+                                        :data="treeDataPosition"
                                         placeholder="请选择服务意向"
                                         style="width: 300px"
                                 ></a-tree-select>
@@ -139,9 +136,10 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import {pagePreVolunteers,doReview,getVolDirections} from '@/api/volunteer'
+    import {pagePreVolunteers,doReview,getVolDirections,queryVolPositions} from '@/api/volunteer'
     import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
     import { Pagination, Options } from '@/types/global';
+    import {Message} from "@arco-design/web-vue";
     const generateFormModel = () => {
         return {
             name: '',
@@ -155,6 +153,7 @@
             const { loading, setLoading } = useLoading(true);
             const { t } = useI18n();
             const renderData = ref([]);
+            const userInfo = ref([])
             const formModel = ref(generateFormModel());
             const basePagination: Pagination = {
                 pageNumber: 1,
@@ -209,6 +208,7 @@
             const data = ref({})
             const PlayerList = ref([])
             const competitions = ref('')
+            const positionId = ref('')
             const message = ref('')
             const isRepeat = ref(false)
             const imgSrc = ref('@/assets/images/img1.jpg')
@@ -232,7 +232,8 @@
                 emailContent:'',
                 risk:'',
                 status:'',
-                isShow:0
+                isShow:0,
+                teamId:''
             });
             const treeDataSort = [
                 {
@@ -254,6 +255,7 @@
 
             ]
             const treeDataService = ref([])
+            const treeDataPosition = ref([])
             // const fetchData = async (
             //     params = {name:'',pageNumber: 1, pageSize: 20 }
             // ) => {
@@ -337,18 +339,106 @@
                     })
                 })
             }
-            handleGetVolDirections(1)
+            // handleGetVolDirections(1)
+            const handleSelect = async (value)=>{
+                const useParams = {
+                    params:{
+                        risk:value
+                    }
+                }
+               const {data} = await queryVolPositions(useParams)
+                data.forEach(item=>{
+                    treeDataPosition.value.push({
+                        key:item.id,
+                        title:item.name
+                    })
+                })
+            }
+
             const handleClick1 = (row) => {
                 form.id = row.id
+                form.email = row.email
+                console.log('form.email',form.email)
                 if (row.sex==='男') {
                     row.sex = '1'
                 } else {
                     row.sex = '0'
                 }
+
+                const keys = Object.keys(row)
+                handleGetVolDirections(row.volunteerType)
+                keys.forEach((item,index)=>{
+                    userInfo.value.push({
+                        label:item,
+                        value:row[item]
+                    })
+                })
+                userInfo.value = userInfo.value.filter(item=>{
+                    return item.label!='status'
+                })
+                userInfo.value = userInfo.value.filter(item=>{
+                    return item.label!='photo'
+                })
+                userInfo.value.forEach(item=>{
+                    if (item.label === 'sex') {
+                        item.label='性别'
+                        if (item.value === 1){
+                            item.value = '男'
+                        } else {
+                            item.value = '女'
+                        }
+                    }
+                    if (item.label === 'age') {
+                        item.label='年龄'
+                    }
+                    if (item.label === 'certificateType') {
+                        item.label='证件类型'
+                    }
+                    if (item.label === 'certificateNumber') {
+                        item.label='证件号'
+                    }
+                    if (item.label === 'updateTime') {
+                        item.label='更新时间'
+                    }
+                    if (item.label === 'intention') {
+                        item.label='服务意向'
+                    }
+                    if (item.label === 'comment') {
+                        item.label='个人简历'
+                    }
+
+                    if (item.label === 'volunteerType') {
+                        item.label='志愿者类型'
+                        if (item.value===0) {
+                            item.value = '赛事志愿者'
+                        } else {
+                            item.value = '赛会志愿者'
+                        }
+                    }
+                    if (item.label === 'applyTime') {
+                        item.label='申请时间'
+                    }
+                    if (item.label === 'name') {
+                        item.label='姓名'
+                    }
+                    if (item.label === 'email') {
+                        item.label='电子邮箱'
+                    }
+                    if (item.label === 'risk') {
+                        item.label='服务方向'
+                    }
+                    if (item.label === 'profession') {
+                        item.label='职业'
+                    }
+                    if (item.label === 'address') {
+                        item.label='地址'
+                    }
+                    if (item.label === 'processText') {
+                        item.label='分配状态'
+                    }
+                })
+
                 showModel.value = true;
-                ctx.$nextTick(() => {
-                    Object.assign(form, row);
-                });
 
             };
             const rowSelection = reactive({
@@ -402,6 +492,7 @@
             const handleCancel1 = () => {
                 showModel.value = false;
                 form.isShow = 0
+                userInfo.value = []
                 ctx.$nextTick(() => {
                     Object.assign(form, {
                         name:'',
@@ -420,16 +511,23 @@
 
             }
             const handleConfirm1 = async ($ref,type)=> {
+                if (+form.status!=0 && +form.status!=1) {
+                    Message.error('请完成审批后再提交')
+                    userInfo.value = []
+                    return
+                }
                 const body = {
                     emailContent:form.emailContent,
                     email:form.email,
                     id:form.id,
                     risk:form.risk + '',
-                    status:+form.status
+                    status:+form.status,
+                    teamId:positionId.value
                 }
                 await doReview(body)
                 /* eslint-disable */
                 visible.value = false
+                userInfo.value = []
                 fetchData()
                 $ref.formRef.validate((valid)=>{
 
@@ -561,6 +659,10 @@
                 uploadCover,
                 isImg,
                 imgSrc,
+                userInfo,
+                handleSelect,
+                treeDataPosition,
+                positionId
             };
         },
     });

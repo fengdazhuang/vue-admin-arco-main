@@ -98,7 +98,7 @@
                                              placeholder="请输入年龄"
                                              :validate-trigger="['change','input']"
                                 >
-                                    <el-input-number :disabled="isEdit" v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="10" @change="handleChange" />
+                                    <el-input-number :disabled="isEdit" v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="100" @change="handleChange" />
                                 </a-form-item>
                             </el-col>
                             <el-col :span="24">

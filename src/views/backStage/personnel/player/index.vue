@@ -94,12 +94,6 @@
                     >
                       <a-input v-model="form.name" placeholder="请输入你的姓名" />
                     </a-form-item>
-<!--                      <a-form-item>-->
-<!--                          <a-image-->
-<!--                                  width="200"-->
-<!--                                  :src="base64"-->
-<!--                          />-->
-<!--                      </a-form-item>-->
                       <a-form-item label="上传照片" :rules="[{required:true,message:'请上传照片'}]">
                           <a-space direction="vertical" :style="{ width: '100%' }">
                               <a-upload
@@ -295,7 +289,7 @@
         </a-table>
         <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs,'edit')"  unmountOnClose>
           <template #title>
-            编辑管理员信息
+            编辑运动员信息
           </template>
           <div>
 
@@ -306,6 +300,11 @@
               >
                 <a-input v-model="form.name" placeholder="请输入你的姓名" />
               </a-form-item>
+                <a-form-item label="照片">
+                    <a-image
+                            :src="form.photo"
+                    />
+                </a-form-item>
               <a-form-item field="competitionName" label="参赛项目"
                            :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
                            :validate-trigger="['change','input']"
@@ -446,6 +445,7 @@ export default defineComponent({
       let node
       const file = ref();
         const base64 = ref()
+
       const onChange = (_, currentFile) => {
           // const blob = JSON.parse(JSON.stringify(currentFile));
           // console.log('blob',blob)

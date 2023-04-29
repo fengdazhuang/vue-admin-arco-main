@@ -1,17 +1,82 @@
 
 <template>
     <div class="container">
-        <Breadcrumb :items="['志愿管理', '志愿者管理']" />
+        <Breadcrumb :items="['志愿管理', '志愿服务点']" />
         <div class="main">
-            <a-card :style="{width:'100%'}" class="general-card card" title="志愿者管理">
+            <a-card :style="{width:'100%'}" class="general-card card" title="志愿服务点">
                 <a-space size="large" >
+                    <span :style="{color:'#000'}">姓名</span>
+                    <a-input @blur="handleSearchName" v-model="form.name"  placeholder="请输入姓名"/>
                     <span :style="{color:'#000'}">志愿类型</span>
                     <a-tree-select @change="handleSearchType(form.volunteerType)" :data="treeData" v-model="form.volunteerType"  placeholder="请选择志愿类型"/>
                     <span :style="{color:'#000'}">服务方向</span>
                     <a-tree-select @change="handleSearchDirection(form.risk)" :data="treeDataService" v-model="form.risk"  placeholder="请选择服务方向"/>
+
                 </a-space>
                 <a-divider style="margin-top: 20px" />
-                <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
+                <a-row style="margin-bottom: 16px">
+                    <a-col :span="16">
+                        <a-space>
+                            <a-button @click="handleCreate()" type="primary">新增</a-button>
+                            <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
+                            <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
+                                <template #title>
+                                    添加服务点
+                                </template>
+                                <div>
+                                    <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}" @submit="handleSubmit">
+                                        <a-form-item field="name" label="服务点"
+                                                     :rules="[{required:true,message:'请输入服务点'}]"
+                                                     :validate-trigger="['change','input']"
+                                        >
+                                            <a-input v-model="form.name" placeholder="请输入服务点" />
+                                        </a-form-item>
+                                        <a-form-item field="position" label="地点"
+                                                     :rules="[{required:true,message:'请输入地点'}]"
+                                                     :validate-trigger="['change','input']"
+                                        >
+                                            <a-input v-model="form.position" placeholder="请输入地点" />
+                                        </a-form-item>
+                                        <a-form-item field="volunteerType" label="志愿者类型"
+                                                     :rules="[{required:true,message:'请输入志愿者类型'}]"
+                                                     :validate-trigger="['change','input']"
+                                        >
+                                            <a-tree-select
+                                                    v-model="form.volunteerType"
+                                                    :allow-clear="true"
+                                                    :allow-search="true"
+                                                    :data="treeDataVolunteerType"
+                                                    placeholder="请选择志愿者类型"
+                                                    style="width: 300px"
+                                                    @change="handleSelect"
+                                            ></a-tree-select>
+                                        </a-form-item>
+                                        <a-form-item field="risk" label="服务方向"
+                                                     :rules="[{required:true,message:'请输入服务方向'}]"
+                                                     :validate-trigger="['change','input']"
+                                        >
+                                            <a-tree-select
+                                                    v-model="form.risk"
+                                                    :allow-clear="true"
+                                                    :allow-search="true"
+                                                    :data="treeDataService"
+                                                    placeholder="请选择服务意向"
+                                                    style="width: 300px"
+                                            ></a-tree-select>
+                                        </a-form-item>
+
+                                        <a-form-item>
+                                            <a-space>
+                                                <!-- <a-button html-type="submit" type="primary">提交</a-button> -->
+                                                <a-button type="primary" status="danger" @click="$refs.formRef.resetFields()">重置</a-button>
+                                            </a-space>
+                                        </a-form-item>
+                                    </a-form>
+                                </div>
+                            </a-modal>
+                        </a-space>
+                    </a-col>
+                </a-row>
                 <a-table
                         size="large"
                         row-key="id"
@@ -21,46 +86,37 @@
                         :bordered="false"
                         @page-change="onPageChange"
                         :row-selection="rowSelection"
+                        @selection-change="handleGetId"
                 >
                     <template #columns>
                         <a-table-column
-                                title="姓名"
+                                title="序号"
+                                data-index="id"
+                        />
+                        <a-table-column
+                                title="服务点"
                                 data-index="name"
-                        />
-                        <a-table-column
-                                title="照片"
-                                data-index="photo"
-                        >
-                            <template #cell="{ record }">
-                                <a-space>
-                                    <a-avatar
-                                            :size="40"
-                                            shape="square"
-                                    >
-                                        <img
-                                                alt="avatar"
-                                                :src="record.photo"
-                                        />
-                                    </a-avatar>
-                                </a-space>
-                            </template>
-                        </a-table-column>
-                        <a-table-column
-                                title="性别"
-                                data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                title="年龄"
-                                data-index="age"
-                        />
-                        <a-table-column
-                                title="分配状态"
-                                data-index="processText"
+                                title="地点"
+                                data-index="position"
                         />
                         <a-table-column
                                 title="服务方向"
                                 data-index="risk"
+                        />
+                        <a-table-column
+                                title="人数"
+                                data-index="volunteerCounts"
+                        />
+                        <a-table-column
+                                title="负责人"
+                                data-index="principal"
+                        />
+                        <a-table-column
+                                title="负责人邮箱"
+                                data-index="principalEmail"
                         />
 
                         <a-table-column
@@ -75,9 +131,68 @@
                 </a-table>
                 <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
                     <template #title>
-                        查看志愿者信息
+                        查看服务点信息
                     </template>
                     <div>
+                        <a-space direction="vertical" size="large" fill>
+                            <a-descriptions :data="data" title="服务点详情信息" :column="2" >
+                                <a-descriptions-item v-for="(item,index) in userInfo"  :label="item.label" :key="index">
+                                    <a-tag>{{ item.value }}</a-tag>
+                                </a-descriptions-item>
+                            </a-descriptions>
+                        </a-space>
+                        <a-table
+                                size="large"
+                                row-key="id"
+                                :loading="loading"
+                                :pagination="pagination"
+                                :data="PlayerList"
+                                :bordered="false"
+                                @page-change="onPageChange"
+                                :row-selection="rowSelection"
+                                @selection-change="handleGetId"
+                        >
+                            <template #columns>
+                                <a-table-column
+                                        title="序号"
+                                        data-index="id"
+                                />
+                                <a-table-column
+                                        title="服务点"
+                                        data-index="name"
+                                >
+                                </a-table-column>
+                                <a-table-column
+                                        title="地点"
+                                        data-index="position"
+                                />
+                                <a-table-column
+                                        title="服务方向"
+                                        data-index="risk"
+                                />
+                                <a-table-column
+                                        title="人数"
+                                        data-index="volunteerCounts"
+                                />
+                                <a-table-column
+                                        title="负责人"
+                                        data-index="principal"
+                                />
+                                <a-table-column
+                                        title="负责人邮箱"
+                                        data-index="principalEmail"
+                                />
+
+                                <a-table-column
+                                        title="操作"
+                                        data-index="operations"
+                                >
+                                    <template #cell="{ record }">
+                                        <a-button @click="handleClick1(record)" type="text">详细信息</a-button>
+                                    </template>
+                                </a-table-column>
+                            </template>
+                        </a-table>
 <!--                        <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">-->
 <!--                            <a-form-item field="name" label="姓名"-->
 <!--                                         :validate-trigger="['change','input']"-->
@@ -140,13 +255,6 @@
 <!--                                <a-input v-model="form.profession" disabled/>-->
 <!--                            </a-form-item>-->
 <!--                        </a-form>-->
-                        <a-space direction="vertical" size="large" fill>
-                            <a-descriptions :data="data" title="志愿者详情信息" :column="2" >
-                                <a-descriptions-item v-for="(item,index) in userInfo"  :label="item.label" :key="index">
-                                    <a-tag>{{ item.value }}</a-tag>
-                                </a-descriptions-item>
-                            </a-descriptions>
-                        </a-space>
                     </div>
                 </a-modal>
             </a-card>
@@ -161,8 +269,25 @@
     import { defineComponent, computed, ref, reactive,getCurrentInstance } from 'vue';
     import { useI18n } from 'vue-i18n';
     import useLoading from '@/hooks/loading';
-    import {getVolDirections, pageVolunteers,resetRisk} from '@/api/volunteer'
-    import {addAdmin, listAdmins, listJudges, logout, queryAdmin, resetPassword, updateStatus} from '@/api/user';
+    import {
+        getVolDirections,
+        pageVolunteers,
+        queryVolPositions,
+        resetRisk,
+        addVolPosition,
+        pageVolPositions,
+        deleteVolPosition
+    } from '@/api/volunteer'
+    import {
+        addAdmin,
+        deletePlayer,
+        listAdmins,
+        listJudges,
+        logout,
+        queryAdmin,
+        resetPassword,
+        updateStatus
+    } from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
         return {
@@ -173,6 +298,8 @@
     };
     export default defineComponent({
         setup() {
+            const test = [{name:'111'},{name:'222'},{name:'333'}]
+            const userInfo = ref([])
             const value = ref(false)
             const { loading, setLoading } = useLoading(true);
             const { t } = useI18n();
@@ -189,6 +316,16 @@
             }
             const ctx1 = getCurrentInstance()
             const {ctx} = getCurrentInstance()
+            const treeDataVolunteerType = [
+                {
+                    key:'0',
+                    title:'赛会志愿者'
+                },
+                {
+                    key:'1',
+                    title:'城市志愿者'
+                }
+            ]
             const treeDataService = ref([])
             const treeData = [
                 {
@@ -250,26 +387,22 @@
             const message = ref('')
             const isRepeat = ref(false)
             let node
-            const userInfo = ref([])
+            let ids = reactive([])
             const num = ref(1)
             const id = ref()
             const handleChange = (value: number) => {
                 console.log(value)
             }
             const form = reactive({
+                id:'',
                 name:'',
-                photo:'@/assets/images/img1.jpg',
-                sex:'',
-                age:13,
                 risk:'',
-                applyTime:'',
-                email:'',
-                volunteerType:'',
-                profession:'',
-                address:'',
+                volunteerCounts:'',
                 position:'',
                 principal:'',
-                principalEmail:''
+                principalEmail:'',
+                volunteerType:''
+
             });
 
             // const fetchData = async (
@@ -305,7 +438,7 @@
             //     }
             // };
             const fetchData = async (
-                params = {pageNumber: 1, pageSize: 20,volunteerType:'',risk:'' }
+                params = {pageNumber: 1, pageSize: 20,volunteerType:'',risk:'' ,name:''}
             ) => {
                 setLoading(true);
                 try {
@@ -313,7 +446,7 @@
                     let useParams = {
                         params:{...params}
                     }
-                    const { data } = await pageVolunteers(useParams);
+                    const { data } = await pageVolPositions(useParams);
                     console.log('data',data)
                     data.records.forEach(item =>{
                         if(item.sex===1) {
@@ -360,8 +493,8 @@
                 } else {
                     row.sex = '0'
                 }
-                const keys = Object.keys(row)
 
+                const keys = Object.keys(row)
                 keys.forEach((item,index)=>{
                     userInfo.value.push({
                         label:item,
@@ -369,50 +502,46 @@
                     })
                 })
                 userInfo.value = userInfo.value.filter(item=>{
-                   return item.label!='status'
+                    return item.label!='sex'
                 })
                 userInfo.value = userInfo.value.filter(item=>{
-                    return item.label!='progress'
+                    return item.label!='principalPhoto'
                 })
                 userInfo.value = userInfo.value.filter(item=>{
-                    return item.label!='process'
+                    return item.label!='createTime'
                 })
                 userInfo.value = userInfo.value.filter(item=>{
-                    return item.label!='photo'
+                    return item.label!='status'
                 })
+                userInfo.value = userInfo.value.filter(item=>{
+                    return item.label!='processText'
+                })
+
                 userInfo.value.forEach(item=>{
-                    if (item.label === 'sex') {
-                        item.label='性别'
-                        if (item.value === 1){
-                            item.value = '男'
-                        } else {
-                            item.value = '女'
-                        }
-                    }
-                    if (item.label === 'age') {
-                        item.label='年龄'
-                    }
                     if (item.label === 'applyTime') {
                         item.label='申请时间'
                     }
                     if (item.label === 'name') {
-                        item.label='姓名'
+                        item.label='服务点'
                     }
-                    if (item.label === 'email') {
-                        item.label='电子邮箱'
+                    if (item.label === 'principalEmail') {
+                        item.label='负责人电子邮箱'
+                    }
+                    if (item.label === 'principal') {
+                        item.label='负责人'
+                    }
+
+                    if (item.label === 'position') {
+                        item.label='地点'
                     }
                     if (item.label === 'risk') {
-                        item.label='服务方向'
+                        item.label='服务意向'
                     }
-                    if (item.label === 'profession') {
-                        item.label='职业'
+                    if (item.label === 'volunteerCounts') {
+                        item.label='人数'
                     }
-                    if (item.label === 'address') {
-                        item.label='地址'
-                    }
-                    if (item.label === 'processText') {
-                        item.label='分配状态'
-                    }
+
+
                 })
                 showModel.value = true;
                 ctx.$nextTick(() => {
@@ -420,16 +549,44 @@
                 });
 
             };
-            const handleDelete = async (row)=>{
+            const handleSearchName = ()=>{
+                const params = {
+                    pageNumber:1,
+                    pageSize:20,
+                    volunteerType:form.volunteerType,
+                    risk:form.risk,
+                    name:form.name
+                }
+                fetchData(params)
+            }
+            const handleGetId = (rowKeys)=>{
+                ids = rowKeys
+            }
+            const handleManyDelete = async ()=>{
+                const str = ids.join(',')
+
                 const useParams={
                     params:{
-                        id:row.id
+                        ids:str
                     }
                 }
-                await deleteJudge(useParams)
+                await deleteVolPosition(useParams)
                 fetchData()
-
             }
+
+            const handleCreate = () => {
+                visible.value = true;
+                ctx.$nextTick(() => {
+                    Object.assign(form, {
+                        competitionName:'',
+                        name: '',
+                        photo:'',
+                        country: '',
+                        sex:1,
+                        email:''
+                    });
+                });
+            };
             const handleGetVolDirections = async (volunteerType)=>{
                 treeDataService.value = []
                 const useParams = {
@@ -445,7 +602,10 @@
                     })
                 })
             }
-
+            const handleSelect = async (value)=>{
+                // treeDataService.value = []
+               handleGetVolDirections(value)
+            }
             const rowSelection = reactive({
                 type: 'checkbox',
                 showCheckedAll: true,
@@ -472,10 +632,23 @@
             // }]
             const handleConfirm = async ($ref,type)=> {
                 /* eslint-disable */
-                const res = await addAdmin(form)
+                const body1 = {
+                    name:form.name,
+                    volunteerType:+form.volunteerType,
+                    position:form.position,
+                    risk:form.risk
+                }
+                const res = await addVolPosition(body1)
                 console.log('resAdmin',res)
                 visible.value = false
-                fetchData()
+                const body = {
+                    pageNumber: 1,
+                    pageSize: 20,
+                    volunteerType:form.volunteerType,
+                    risk:form.risk ,
+                    name:form.name
+                }
+                fetchData(body)
                 $ref.formRef.validate((valid)=>{
 
                     if(type==='edit') {
@@ -617,7 +790,6 @@
             //     imgSrc.value='@/assets/images/img1.jpg'
             //     isImg.value = true
             // }
-
             const search = async () => {
                 // console.log('formModel.value',formModel.value)
                 let useParams = {
@@ -632,13 +804,14 @@
                 fetchData({ ...basePagination, pageNumber });
             };
 
-
             const handleSearchDirection= (risk)=>{
+                console.log('risk',risk)
                 const params = {
                     pageNumber:1,
                     pageSize:20,
                     volunteerType:form.volunteerType,
                     risk,
+                    name:form.name
                 }
                 fetchData(params)
             }
@@ -649,6 +822,7 @@
                     pageSize:20,
                     volunteerType:type,
                     risk:form.risk,
+                    name:form.name
                 }
                 handleGetVolDirections(type)
                 fetchData(params)
@@ -689,7 +863,7 @@
                 treeDataService,
                 // uploadCover,
                 inputPic,
-                handleDelete,
+                // handleDelete,
                 isAbled,
                 message,
                 handleReset,
@@ -699,7 +873,14 @@
                 handleChange,
                 handleSearchDirection,
                 handleSearchType,
-                userInfo,
+                test,
+                handleCreate,
+                treeDataVolunteerType,
+                handleSelect,
+                handleManyDelete,
+                handleGetId,
+                handleSearchName,
+                userInfo
             };
         },
     });
