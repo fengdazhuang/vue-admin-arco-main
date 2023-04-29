@@ -12,9 +12,11 @@
           label-width="150px"
           label-position="left"
         >
+
           <div class="container">
+
             <el-col :span="24">
-              <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入电子邮箱'}]">
+              <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入电子邮箱'},{ pattern: reg_Email, message: ' 请填写您常用的电子邮箱。邮箱最多80个字符，只能由字母、数字、半角句号、中划线或下划线组成 ', trigger: ['blur', 'change'] }]">
                 <el-input
                   v-model="formData.email"
                   placeholder="请输入电子邮箱"
@@ -24,9 +26,6 @@
                 </el-input>
               </el-form-item>
             </el-col>
-            <p>
-              请填写您常用的电子邮箱。邮箱最多80个字符，只能由字母、数字、半角句号、中划线或下划线组成
-            </p>
           </div>
           <div class="container">
             <div class="verification">
@@ -51,7 +50,7 @@
           </div>
           <div class="container">
             <el-col :span="24">
-              <el-form-item label="密码" prop="password" :rules="[{required:true,message:'请输入密码'}]">
+              <el-form-item label="密码" prop="password" :rules="[{required:true,message:'请输入密码'},{ pattern: reg_Password, message: '只能输入6-20个字母、数字、下划线', trigger: ['blur', 'change'] }]">
                 <el-input
                   v-model="formData.password"
                   placeholder="请输入密码"
@@ -61,9 +60,6 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <p>
-              密码格式要求：长应8一20个字符，且必须同时包含大写、小写字母、数字和特殊字符
-            </p>
           </div>
           <div class="container">
             <el-col :span="24">
@@ -80,13 +76,13 @@
             <p>为确保填写正确，需要再次填写您的密码，请勿复制粘贴</p>
           </div>
           <div class="read1">
-            <input type="radio" name="" id="" value="1" />
+            <input type="radio" :checked="isChecked" @click="isChecked = !isChecked" name="" id="" value="1" />
             <span
               >我已阅读并同意<a herf="https://www.csdn.net/" class="link">2022年杭州亚运会和亚残运会赛会志愿者申请人信息采集和隐私保护改策</a></span
             >
           </div>
           <div class="read2">
-            <input type="radio" name="" value="2" />
+            <input type="radio"  :checked="isChecked2" @click="isChecked2 = !isChecked2"  name="" value="2" />
             <span>我同意使用注册的电子邮箱接收杭州亚组委相关信息</span>
           </div>
           <div class="btn">
@@ -125,8 +121,12 @@
 <script>
     /* eslint-disable */
     import {sendCode,register} from '@/api/volunteer'
-    import {reactive,getCurrentInstance} from "vue";
+    import {regEmail,regPassword} from '@/api/regret'
+    import {reactive,getCurrentInstance,ref} from "vue";
     import {useRouter} from 'vue-router'
+    import { Message} from '@arco-design/web-vue';
+
+
 export default {
   components: {},
   props: [],
@@ -169,6 +169,10 @@ export default {
   created() {},
   mounted() {},
   setup() {
+      const reg_Email = regEmail
+      const reg_Password = regPassword
+      const isChecked = ref(false)
+      const isChecked2 = ref(false)
       const {ctx} = getCurrentInstance()
       const formData= reactive({
           email: '',
@@ -178,6 +182,16 @@ export default {
       })
       const router = useRouter()
       const handleSubmit = ()=>{
+          if (formData.password != formData.confirmPassword) {
+              Message.error('两次密码不一致')
+              return
+          }
+          console.log('isChecked.value',isChecked.value)
+          console.log('isChecked.value2',isChecked2.value)
+          if(!isChecked.value || !isChecked2.value) {
+              Message.error('请选择同意协议协议')
+                return
+          }
           ctx.$refs.elForm.validate(async (validate)=>{
               if (validate) {
                   const body = {
@@ -195,11 +209,13 @@ export default {
 
       }
     const OpenPage = () => {
-      window.open("#/re-login");
+      // window.open("#/re-login");
+        router.push('/re-login')
     };
     const handleValidateCode = async ()=>{
         const body = {
-            email:formData.email
+            email:formData.email,
+            type:0
         }
         await sendCode(body)
     }
@@ -207,7 +223,12 @@ export default {
       OpenPage,
         handleValidateCode,
         formData,
-        handleSubmit
+        handleSubmit,
+        reg_Email,
+        reg_Password,
+        isChecked,
+        isChecked2
+
     };
   },
   methods: {

@@ -32,14 +32,14 @@
             }"
           >
           </a-table-column>
-          <a-table-column
-            :title="$t('dataAnalysis.popularAuthor.column.click')"
-            data-index="clickCount"
-            :sortable="{
-              sortDirections: ['ascend', 'descend'],
-            }"
-          >
-          </a-table-column>
+<!--          <a-table-column-->
+<!--            :title="$t('dataAnalysis.popularAuthor.column.click')"-->
+<!--            data-index="clickCount"-->
+<!--            :sortable="{-->
+<!--              sortDirections: ['ascend', 'descend'],-->
+<!--            }"-->
+<!--          >-->
+<!--          </a-table-column>-->
         </template>
       </a-table>
     </a-card>

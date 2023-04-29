@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Breadcrumb
-      :items="['数据可视化', '分析页']"
+      :items="['数据可视化', '网站访问']"
     />
     <a-space direction="vertical" :size="12" fill>
       <a-space direction="vertical" :size="16" fill>

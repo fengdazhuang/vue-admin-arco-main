@@ -88,7 +88,7 @@ export default {
         if (info.content) {
             info.info = info.content
         }
-        info.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
+        info.createTime = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDay()}日`
         return {
           info
         }

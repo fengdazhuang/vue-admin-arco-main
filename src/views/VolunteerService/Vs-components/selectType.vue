@@ -2,7 +2,7 @@
     <div class="re-con">
         <div class="content">
             <h1 style="font-size: 32px" class="txt">选择志愿者类型</h1>
-
+<!--            {{formData}}111-->
             <el-row :gutter="15">
                 <el-form
                         ref="elForm"
@@ -107,19 +107,30 @@
 
 
             const volunteerInfo = ref(JSON.parse(window.sessionStorage.getItem('volunteerInfo')))
-
-            if (volunteerInfo.value.volunteerType === 0) {
-                volunteerInfo.value.volunteerType = '赛会志愿者'
-            } else {
-                volunteerInfo.value.volunteerType = '城市志愿者'
-            }
-            const updatevolunteerInfo = ref({
-                volunteerType:volunteerInfo.value.volunteerType
+            const nowVolunteerInfo = ref({
+                volunteerType:''
             })
             const formData = reactive({
-                volunteerType: updatevolunteerInfo.value.volunteerType
+                volunteerType: ''
             })
-            console.log('volunteerInfo',volunteerInfo)
+            const handleQueryVolunteer = async ()=>{
+                const useParams = {
+                    params:{
+                        id:volunteerInfo.value.id
+                    }
+                }
+                const {data} = await queryVolunteer(useParams)
+                nowVolunteerInfo.value = data
+                formData.volunteerType = nowVolunteerInfo.value.volunteerType
+                if (formData.volunteerType === 0) {
+                    formData.volunteerType = '赛会志愿者'
+                } else if (formData.volunteerType === 1) {
+                    formData.volunteerType = '城市志愿者'
+                }
+            }
+            handleQueryVolunteer()
+
+
             const value = ref('')
 
             const options = [
@@ -133,23 +144,8 @@
                 }
             ]
             const router = useRouter()
-            const handleQueryVolunteer = async ()=>{
-                const useParams = {
-                    params:{
-                        id:volunteerInfo.value.id
-                    }
-                }
-                const res = await queryVolunteer(useParams)
-                // if (volunteerInfo.value.volunteerType === 0) {
-                //     volunteerInfo.value.volunteerType = '赛会志愿者'
-                // } else {
-                //     volunteerInfo.value.volunteerType = '城市志愿者'
-                // }
-                updatevolunteerInfo.value = res.data
-                // volunteerInfo.value = res.data
-                console.log('res',res)
-            }
-            handleQueryVolunteer()
+
+
             const handleSubmit = async ()=>{
                 const useParams = {
                     params:{
@@ -158,6 +154,9 @@
                     }
                 }
                 const res =  await chooseVolType({},useParams)
+
+                handleQueryVolunteer()
+
                 if(res.code === 200) {
                     Message.success('提交成功')
                     router.push('/ind-center')
@@ -175,7 +174,8 @@
                 value,
                 handleSubmit,
                 handleJump,
-                formData
+                formData,
+                nowVolunteerInfo
             };
         },
         methods: {

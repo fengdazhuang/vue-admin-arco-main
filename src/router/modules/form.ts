@@ -33,7 +33,7 @@ export default {
       name: 'VolunteerServicePoints',
       component: () => import('@/views/backStage/form/search-table/index.vue'),
       meta: {
-        locale: '志愿服务点',
+        locale: '志愿方向',
         requiresAuth: true,
         roles: ['admin'],
       },

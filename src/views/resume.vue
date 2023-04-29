@@ -20,10 +20,11 @@
                 </el-menu-item>
             </el-menu>
         </div>
-        <div class="content" :style="{height:'12rem'}">
+        <div class="content" :style="{height:'13rem'}">
             <div class="re-con">
                 <div class="content">
                     <h1 style="font-size: 32px" class="txt">简介预览</h1>
+
                     <el-button type="primary" class="position"  @click="handleEdit" v-show="isBtn">启动编辑</el-button>
                     <el-row :gutter="15">
                         <el-form
@@ -61,7 +62,18 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入电子邮箱'}]">
+                                <el-form-item label="志愿者编号" prop="id">
+                                    <el-input
+                                            :disabled="true"
+                                            v-model="userInfo.id"
+                                            clearable
+                                            :style="{ width: '5rem' }"
+                                    >
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="24">
+                                <el-form-item label="电子邮箱" prop="email" :rules="[{required:true,message:'请输入验证码'},{ pattern: reg_Email, message: ' 请填写您常用的电子邮箱。邮箱最多80个字符，只能由字母、数字、半角句号、中划线或下划线组成 ', trigger: ['blur', 'change'] }]">
                                     <el-input
                                             :disabled="isEdit"
                                             v-model="userInfo.email"
@@ -127,19 +139,6 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="24">
-                                <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入服务意向'}]">
-                                    <a-tree-select
-                                            :disabled="isEdit"
-                                            v-model="userInfo.intention"
-                                            :allow-clear="true"
-                                            :allow-search="true"
-                                            :data="treeDataService"
-                                            placeholder="请选择服务方向"
-                                            style="width: 300px"
-                                    ></a-tree-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="24">
                                 <el-form-item label="地址" prop="address" :rules="[{required:true,message:'请输入家庭地址'}]">
                                     <el-input
                                             :disabled="isEdit"
@@ -199,36 +198,76 @@
 <script>
     /* eslint-disable */
     import {reactive, ref,getCurrentInstance} from "vue";
+    import {useRouter} from "vue-router";
     import {modifyInfo,queryVolunteer} from'@/api/volunteer'
     import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
     import { Message } from '@arco-design/web-vue';
     import {getVolDirections} from "@/api/volunteer";
+    import {regEmail} from '@/api/regret'
 
     export default {
         name: "VolunteerService",
         components:{Bottom},
         setup() {
+            const router = useRouter()
+            const  reg_Email = regEmail
             const {ctx} = getCurrentInstance()
             const elForm = ref(null)
             const isBtn = ref(true)
             let volunteerInfo = reactive(JSON.parse(window.sessionStorage.getItem('volunteerInfo')))
-            let userInfo = reactive({
-                email: volunteerInfo.email,
-                password: volunteerInfo.password,
+            const nowVolunteerInfo = ref()
+            let userInfo = ref({
+                email: '',
+                password: '',
                 validateCode:'',
                 key:'',
-                name:volunteerInfo.name,
-                photo:volunteerInfo.photo,
-                sex:volunteerInfo.sex,
-                age:volunteerInfo.age,
-                profession:volunteerInfo.profession,
-                certificateType:volunteerInfo.certificateType,
-                certificateNumber:volunteerInfo.certificateNumber,
-                address:volunteerInfo.address,
-                comment:volunteerInfo.comment,
-                id:volunteerInfo.id,
-                intention:volunteerInfo.intention
+                name:'',
+                photo:'',
+                sex:'',
+                age:'',
+                profession:'',
+                certificateType:'',
+                certificateNumber:'',
+                address:'',
+                comment:'',
+                id:'',
+                volunteerType:''
             });
+            const handleQueryVolunteer = async ()=>{
+                const useParams = {
+                    params:{
+                        id:volunteerInfo.id
+                    }
+                }
+                const {data} = await queryVolunteer(useParams)
+                nowVolunteerInfo.value = data
+                console.log()
+                userInfo.value = {
+                    email: nowVolunteerInfo.value.email,
+                    password: nowVolunteerInfo.value.password,
+                    validateCode:'',
+                    key:'',
+                    name:nowVolunteerInfo.value.name,
+                    photo:nowVolunteerInfo.value.photo,
+                    sex:nowVolunteerInfo.value.sex,
+                    age:nowVolunteerInfo.value.age,
+                    profession:nowVolunteerInfo.value.profession,
+                    certificateType:nowVolunteerInfo.value.certificateType,
+                    certificateNumber:nowVolunteerInfo.value.certificateNumber,
+                    address:nowVolunteerInfo.value.address,
+                    comment:nowVolunteerInfo.value.comment,
+                    id:nowVolunteerInfo.value.id,
+                    volunteerType:nowVolunteerInfo.value.volunteerType
+
+                };
+                if (data.process ===2 || data.process ===3) {
+                    isBtn.value = false
+                }
+                // userInfo = data
+            }
+            handleQueryVolunteer()
+
+
             const value = ref('')
             const isEdit = ref(true)
             const certificateTypes = [
@@ -295,22 +334,10 @@
             handleGetVolDirections(1)
             const uploadCover = (e)=> {
                 imgSrc.value='@/assets/images/img1.jpg'
-                userInfo.photo = '@/assets/images/img1.jpg'
+                userInfo.value.photo = '@/assets/images/img1.jpg'
                 isImg.value = true
             }
-            const handleQueryVolunteer = async ()=>{
-                const useParams = {
-                    params:{
-                        id:volunteerInfo.id
-                    }
-                }
-               const {data} = await queryVolunteer(useParams)
-                if (data.process ===2 || data.process ===3) {
-                    isBtn.value = false
-                }
-                // userInfo = data
-            }
-            handleQueryVolunteer()
+
             const handleEdit = () =>{
                 isEdit.value = !isEdit.value
                 console.log('isEdit.value',isEdit.value)
@@ -319,34 +346,31 @@
                 ctx.$refs.elForm.validate(async (validate)=>{
                     if (validate) {
                         const body = {
-                            address:userInfo.address,
-                            age:+userInfo.age,
-                            certificateNumber:userInfo.certificateNumber,
-                            certificateType:userInfo.certificateType,
-                            comment:userInfo.comment,
-                            id:userInfo.id,
-                            name:userInfo.name,
-                            photo:userInfo.photo,
-                            profession:userInfo.profession,
-                            sex:+userInfo.sex,
-                            intention:userInfo.intention
+                            address:userInfo.value.address,
+                            age:+userInfo.value.age,
+                            certificateNumber:userInfo.value.certificateNumber,
+                            certificateType:userInfo.value.certificateType,
+                            comment:userInfo.value.comment,
+                            id:userInfo.value.id,
+                            name:userInfo.value.name,
+                            photo:userInfo.value.photo,
+                            profession:userInfo.value.profession,
+                            sex:+userInfo.value.sex,
                         }
                         await modifyInfo(body)
 
                         Message.success('提交成功')
                         isEdit.value = true
-                        const useParams = {
-                            params:{
-                                id:userInfo.id
-                            }
-                        }
-                        const {data} = await queryVolunteer(useParams)
-                        volunteerInfo = data
+                        handleQueryVolunteer()
+                        // volunteerInfo = data
                     } else {
                         Message.error('提交失败')
                     }
                 })
 
+            }
+            const OpenPage = ()=>{
+                router.push('/ind-center')
             }
             return {
                 activeIndex,
@@ -363,7 +387,9 @@
                 isEdit,
                 handleEdit,
                 treeDataService,
-                isBtn
+                isBtn,
+                reg_Email,
+                OpenPage
             };
         },
     };
@@ -427,7 +453,7 @@
     .content {
       position: relative;
       width: 60%;
-      height: 12rem;
+      height: 13rem;
       display: flex;
       position: relative;
       justify-content: center;

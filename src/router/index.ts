@@ -132,6 +132,12 @@ const router = createRouter({
           component: () =>
               import("@/views/VolunteerService/Vs-components/apply.vue"),
         },
+        {
+          path: "forgetPassword",
+          name: "forgetPassword",
+          component: () =>
+              import("@/views/VolunteerService/Vs-components/forgetPassword.vue"),
+        },
       ],
     },
     {
@@ -169,7 +175,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const userStore = useUserStore();
-  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume','Ch-psw','selectType','apply','recognize']
+  const unGuardRoute = ['index','information','competition','volunteerService','ind-index','re-login','re-register','resume','Ch-psw','selectType','apply','recognize','preview','forgetPassword']
   // to.name === 'index' || to.name === 'information' || to.name === 'competition'|| to.name==='volunteerService' || to.name==='ind-index' || to.name==='re-login' || to.name==='re-register'
   if (unGuardRoute.includes(to.name)) {
     next()

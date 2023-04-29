@@ -47,7 +47,7 @@
             </el-form-item>
           </el-col>
           <div class="re-link">
-            <a>忘记密码</a>
+            <a @click="handleForgetPwd">忘记密码</a>
             <a @click="OpenPage2()">新用户注册</a>
           </div>
           <div class="btn">
@@ -83,38 +83,44 @@
     import {useRouter} from 'vue-router'
     import {reactive, ref,getCurrentInstance} from "_vue@3.2.47@vue";
     import { Message } from '@arco-design/web-vue';
+    import {regPassword} from '@/api/regret'
 
 export default {
   components: {},
   props: [],
   data() {
-    return {
-      rules: {
-          email: [
-          {
-            required: true,
-            message: "请输入电子邮箱",
-            trigger: "blur",
-          },
-        ],
-          password: [
-          {
-            required: true,
-            message: "请输入密码",
-            trigger: "blur",
-          },
-        ],
-          validateCode: [
-          {
-            required: true,
-            message: "请输入验证码",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+
   },
   setup() {
+      const reg_Password = regPassword
+      const  rules= {
+          email: [
+              {
+                  required: true,
+                  message: "请输入电子邮箱",
+                  trigger: "blur",
+              },
+          ],
+          password: [
+              {
+                  required: true,
+                  message: "请输入密码",
+                  trigger: "blur",
+              },
+              {
+                  pattern: reg_Password,
+                  message: '只能输入6-20个字母、数字、下划线',
+                  trigger: ['blur', 'change']
+              }
+          ],
+          validateCode: [
+              {
+                  required: true,
+                  message: "请输入验证码",
+                  trigger: "blur",
+              },
+          ],
+      }
       const {ctx} = getCurrentInstance()
       const userStore = useUserStore();
       const img = ref('')
@@ -139,6 +145,9 @@ export default {
               }
           })
 
+      }
+      const handleForgetPwd = ()=>{
+          router.push('/forgetPassword')
       }
     const OpenPage = () => {
       window.open("#/ind-index");
@@ -165,7 +174,9 @@ export default {
         handleChangeValidateCode,
         img,
         handleLogin,
-        userInfo
+        userInfo,
+        handleForgetPwd,
+        rules
     };
   },
   methods: {

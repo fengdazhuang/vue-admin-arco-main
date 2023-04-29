@@ -6,14 +6,17 @@
                 <div class="vol">
                     <p style="font-size: 20px; margin-top: 0.1rem; margin-left: 20px">
                         个人中心
+<!--                        {{nowVolunteerInfo}}-->
+                        {{isShowVolunteerType}}
                     </p>
                     <div class="user">
                         <div class="user-icon">
                             <el-icon style="font-size: 20px"><User /></el-icon>
-                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者编号 {{volunteerInfo.id.slice(0,6)}}</p>
+                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者姓名 {{nowVolunteerInfo.name}}</p>
                         </div>
                         <p style="font-size: 12px">志愿者类型</p>
-                        <span @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.5rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
+                        <span v-if="isShowVolunteerType" style="font-size: 12px; color: #179fff">{{nowVolunteerInfo.volunteerType===0 ? '赛会志愿者':'城市志愿者' }}</span>
+                        <span v-else @click="handleSelectType" :style="{fontSize:'12px',margin:'0 0 0 -0.5rem',color:'#179fff',cursor:'pointer'}">[请选择]</span>
                     </div>
                 </div>
                 <div class="vol-list">
@@ -45,8 +48,8 @@
       <div class="main">
         <div class="main-up">
           <span style="font-size: 24px">招募进展</span>
-          <span style="font-size: 12px; color: rgb(184, 184, 182)" v-show="volunteerInfo.volunteerType!=0 && volunteerInfo.volunteerType!=1">选择志愿者类型后呈现</span>
-            <span style="font-size: 12px; color: rgb(184, 184, 182)">{{volunteerInfo.volunteerType ===0 ? '赛会志愿者':'城市志愿者'}}</span>
+            <span style="font-size: 12px; color: rgb(184, 184, 182)" v-if="isShowVolunteerType">{{nowVolunteerInfo.volunteerType ===0 ? '赛会志愿者':'城市志愿者'}}</span>
+          <span style="font-size: 12px; color: rgb(184, 184, 182)"   v-else>选择志愿者类型后呈现</span>
         </div>
         <div style="height: 4rem" class="main-fo">
           <el-steps :active="3" direction="vertical">
@@ -68,7 +71,7 @@
 
 <script>
     import {reactive, ref} from 'vue'
-    import {logout} from '@/api/volunteer'
+    import {logout,queryVolunteer} from '@/api/volunteer'
     import {useRouter} from 'vue-router'
     import {applyVolunteer} from '@/api/volunteer'
     import Sign from '@/components/sign/index.vue'
@@ -77,6 +80,7 @@ export default {
   name: "ind-center",
     components:{Sign},
     setup(){
+      const isShowVolunteerType = ref(false)
         const form = reactive({
             competitionName:'',
             name: '',
@@ -88,6 +92,26 @@ export default {
         const router = useRouter()
         const isShow = ref(false)
         const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
+        const nowVolunteerInfo = ref({
+            name:'',
+            volunteerType:undefined
+        })
+        const handleQueryVolunteer = async ()=>{
+            const useParams = {
+                params:{
+                    id:volunteerInfo.id
+                }
+            }
+            const {data} = await queryVolunteer(useParams)
+            nowVolunteerInfo.value = data
+            if(nowVolunteerInfo.value.volunteerType===0 || nowVolunteerInfo.value.volunteerType===1) {
+                isShowVolunteerType.value = true
+            } else {
+                isShowVolunteerType.value = false
+            }
+        }
+        handleQueryVolunteer()
+
       const showModel= ref(false)
         const handleCancel=()=>{
             showModel.value = false
@@ -103,7 +127,14 @@ export default {
             showModel.value = false
         }
         const handleApply = ()=>{
-            router.push('/apply')
+            if(nowVolunteerInfo.value.volunteerType == null) {
+                router.push('/selectType')
+            } else if(nowVolunteerInfo.value.status===0) {
+                router.push('/resume')
+            } else {
+                router.push('/apply')
+            }
+
         }
       const previewResume = ()=>{
           window.open('#/resume')
@@ -134,11 +165,12 @@ export default {
             handleConfirm,
             OpenPage,
             handleSelectType,
-            volunteerInfo,
             handleApply,
             isShow,
             handleIsShow,
-            handleIsShowTrue
+            handleIsShowTrue,
+            isShowVolunteerType,
+            nowVolunteerInfo
         }
     }
 };

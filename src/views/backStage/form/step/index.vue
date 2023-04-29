@@ -11,6 +11,7 @@
                     <a-tree-select @change="handleSearchType(form.volunteerType)" :data="treeData" v-model="form.volunteerType"  placeholder="请选择志愿类型"/>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
+                <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
                 <a-table
                         size="large"
                         row-key="id"
@@ -23,12 +24,14 @@
                 >
                     <template #columns>
                         <a-table-column
-                                :width="140"
+                                title="序号"
+                                data-index="id"
+                        />
+                        <a-table-column
                                 title="姓名"
                                 data-index="name"
                         />
                         <a-table-column
-                                :width="150"
                                 title="照片"
                                 data-index="photo"
                         >
@@ -47,29 +50,33 @@
                             </template>
                         </a-table-column>
                         <a-table-column
-                                :width="100"
                                 title="性别"
                                 data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                :width="100"
                                 title="年龄"
                                 data-index="age"
+                        />
+                        <a-table-column
+                                title="地点"
+                                data-index="position"
                         />
                         <a-table-column
                                 title="分配状态"
                                 data-index="processText"
                         />
                         <a-table-column
-                                :width="160"
                                 title="服务方向"
                                 data-index="risk"
                         />
                         <a-table-column
-                                :width="200"
-                                title="申请时间"
-                                data-index="applyTime"
+                                title="负责人"
+                                data-index="principal"
+                        />
+                        <a-table-column
+                                title="负责人邮箱"
+                                data-index="principalEmail"
                         />
 
                         <a-table-column
@@ -77,56 +84,39 @@
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
-                                <a-button @click="handleClick1(record)" type="text">编辑</a-button>
+                                <a-button @click="handleClick1(record)" type="text">详细信息</a-button>
                             </template>
                         </a-table-column>
                     </template>
                 </a-table>
                 <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
                     <template #title>
-                        编辑志愿者信息
+                        查看志愿者信息
                     </template>
                     <div>
                         <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
                             <a-form-item field="name" label="姓名"
-                                         :rules="[{required:true,message:'name is required'},{minLength:2,message:'姓名不能少于两位'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <a-input v-model="form.name"  placeholder="请输入你的姓名" />
+                                <a-input disabled v-model="form.name"  placeholder="请输入你的姓名" />
                                 <span v-show="isRepeat">{{message}}</span>
                             </a-form-item>
-                            <a-form-item field="photo" label="照片">
-                                <template #cell="{ record }">
-                                    <a-space>
-                                        <a-avatar
-                                                :size="40"
-                                                shape="square"
-                                        >
-                                            <img
-                                                    alt="avatar"
-                                                    :src="record.photo"
-                                            />
-                                        </a-avatar>
-                                    </a-space>
-                                </template>
-                            </a-form-item>
-                            <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
-                                <a-radio-group v-model="form.sex">
+                            <a-form-item  field="sex" label="性别">
+                                <a-radio-group disabled v-model="form.sex">
                                     <a-radio value="1">男</a-radio>
                                     <a-radio value="0">女</a-radio>
                                 </a-radio-group>
                             </a-form-item>
                             <a-form-item field="age" label="年龄"
-                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                                          :validate-trigger="['change','input']"
                             >
-                                <el-input-number v-model="num" :min="1" :max="10" @change="handleChange" />
+                                <el-input-number disabled v-model="num" :min="1" :max="10" @change="handleChange" />
                             </a-form-item>
                             <a-form-item field="risk" label="服务方向"
-                                         :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                                          :validate-trigger="['change','input']"
                             >
                                 <a-tree-select
+                                        disabled
                                         v-model="form.risk"
                                         :allow-clear="true"
                                         :allow-search="true"
@@ -135,10 +125,35 @@
                                         style="width: 300px"
                                 ></a-tree-select>
                             </a-form-item>
+                            <a-form-item field="position" label="地点"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <el-input disabled v-model="form.position" :min="1" :max="10" @change="handleChange" />
+                            </a-form-item>
+                            <a-form-item field="principal" label="负责人"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <el-input disabled v-model="form.principal" :min="1" :max="10" @change="handleChange" />
+                            </a-form-item>
+                            <a-form-item field="principalEmail" label="负责人邮箱"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <el-input disabled v-model="form.principalEmail" :min="1" :max="10" @change="handleChange" />
+                            </a-form-item>
                             <a-form-item field="applyTime" label="申请时间"
                                          :validate-trigger="['change','input']"
                             >
                                 <a-input v-model="form.applyTime" disabled/>
+                            </a-form-item>
+                            <a-form-item field="address" label="地址"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <a-input v-model="form.address" disabled/>
+                            </a-form-item>
+                            <a-form-item field="profession" label="职业"
+                                         :validate-trigger="['change','input']"
+                            >
+                                <a-input v-model="form.profession" disabled/>
                             </a-form-item>
                         </a-form>
                     </div>
@@ -258,7 +273,12 @@
                 risk:'',
                 applyTime:'',
                 email:'',
-                volunteerType:''
+                volunteerType:'',
+                profession:'',
+                address:'',
+                position:'',
+                principal:'',
+                principalEmail:''
             });
 
             // const fetchData = async (

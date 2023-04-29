@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Breadcrumb :items="['志愿服务', '志愿服务点']" />
+        <Breadcrumb :items="['志愿服务', '志愿方向']" />
         <div class="tab-container">
         <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
                 <el-tab-pane v-for="item in tabOptions"  :name="item.label" :key="item.key">

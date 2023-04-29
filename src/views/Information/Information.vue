@@ -76,7 +76,7 @@
                 }
                 const {data} = await queryNews(useParams)
                 data.records.forEach(item=>{
-                    item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
+                    item.createTime = `${date.getFullYear()}年${date.getMonth()+1}月${date.getDay()}日`
                 })
                 newsData.value = data.records
                 console.log('newsData.value',newsData.value)
