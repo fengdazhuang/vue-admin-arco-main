@@ -51,7 +51,7 @@
 <script>
     /* eslint-disable */
     import {reactive, ref} from 'vue'
-    import {chooseVolType} from '@/api/volunteer'
+    import {chooseVolType,queryVolunteer} from '@/api/volunteer'
     import {useRouter} from "vue-router";
     import { Message } from '@arco-design/web-vue';
 
@@ -105,10 +105,20 @@
         mounted() {},
         setup() {
 
-            const formData = reactive({
-                volunteerType: ''
+
+            const volunteerInfo = ref(JSON.parse(window.sessionStorage.getItem('volunteerInfo')))
+
+            if (volunteerInfo.value.volunteerType === 0) {
+                volunteerInfo.value.volunteerType = '赛会志愿者'
+            } else {
+                volunteerInfo.value.volunteerType = '城市志愿者'
+            }
+            const updatevolunteerInfo = ref({
+                volunteerType:volunteerInfo.value.volunteerType
             })
-            const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
+            const formData = reactive({
+                volunteerType: updatevolunteerInfo.value.volunteerType
+            })
             console.log('volunteerInfo',volunteerInfo)
             const value = ref('')
 
@@ -123,10 +133,27 @@
                 }
             ]
             const router = useRouter()
+            const handleQueryVolunteer = async ()=>{
+                const useParams = {
+                    params:{
+                        id:volunteerInfo.value.id
+                    }
+                }
+                const res = await queryVolunteer(useParams)
+                // if (volunteerInfo.value.volunteerType === 0) {
+                //     volunteerInfo.value.volunteerType = '赛会志愿者'
+                // } else {
+                //     volunteerInfo.value.volunteerType = '城市志愿者'
+                // }
+                updatevolunteerInfo.value = res.data
+                // volunteerInfo.value = res.data
+                console.log('res',res)
+            }
+            handleQueryVolunteer()
             const handleSubmit = async ()=>{
                 const useParams = {
                     params:{
-                        id:volunteerInfo.id,
+                        id:volunteerInfo.value.id,
                         volunteerType:formData.volunteerType
                     }
                 }

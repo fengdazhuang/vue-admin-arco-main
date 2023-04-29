@@ -21,6 +21,9 @@
                 <el-menu-item index="4" class="common">
                     <router-link to="backStage" >后台管理</router-link>
                 </el-menu-item>
+                <el-menu-item index="5" class="common">
+                    <router-link to="recognize" >运动员签到</router-link>
+                </el-menu-item>
             </el-menu>
         </div>
         <div class="content">
@@ -285,7 +288,7 @@ export default {
 
                 position: relative;
                 top: 50%;
-              width: px2rem(72px);
+              //width: px2rem(72px);
                 height: px2rem(30px);
                 font-size: px2rem(18px);
                 border-radius: px2rem(15px);

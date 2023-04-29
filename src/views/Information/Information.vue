@@ -24,13 +24,13 @@
                     </div>
                 </div>
             </div>
-            <div class="yydt-box" v-for="item in newsData" :key="item.id">
+            <div class="yydt-box" @click="handleReadNews(item.id)" v-for="item in newsData" :key="item.id">
                 <div v-show="item.articleCover" class="yydt-box-img">
                     <img @click="handleInfo(item)" :src="item.articleCover" />
                 </div>
                 <div class="yydt-item">
                     <p class="time">{{item.createTime}}</p>
-                    <a href="#" @click="handleInfo(item)">
+                    <a @click="handleInfo(item)">
                         <p class="title">{{item.title}}</p>
                         <div class="summary" v-html="item.content">
                         </div>
@@ -48,8 +48,10 @@
 
 <script>
     /* eslint-disable */
-    import {addNews, queryNews} from '@/api/user'
+    import {addNews, queryNews,ReadNews} from '@/api/user'
     import {reactive,ref} from "vue";
+
+
     export default  {
         name:'Information',
         setup(){
@@ -63,6 +65,9 @@
             }
             let newsData = ref({})
             const date = new Date()
+            const handleReadNews = async (id)=>{
+
+            }
             const getNews = async ()=>{
                 const useParams = {
                     params:{
@@ -77,14 +82,21 @@
                 console.log('newsData.value',newsData.value)
             }
             getNews()
-            const  handleInfo = (item)=>{
+            const  handleInfo = async (item)=>{
                 window.sessionStorage.setItem('item',JSON.stringify(item))
+                const useParams = {
+                    params:{
+                        id:item.id
+                    }
+                }
+                const res = await ReadNews(useParams)
                 window.open('#/preview')
             }
             return {
                 getNews,
                 handleInfo,
-                newsData
+                newsData,
+                handleReadNews
             }
         }
     }

@@ -94,13 +94,13 @@
                     >
                       <a-input v-model="form.name" placeholder="请输入你的姓名" />
                     </a-form-item>
-                      <a-form-item>
-                          <a-image
-                                  width="200"
-                                  :src="base64"
-                          />
-                      </a-form-item>
-                      <a-form-item>
+<!--                      <a-form-item>-->
+<!--                          <a-image-->
+<!--                                  width="200"-->
+<!--                                  :src="base64"-->
+<!--                          />-->
+<!--                      </a-form-item>-->
+                      <a-form-item label="上传照片" :rules="[{required:true,message:'请上传照片'}]">
                           <a-space direction="vertical" :style="{ width: '100%' }">
                               <a-upload
                                       action="/"
@@ -147,19 +147,19 @@
                               </a-upload>
                           </a-space>
                       </a-form-item>
-                    <a-form-item field="photo" label="上传照片">
-                      <a-space direction="vertical" :style="{ width: '100%' }">
-                        <div class="choose-cover">
-                          <div class="uploader-comp">
-                            <div id="block-choose" class="block-choose" :style="coverStyle">
-                              <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
-                            </div>
-                            <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
-                          </div>
-                          <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
-                        </div>
-                      </a-space>
-                    </a-form-item>
+<!--                    <a-form-item field="photo" label="上传照片">-->
+<!--                      <a-space direction="vertical" :style="{ width: '100%' }">-->
+<!--                        <div class="choose-cover">-->
+<!--                          <div class="uploader-comp">-->
+<!--                            <div id="block-choose" class="block-choose" :style="coverStyle">-->
+<!--                              <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>-->
+<!--                            </div>-->
+<!--                            <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">-->
+<!--                          </div>-->
+<!--                          <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>-->
+<!--                        </div>-->
+<!--                      </a-space>-->
+<!--                    </a-form-item>-->
                     <a-form-item field="email" label="电子邮箱"
                                  :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                                  :validate-trigger="['change','input']"
@@ -179,7 +179,7 @@
                         <a-radio value="0">女</a-radio>
                       </a-radio-group>
                     </a-form-item>
-                    <a-form-item field="competitionName" label="参赛项目">
+                    <a-form-item field="competitionName" label="参赛项目" :rules="[{required:true,message:'请选择参赛项目'}]">
                       <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择参赛项目"/>
                     </a-form-item>
                     <a-form-item>
@@ -216,15 +216,20 @@
                       data-index="photo"
               >
                   <template #cell="{ record }">
-                      <a-space>
+                      <a-space @click="handle(record)">
                           <a-avatar
                                   :size="40"
                                   shape="square"
                           >
-                              <img
-                                      alt="avatar"
+                              <a-image
+                                      :preview-visible="visible2"
+                                      @preview-visible-change="() => { visible2 = false }"
                                       :src="record.photo"
                               />
+<!--                              <img-->
+<!--                                      alt="avatar"-->
+<!--                                      :src="record.photo"-->
+<!--                              />-->
                           </a-avatar>
                       </a-space>
                   </template>
@@ -252,12 +257,20 @@
                       :width="100"
                       title="抵达情况"
                       data-index="arrivalStatus"
-              />
+              >
+                  <template #cell="{ record }">
+                      <span :style="{color:(record.arrivalStatus===true? 'green':'red')}">{{record.arrivalStatusText}}</span>
+                  </template>
+              </a-table-column>
               <a-table-column
                       :width="100"
                       title="健康状况"
                       data-index="healthyStatus"
-              />
+              >
+                  <template #cell="{ record }">
+                      <span :style="{color:(record.healthyStatus===true? 'green':'red')}">{{record.healthyStatusText}}</span>
+                  </template>
+              </a-table-column>
               <a-table-column
                       title="电子邮箱"
                       data-index="email"
@@ -299,19 +312,19 @@
               >
                 <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择参赛项目"/>
               </a-form-item>
-              <a-form-item field="photo" label="上传照片">
-                <a-space direction="vertical" :style="{ width: '100%' }">
-                  <div class="choose-cover">
-                    <div class="uploader-comp">
-                      <div id="block-choose" class="block-choose" :style="coverStyle">
-                        <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
-                      </div>
-                      <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
-                    </div>
-                    <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
-                  </div>
-                </a-space>
-              </a-form-item>
+<!--              <a-form-item field="photo" label="上传照片">-->
+<!--                <a-space direction="vertical" :style="{ width: '100%' }">-->
+<!--                  <div class="choose-cover">-->
+<!--                    <div class="uploader-comp">-->
+<!--                      <div id="block-choose" class="block-choose" :style="coverStyle">-->
+<!--                        <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>-->
+<!--                      </div>-->
+<!--                      <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">-->
+<!--                    </div>-->
+<!--                    <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>-->
+<!--                  </div>-->
+<!--                </a-space>-->
+<!--              </a-form-item>-->
               <a-form-item field="email" label="电子邮箱"
                            :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
                            :validate-trigger="['change','input']"
@@ -424,10 +437,11 @@ export default defineComponent({
     const treeRef = ref()
     // const data = ref({})
     const PlayerList = ref([])
-    const imgSrc = ref('@/assets/images/img1.jpg')
-    const isImg = ref(false)
-    const inputPic = ref(null)
+    // const imgSrc = ref('@/assets/images/img1.jpg')
+    // const isImg = ref(false)
+    // const inputPic = ref(null)
     const date = new Date()
+      const visible2 = ref(false)
     const competitions = ref('')
       let node
       const file = ref();
@@ -501,8 +515,11 @@ export default defineComponent({
       email:'',
     });
     let ids = reactive([])
+      const handle = (row)=>{
+          console.log('row',row)
+      }
     const fetchData = async (
-        params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:1,healthyStatus:0}
+        params: PolicyParams = { competitionName:'',country:'',name:'',pageNumber: 1, pageSize: 20,arrivalStatus:'',healthyStatus:''}
     ) => {
       setLoading(true);
       try {
@@ -518,20 +535,27 @@ export default defineComponent({
             item.sex = '女'
           }
           if (item.arrivalStatus === 0) {
-              item.arrivalStatus = '抵达'
+              item.arrivalStatus = true
+              item.arrivalStatusText = '已抵达'
           } else {
-              item.arrivalStatus = '未抵达'
+              item.arrivalStatus = false
+              item.arrivalStatusText = '未抵达'
           }
             if (item.healthyStatus=== 0) {
-                item.healthyStatus = '健康'
+                item.healthyStatus = true
+                item.healthyStatusText = '健康'
             } else if(item.healthyStatus=== 1){
-                item.healthyStatus = '良好'
+                item.healthyStatus = true
+                item.healthyStatusText = '良好'
             } else if (item.healthyStatus=== 2) {
-                item.healthyStatus = '较差'
+                item.healthyStatus = false
+                item.healthyStatusText = '较差'
             }
           // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
         })
+
         PlayerList.value = data.records
+          console.log('PlayerList.value',PlayerList.value)
         // renderData.value = data.list;
         pagination.pageNumber = params.pageNumber;
         pagination.total = data.total;
@@ -556,8 +580,8 @@ export default defineComponent({
     };
 
     const handleClick1 = (row) => {
-      isImg.value = true
-      imgSrc.value = row.photo
+      // isImg.value = true
+      // imgSrc.value = row.photo
       if (row.sex==='男') {
         row.sex = '1'
       } else {
@@ -634,8 +658,8 @@ export default defineComponent({
       /* eslint-disable */
       const res = await addPlayer(form)
       visible.value = false
-      imgSrc.value = '@/assets/images/img1.jpg'
-      isImg.value = false
+      // imgSrc.value = '@/assets/images/img1.jpg'
+      // isImg.value = false
       fetchData()
       $ref.formRef.validate((valid)=>{
 
@@ -730,6 +754,10 @@ export default defineComponent({
       },
     ];
     const treeDataCountry = [
+        {
+            key:'',
+            title:'所有'
+        },
       {
         key:'中国',
         title:'中国'
@@ -745,6 +773,10 @@ export default defineComponent({
     ]
       const treeArrivalStatus = [
           {
+              key:'',
+              title:'所有'
+          },
+          {
               key:'0',
               title:'抵达'
           },
@@ -754,6 +786,10 @@ export default defineComponent({
           },
       ]
       const treeHealthyStatus = [
+          {
+              key:'',
+              title:'所有'
+          },
           {
               key:'0',
               title:'健康'
@@ -865,11 +901,11 @@ export default defineComponent({
     //         }
     //       });
     // }
-      const uploadCover = (e)=> {
-          imgSrc.value='@/assets/images/img1.jpg'
-          form.photo = '@/assets/images/img1.jpg'
-          isImg.value = true
-      }
+    //   const uploadCover = (e)=> {
+    //       imgSrc.value='@/assets/images/img1.jpg'
+    //       form.photo = '@/assets/images/img1.jpg'
+    //       isImg.value = true
+    //   }
 
     const search = async () => {
         if(node) {
@@ -937,10 +973,10 @@ export default defineComponent({
       checkStrictly,
       treeRef,
       treeDataCountry,
-      uploadCover,
-      imgSrc,
-      isImg,
-      inputPic,
+      // uploadCover,
+      // imgSrc,
+      // isImg,
+      // inputPic,
         handleDelete,
         handleGetId,
         handleManyDelete,
@@ -949,8 +985,10 @@ export default defineComponent({
         treeArrivalStatus,
         file,
         onChange,
+        handle,
         onProgress,
-        base64
+        base64,
+        visible2
     };
   },
 });

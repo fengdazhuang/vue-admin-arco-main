@@ -94,17 +94,48 @@
                                         >
                                             <a-input v-model="form.name" placeholder="请输入你的姓名" />
                                         </a-form-item>
-                                        <a-form-item field="photo" label="上传照片">
+                                        <a-form-item label="上传照片" :rules="[{required:true,message:'请上传照片'}]">
                                             <a-space direction="vertical" :style="{ width: '100%' }">
-                                                <div class="choose-cover">
-                                                    <div class="uploader-comp">
-                                                        <div id="block-choose" class="block-choose" :style="coverStyle">
-                                                            <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                                <a-upload
+                                                        action="/"
+                                                        :fileList="file ? [file] : []"
+                                                        :show-file-list="false"
+                                                        @change="onChange"
+                                                        @progress="onProgress"
+                                                >
+                                                    <template #upload-button>
+                                                        <div
+                                                                :class="`arco-upload-list-item${file && file.status === 'error' ? ' arco-upload-list-item-error' : ''}`">
+                                                            <div
+                                                                    class="arco-upload-list-picture custom-upload-avatar"
+                                                                    v-if="file && file.url"
+                                                            >
+                                                                <img :src="file.url" />
+                                                                <div class="arco-upload-list-picture-mask">
+                                                                    <IconEdit />
+                                                                </div>
+                                                                <a-progress
+                                                                        v-if="file.status === 'uploading' && file.percent < 100"
+                                                                        :percent="file.percent"
+                                                                        type="circle"
+                                                                        size="mini"
+                                                                        :style="{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translateX(-50%) translateY(-50%)',
+              }"
+                                                                />
+                                                            </div>
+                                                            <div class="arco-upload-picture-card" v-else>
+                                                                <div class="arco-upload-picture-card-text">
+                                                                    <IconPlus />
+                                                                    <div style="margin-top: 10px; font-weight: 600">Upload</div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
-                                                    </div>
-                                                    <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
-                                                </div>
+                                                    </template>
+                                                </a-upload>
                                             </a-space>
                                         </a-form-item>
                                         <a-form-item field="email" label="电子邮箱"
@@ -246,17 +277,48 @@
                             >
                                 <a-tree-select :data="treeData" v-model="form.competitionName" placeholder="请选择负责项目"/>
                             </a-form-item>
-                            <a-form-item field="photo" label="上传照片">
+                            <a-form-item label="上传照片" :rules="[{required:true,message:'请上传照片'}]">
                                 <a-space direction="vertical" :style="{ width: '100%' }">
-                                    <div class="choose-cover">
-                                        <div class="uploader-comp">
-                                            <div id="block-choose" class="block-choose" :style="coverStyle">
-                                                <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                    <a-upload
+                                            action="/"
+                                            :fileList="file ? [file] : []"
+                                            :show-file-list="false"
+                                            @change="onChange"
+                                            @progress="onProgress"
+                                    >
+                                        <template #upload-button>
+                                            <div
+                                                    :class="`arco-upload-list-item${file && file.status === 'error' ? ' arco-upload-list-item-error' : ''}`">
+                                                <div
+                                                        class="arco-upload-list-picture custom-upload-avatar"
+                                                        v-if="file && file.url"
+                                                >
+                                                    <img :src="file.url" />
+                                                    <div class="arco-upload-list-picture-mask">
+                                                        <IconEdit />
+                                                    </div>
+                                                    <a-progress
+                                                            v-if="file.status === 'uploading' && file.percent < 100"
+                                                            :percent="file.percent"
+                                                            type="circle"
+                                                            size="mini"
+                                                            :style="{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translateX(-50%) translateY(-50%)',
+              }"
+                                                    />
+                                                </div>
+                                                <div class="arco-upload-picture-card" v-else>
+                                                    <div class="arco-upload-picture-card-text">
+                                                        <IconPlus />
+                                                        <div style="margin-top: 10px; font-weight: 600">Upload</div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
-                                        </div>
-                                        <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
-                                    </div>
+                                        </template>
+                                    </a-upload>
                                 </a-space>
                             </a-form-item>
                             <a-form-item field="email" label="电子邮箱"
@@ -372,11 +434,32 @@
             const PlayerList = ref([])
             const imgSrc = ref('@/assets/images/img1.jpg')
             const isImg = ref(false)
-            const inputPic = ref(null)
+            // const inputPic = ref(null)
             // const date = new Date()
             const competitions = ref('')
             let node
             let ids = reactive([])
+            const file = ref();
+            const base64 = ref()
+            const onChange = (_, currentFile) => {
+                // const blob = JSON.parse(JSON.stringify(currentFile));
+                // console.log('blob',blob)
+                const fileReader = new FileReader();
+                fileReader.onload = (e) => {
+                    console.log('e.target.result',e.target.result)
+                    form.photo = e.target.result
+                    base64.value = e.target.result
+                    console.log('base64',base64.value)
+                };
+                fileReader.readAsDataURL(currentFile.file);
+                file.value = {
+                    ...currentFile,
+                    // url: URL.createObjectURL(currentFile.file),
+                };
+            };
+            const onProgress = (currentFile) => {
+                file.value = currentFile;
+            };
             const handleGetId = (rowKeys)=>{
                 ids = rowKeys
             }
@@ -393,7 +476,7 @@
             const form = reactive({
                 competitionName:'',
                 name: '',
-                photo:'@/assets/images/img1.jpg',
+                photo:'',
                 country: '',
                 sex:1,
                 email:''
@@ -616,6 +699,10 @@
             ];
             const treeDataCountry = [
                 {
+                    key:'',
+                    title:'所有'
+                },
+                {
                     key:'中国',
                     title:'中国'
                 },
@@ -630,6 +717,10 @@
             ]
             const treeArrivalStatus = [
                 {
+                    key:'',
+                    title:'所有'
+                },
+                {
                     key:'0',
                     title:'抵达'
                 },
@@ -639,6 +730,10 @@
                 },
             ]
             const treeHealthyStatus = [
+                {
+                    key:'',
+                    title:'所有'
+                },
                 {
                     key:'0',
                     title:'健康'
@@ -653,6 +748,10 @@
                 },
             ]
             const treeData = [
+                {
+                    key:'',
+                    title:'所有'
+                },
                 {
                     key: '竞技性比赛',
                     title: '竞技性比赛',
@@ -750,11 +849,11 @@
             //         }
             //       });
             // }
-            const uploadCover = (e)=> {
-                imgSrc.value='@/assets/images/img1.jpg'
-                form.photo = '@/assets/images/img1.jpg'
-                isImg.value = true
-            }
+            // const uploadCover = (e)=> {
+            //     imgSrc.value='@/assets/images/img1.jpg'
+            //     form.photo = '@/assets/images/img1.jpg'
+            //     isImg.value = true
+            // }
 
             const search = async () => {
                 const items = node.map(item=>{
@@ -820,15 +919,18 @@
                 checkStrictly,
                 treeRef,
                 treeDataCountry,
-                uploadCover,
+                // uploadCover,
                 imgSrc,
                 isImg,
-                inputPic,
+                // inputPic,
                 handleDelete,
                 handleGetId,
                 handleManyDelete,
                 treeArrivalStatus,
-                treeHealthyStatus
+                treeHealthyStatus,
+                onChange,
+                onProgress,
+                file
             };
         },
     });

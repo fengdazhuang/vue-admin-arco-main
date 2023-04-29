@@ -46,7 +46,7 @@
                     <a-col :span="16">
                         <a-space>
                             <a-button @click="handleCreate()" type="primary">新增</a-button>
-                            <a-button type="primary" status="danger">批量改变</a-button>
+                            <a-button type="primary" status="danger" @click="handleChangeMany">批量改变</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
                                     添加合作伙伴
@@ -131,6 +131,12 @@
                                 title="链接"
                                 data-index="url"
                         >
+                            <template #cell="{ record }">
+                                <a-space style="margin-bottom: 20px;">
+                                    <span v-show="!record.isInput">{{record.url}}</span>
+                                    <a-input @blur="handleBlur(record)" :style="{width:'170px',height:'25px'}" v-show="record.isInput" v-model="record.url" />
+                                </a-space>
+                            </template>
                         </a-table-column>
                         <a-table-column
                                 title="状态控制"
@@ -162,7 +168,7 @@
                                 data-index="operations"
                         >
                             <template #cell="{ record }">
-                                <a-button @click="handleEdit(record)" type="text"  size="small">编辑</a-button>
+                                <a-button @click="handleEditUrl(record)" type="text"  size="small">编辑</a-button>
                             </template>
                         </a-table-column>
                     </template>
@@ -299,7 +305,9 @@
             // const date = new Date()
             const competitions = ref('')
             const message = ref('')
+
             const isRepeat = ref(false)
+            let ids = []
             let node
             let form = reactive({
                 id:'',
@@ -361,6 +369,7 @@
                             item.status = true
                             item.statusText = '已启用'
                         }
+                        item.isInput = false
                     })
                     PlayerList.value = data
                     console.log(1111)
@@ -419,7 +428,24 @@
                 });
             }
             const handleGetId = (rowKeys) =>{
+                ids = []
+                console.log('rowKeys',rowKeys)
 
+                // rowKeys = rowKeys.filter(item=>{
+                //     return !filterRowKeys.includes(item)
+                // })
+
+                PlayerList.value.forEach(item=>{
+                    if (rowKeys.includes(item.id)) {
+                        // filterRowKeys.push(item.id)
+                        ids.push({
+                            id:item.id,
+                            status:item.status
+                        })
+                    }
+
+                })
+                console.log('ids222',ids)
             }
             const handleCancel1 = () => {
                 showModel.value = false;
@@ -432,6 +458,12 @@
                         createTime:''
                     });
                 });
+            }
+            const isShowInput = ref(false)
+            const handleEditUrl = (row)=>{
+                console.log('row',row)
+                row.isInput = true
+                // isShowInput.value = true
             }
             const handleEdit = (row)=>{
                 console.log('row',row)
@@ -474,6 +506,40 @@
                         }
                     }
                 })
+            }
+            const handleChangeMany = async ()=>{
+                console.log('idsbe',ids)
+                ids.forEach(item=>{
+                    console.log('item.status',item.status)
+                    if (item.status) {
+                        item.status = 1
+                        console.log('item.status1111',item.status)
+                    } else {
+                        item.status = 0
+                    }
+                    console.log('item.status2222',item.status)
+                })
+                const body = ids
+                await modifyFriendLinkStatus(body)
+                fetchData()
+                ids.forEach(item=>{
+                    if (item.status === 1) {
+                        item.status = false
+                    } else {
+                        item.status = true
+                    }
+                })
+            }
+            const handleBlur = async (row)=>{
+                row.isInput = false
+                const body = {
+                    id:row.id,
+                    url:row.url,
+                    logo:row.logo
+                }
+                const res = await modifyFriendLink(body)
+                // visible.value = false
+                fetchData()
             }
             const handleConfirm1 = async ($ref,type)=> {
                 /* eslint-disable */
@@ -776,7 +842,11 @@
                 handleEdit,
                 imgSrc,
                 isImg,
-                inputPic
+                inputPic,
+                handleChangeMany,
+                isShowInput,
+                handleEditUrl,
+                handleBlur
             };
         },
     });

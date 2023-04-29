@@ -260,6 +260,10 @@
             });
             const treeDataSort = [
                 {
+                    key:'',
+                    title:'所有'
+                },
+                {
                     key:1,
                     title:'年龄'
                 },

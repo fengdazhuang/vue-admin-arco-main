@@ -58,7 +58,7 @@
                                 data-index="age"
                         />
                         <a-table-column
-                                title="审批状态"
+                                title="分配状态"
                                 data-index="processText"
                         />
                         <a-table-column
@@ -186,6 +186,10 @@
             const {ctx} = getCurrentInstance()
             const treeDataService = ref([])
             const treeData = [
+                {
+                    key:'',
+                    title:'所有'
+                },
                 {
                     key: '0',
                     title: '赛会志愿者',
@@ -319,12 +323,10 @@
                         if(item.process === 0 || item.process==null) {
                             item.processText = '未申请'
 
-                        } else if(item.process === 1) {
-                            item.processText = '已申请，未审核，未分配'
-                        } else if(item.process === 2) {
-                            item.processText = '已申请，已审核，未分配'
-                        } else if(item.process === 3) {
-                            item.processText = '已申请，已审核，已分配'
+                        } else if(item.process === 1 || item.process === 2) {
+                            item.processText = '未分配'
+                        }  else if(item.process === 3) {
+                            item.processText = '已分配'
                         } else if(item.process === 4){
                             item.processText = '未通过'
                         }
@@ -376,6 +378,12 @@
                         title:item.name
                     })
                 })
+                treeDataService.value.unshift(
+                    {
+                        key:'',
+                        title:'所有'
+                    }
+                )
             }
             handleGetVolDirections(1)
             const rowSelection = reactive({
