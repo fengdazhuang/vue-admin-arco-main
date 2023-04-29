@@ -4,43 +4,6 @@
         <Breadcrumb :items="['系统管理', '合作伙伴']" />
         <div class="main">
             <a-card :style="{width:'100%'}" class="general-card card" title="合作伙伴">
-                <a-row>
-                    <a-col :flex="1">
-                        <a-form
-                                :model="formModel"
-                                :label-col-props="{ span: 6 }"
-                                :wrapper-col-props="{ span: 18 }"
-                                label-align="left"
-                        >           <a-row :gutter="16">
-                            <a-col :span="6">
-                                <a-form-item field="name"  label="昵称">
-                                    <a-input
-                                            v-model="formModel.name"
-                                            placeholder="请输入昵称"
-                                    />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :flex="'86px'" style="text-align: right">
-                                <a-space  :size="18">
-                                    <a-button type="primary" :style="{margin:'0 0 0 20px'}" @click="search">
-                                        <template #icon>
-                                            <icon-search />
-                                        </template>
-                                        删除
-                                    </a-button>
-                                    <a-button @click="reset">
-                                        <template #icon>
-                                            <icon-refresh />
-                                        </template>
-                                        重置
-                                    </a-button>
-                                </a-space>
-                            </a-col>
-                        </a-row>
-                        </a-form>
-                    </a-col>
-
-                </a-row>
                 <a-divider style="margin-top: 0" />
                 <a-row style="margin-bottom: 16px">
                     <a-col :span="16">
@@ -53,6 +16,12 @@
                                 </template>
                                 <div>
                                     <a-form ref="formRef" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
+                                        <a-form-item field="name" label="name"
+                                                     :rules="[{required:true,message:'请输入name'}]"
+                                                     :validate-trigger="['change','input']"
+                                        >
+                                            <a-input v-model="form.name" placeholder="请输入name" />
+                                        </a-form-item>
                                         <a-form-item field="logo" label="Logo">
                                             <div class="choose-cover">
                                                 <div class="uploader-comp">
@@ -69,16 +38,6 @@
                                                      :validate-trigger="['change','input']"
                                         >
                                             <a-input v-model="form.url" placeholder="请输入链接" />
-                                        </a-form-item>
-                                        <a-form-item field="status" label="状态"
-                                                     :rules="[{required:true,message:'请设置状态'}]"
-                                                     :validate-trigger="['change','input']"
-                                        >
-                                            <template #cell="{ record }">
-                                                <a-space style="margin-bottom: 20px;">
-                                                    <a-switch  @click="handleChangeStatus(record)" v-model="record.status" />
-                                                </a-space>
-                                            </template>
                                         </a-form-item>
                                         <a-form-item>
                                             <a-space>
@@ -107,6 +66,10 @@
                         <a-table-column
                                 title="ID"
                                 data-index="id"
+                        />
+                        <a-table-column
+                                title="name"
+                                data-index="name"
                         />
                         <a-table-column
                                 :width="150"
@@ -314,7 +277,8 @@
                 url:'',
                 logo:'',
                 status:0,
-                createTime:''
+                createTime:'',
+                name:''
             });
 
             // const fetchData = async (
@@ -481,9 +445,9 @@
             const handleConfirm = async ($ref,type)=> {
                 /* eslint-disable */
                 const body = {
+                    name:form.name,
                     url:form.url,
                     logo:form.logo,
-                    status:1
                 }
                 const res = await addFriendLink(body)
                 visible.value = false

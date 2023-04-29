@@ -6,7 +6,7 @@
       <!-- 文字 -->
       <div class="txt">
         <el-icon class="icon"><Service /></el-icon>
-        <p>赛会志愿者补充招募申请报名已于2022年12月31日24：00分截止。</p>
+        <p>赛会志愿者补充招募正在进行中！</p>
       </div>
       <div class="fo-container">
         <p>欢迎报名杭州2022年亚运会和亚残运会赛会志愿者</p>
@@ -53,9 +53,11 @@ export default {
     .vid {
       width: 100%;
       height: 4rem;
-      background-color: black;
+      //background-color: black;
       display: block;
       margin-top: 0.5rem;
+      background-image: url("@/assets/images/volunteer.jpg");
+      background-size: 100%;
     }
     .txt {
       font-size: 16px;

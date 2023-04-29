@@ -929,7 +929,25 @@ export default defineComponent({
             } else {
                 item.sex = '女'
             }
+            if (item.arrivalStatus === 0) {
+                item.arrivalStatus = true
+                item.arrivalStatusText = '已抵达'
+            } else {
+                item.arrivalStatus = false
+                item.arrivalStatusText = '未抵达'
+            }
+            if (item.healthyStatus=== 0) {
+                item.healthyStatus = true
+                item.healthyStatusText = '健康'
+            } else if(item.healthyStatus=== 1){
+                item.healthyStatus = true
+                item.healthyStatusText = '良好'
+            } else if (item.healthyStatus=== 2) {
+                item.healthyStatus = false
+                item.healthyStatusText = '较差'
+            }
         })
+
         PlayerList.value = data.records
 
     };

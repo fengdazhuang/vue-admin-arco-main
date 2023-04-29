@@ -7,7 +7,7 @@
                 <a-space size="large" >
 
                     <span :style="{color:'#000'}">排序</span>
-                    <a-tree-select @change="handleOrderType(form.orderType)" :data="treeDataSort" v-model="form.orderType"  placeholder="请选择服务方向"/>
+                    <a-tree-select @change="handleOrderType(form.orderType)" :data="treeDataSort" v-model="form.orderType"  placeholder="请选择服务意向"/>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
                 <a-table
@@ -22,12 +22,10 @@
                 >
                     <template #columns>
                         <a-table-column
-                                :width="100"
                                 title="姓名"
                                 data-index="name"
                         />
                         <a-table-column
-                                :width="100"
                                 title="照片"
                                 data-index="photo"
                         >
@@ -46,31 +44,22 @@
                             </template>
                         </a-table-column>
                         <a-table-column
-                                :width="80"
                                 title="性别"
                                 data-index="sex"
                         >
                         </a-table-column>
                         <a-table-column
-                                :width="200"
                                 title="年龄"
                                 data-index="age"
                         />
 
                         <a-table-column
-                                :width="220"
-                                title="服务方向"
+                                title="服务意向"
                                 data-index="intention"
                         />
                         <a-table-column
-                                :width="220"
                                 title="申请时间"
                                 data-index="applyTime"
-                        />
-                        <a-table-column
-                                :width="220"
-                                title="审批时间"
-                                data-index="updateTime"
                         />
 
                         <a-table-column
@@ -96,19 +85,6 @@
                                 <a-input v-model="form.name"  placeholder="请输入你的姓名" />
                                 <span v-show="isRepeat">{{message}}</span>
                             </a-form-item>
-                            <a-form-item field="photo" label="上传照片">
-                                <a-space direction="vertical" :style="{ width: '100%' }">
-                                    <div class="choose-cover">
-                                        <div class="uploader-comp">
-                                            <div id="block-choose" class="block-choose" :style="coverStyle">
-                                                <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
-                                            </div>
-                                            <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
-                                        </div>
-                                        <div style="margin-top: 10px; color: #9b9d9e;">请上传JPG、JPEG、PNG格式的封面图噢~</div>
-                                    </div>
-                                </a-space>
-                            </a-form-item>
                             <a-form-item field="sex" label="性别" :rules="[{required:true,message:'must select one'}]">
                                 <a-radio-group v-model="form.sex">
                                     <a-radio value="1">男</a-radio>
@@ -133,13 +109,13 @@
                                     <a-radio @click="form.isShow=0" value="0">拒绝</a-radio>
                                 </a-radio-group>
                             </a-form-item>
-                            <a-form-item v-show="form.isShow === 1 ? 1:0"   field="risk" label="服务方向" :rules="[{required:true,message:'请选择服务方向'}]">
+                            <a-form-item v-show="form.isShow === 1 ? 1:0"   field="risk" label="服务意向" :rules="[{required:true,message:'请选择服务方向'}]">
                                 <a-tree-select
                                         v-model="form.risk"
                                         :allow-clear="true"
                                         :allow-search="true"
                                         :data="treeDataService"
-                                        placeholder="请选择服务方向"
+                                        placeholder="请选择服务意向"
                                         style="width: 300px"
                                 ></a-tree-select>
                             </a-form-item>

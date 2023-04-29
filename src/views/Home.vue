@@ -3,7 +3,7 @@
         <div class="header">
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect">
                 <el-menu-item>
-                    <img class="bg-logo1" src="@/assets/images/logo1.png" alt="">
+                    <img class="bg-logo1"  src="@/assets/images/logo1.png" alt="">
                 </el-menu-item>
                 <div class="flex-grow" />
                 <el-menu-item index="0" class="common">
@@ -221,12 +221,18 @@
   /* eslint-disable */
   import {reactive, ref} from 'vue'
 import {getFriendLinks} from '@/api/system'
+  import {useRouter} from "vue-router";
 
 export default {
     name: 'home',
     setup () {
+        const router = useRouter()
         let FriendLinksList = ref([])
         const activeIndex = ref('0')
+        const handleToIndex = ()=>{
+            console.log(111)
+            router.push('/')
+        }
         const handleSelect = (key, keyPath) => {
             console.log(key, keyPath)
         }
@@ -244,7 +250,8 @@ export default {
             activeIndex,
             handleSelect,
             PageOpen,
-            FriendLinksList
+            FriendLinksList,
+            handleToIndex
         }
     }
 

@@ -3,7 +3,7 @@
     <Breadcrumb
       :items="[
         '数据可视化',
-        '多维数据分析',
+        '新闻分析',
       ]"
     />
     <a-space direction="vertical" :size="16" fill>

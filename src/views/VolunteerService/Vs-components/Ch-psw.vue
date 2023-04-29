@@ -39,7 +39,7 @@
               </el-form-item>
             </el-col>
             <p>
-              密码格式要求：长应8一20个字符，且必须同时包含大写、小写字母、数字和特殊字符
+                只能输入6-20个字母、数字、下划线
             </p>
           </div>
           <div class="container">
@@ -89,43 +89,54 @@
     /* eslint-disable */
     import {modifyPassword} from '@/api/volunteer'
     import {getCurrentInstance, reactive} from "vue";
+    import {useRouter} from "vue-router";
     import { Message } from '@arco-design/web-vue';
+    import {regPassword} from '@/api/regret'
 
     export default {
   components: {},
   props: [],
-  data() {
-    return {
-      rules: {
-        password: [
-          {
-            required: true,
-            message: "请输入密码",
-            trigger: "blur",
-          },
-        ],
-          newPassword: [
-          {
-            required: true,
-            message: "请输入新密码",
-            trigger: "blur",
-          },
-        ],
-        confirmPassword: [
-          {
-            required: true,
-            message: "请输入确认密码",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
-  },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   setup() {
+      const reg_Password = regPassword
+      const router = useRouter()
+      const rules= {
+          password: [
+              {
+                  required: true,
+                  message: "请输入密码",
+                  trigger: "blur",
+              },
+              {
+                pattern: reg_Password,
+                  message: '只能输入6-20个字母、数字、下划线',
+                  trigger: ['blur', 'change']
+              }
+          ],
+          newPassword: [
+              {
+                  required: true,
+                  message: "请输入新密码",
+                  trigger: "blur",
+              },
+              ,
+              {
+                  pattern: reg_Password,
+                  message: '只能输入6-20个字母、数字、下划线',
+                  trigger: ['blur', 'change']
+              }
+          ],
+          confirmPassword: [
+              {
+                  required: true,
+                  message: "请输入确认密码",
+                  trigger: "blur",
+              },
+          ],
+      }
       const formData = reactive({
           password: '',
           newPassword: '',
@@ -134,8 +145,11 @@
       const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
       const {ctx} = getCurrentInstance()
       const handleChangePassword =   ()=>{
+          if(formData.newPassword != formData.confirmPassword) {
+              Message.error('两次密码不相同')
+              return
+          }
           ctx.$refs.elForm.validate(async (validata)=>{
-              console.log('validata',validata)
               if (validata) {
                   const body = {
                       id:volunteerInfo.id,
@@ -145,6 +159,7 @@
                   await modifyPassword(body)
                   ctx.$refs.elForm.resetFields()
                   Message.success('修改成功')
+                  router.push('/ind-center')
               } else {
                   Message.error('修改失败')
               }
@@ -157,7 +172,8 @@
     return {
       OpenPage,
         handleChangePassword,
-        formData
+        formData,
+        rules
     };
   },
   methods: {

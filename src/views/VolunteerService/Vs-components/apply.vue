@@ -15,6 +15,7 @@
                             <el-col :span="24">
                                 <el-form-item label="服务意向" prop="intention" :rules="[{required:true,message:'请输入服务意向'}]">
                                     <a-tree-select
+                                            multiple="true"
                                             v-model="userInfo.intention"
                                             :allow-clear="true"
                                             :allow-search="true"
@@ -68,6 +69,7 @@
 <script>
     /* eslint-disable */
     import {reactive, ref,getCurrentInstance} from "vue";
+    import {useRouter} from "vue-router";
     import {modifyInfo,queryVolunteer} from'@/api/volunteer'
     import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
     import { Message } from '@arco-design/web-vue';
@@ -78,20 +80,28 @@
         components:{Bottom},
         setup() {
             const {ctx} = getCurrentInstance()
+            const router = useRouter()
             const elForm = ref(null)
-            let volunteerInfo = reactive(JSON.parse(window.sessionStorage.getItem('volunteerInfo')))
-            let userInfo = reactive({
-                comment:volunteerInfo.comment,
+            let volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
+            let userInfo = ref({
+                comment:'',
                 id:volunteerInfo.id,
-                intention:volunteerInfo.intention
+                intention:''
             });
             const value = ref('')
             const activeIndex = ref("0");
             const treeDataService = ref([])
             const handleSubmitApply = async ()=>{
-                const res = await applyVolunteer(userInfo)
+                const intention = userInfo.value.intention.join(',')
+                const body = {
+                    id:volunteerInfo.id,
+                    comment:userInfo.value.comment,
+                    intention:intention
+                }
+                const res = await applyVolunteer(body)
                 if (res.code===200) {
                     Message.success('提交成功')
+                    router.push('/ind-center')
                 }
                 console.log('ress',res)
             }
@@ -112,7 +122,6 @@
                     })
                 })
             }
-            handleGetVolDirections(1)
             const handleQueryVolunteer = async ()=>{
                 const useParams = {
                     params:{
@@ -120,9 +129,19 @@
                     }
                 }
                 const {data} = await queryVolunteer(useParams)
+                console.log('data',data)
+                userInfo.value = {
+                    comment:data.comment,
+                    id:volunteerInfo.id,
+                    intention:data.intention
+                }
+                handleGetVolDirections(data.volunteerType)
                 // userInfo = data
             }
             handleQueryVolunteer()
+
+
+
 
             return {
                 activeIndex,

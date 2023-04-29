@@ -499,16 +499,21 @@
                             item.sex = '女'
                         }
                         if (item.arrivalStatus === 0) {
-                            item.arrivalStatus = '抵达'
+                            item.arrivalStatus = true
+                            item.arrivalStatusText = '已抵达'
                         } else {
-                            item.arrivalStatus = '未抵达'
+                            item.arrivalStatus = false
+                            item.arrivalStatusText = '未抵达'
                         }
                         if (item.healthyStatus=== 0) {
-                            item.healthyStatus = '健康'
+                            item.healthyStatus = true
+                            item.healthyStatusText = '健康'
                         } else if(item.healthyStatus=== 1){
-                            item.healthyStatus = '良好'
+                            item.healthyStatus = true
+                            item.healthyStatusText = '良好'
                         } else if (item.healthyStatus=== 2) {
-                            item.healthyStatus = '较差'
+                            item.healthyStatus = false
+                            item.healthyStatusText = '较差'
                         }
                         // item.createTime = `${date.getFullYear()}年${date.getMonth()}月${date.getDay()}日${date.getHours()}时${date.getMinutes()}分`
                     })
@@ -749,10 +754,6 @@
             ]
             const treeData = [
                 {
-                    key:'',
-                    title:'所有'
-                },
-                {
                     key: '竞技性比赛',
                     title: '竞技性比赛',
                     children: [
@@ -874,6 +875,23 @@
                         item.sex = '男'
                     } else {
                         item.sex = '女'
+                    }
+                    if (item.arrivalStatus === 0) {
+                        item.arrivalStatus = true
+                        item.arrivalStatusText = '已抵达'
+                    } else {
+                        item.arrivalStatus = false
+                        item.arrivalStatusText = '未抵达'
+                    }
+                    if (item.healthyStatus=== 0) {
+                        item.healthyStatus = true
+                        item.healthyStatusText = '健康'
+                    } else if(item.healthyStatus=== 1){
+                        item.healthyStatus = true
+                        item.healthyStatusText = '良好'
+                    } else if (item.healthyStatus=== 2) {
+                        item.healthyStatus = false
+                        item.healthyStatusText = '较差'
                     }
                 })
                 PlayerList.value = data.records
