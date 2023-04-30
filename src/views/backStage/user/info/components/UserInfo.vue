@@ -12,7 +12,7 @@
                             <i class="el-icon-picture-outline"></i>
                             头像
                         </template>
-                        <img class="img" src="@/assets/images/img1.jpg" alt="" />
+                        <img class="img" :src="updateAdminInfo.picture" alt="" />
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
@@ -121,7 +121,7 @@
                                 <div class="choose-cover">
                                     <div class="uploader-comp">
                                         <div id="block-choose" class="block-choose">
-                                            <img src="@/assets/images/img1.jpg"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                            <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
                                         </div>
                                         <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
                                     </div>
@@ -188,7 +188,8 @@
 
 <script lang="ts">
     /* eslint-disable */
-    import {ref,reactive} from 'vue'
+    import axios from 'axios'
+    import {ref, reactive, getCurrentInstance} from 'vue'
     import {modifyInfo,getInfo} from '@/api/user'
 
     import { ElMessageBox } from 'element-plus'
@@ -200,7 +201,8 @@
         },
         setup(){
             const dialogVisible = ref(false)
-
+          const ctx1 = getCurrentInstance()
+          const globalProperties = ctx1.appContext.config.globalProperties
             const updateAdminInfo = ref({})
             const imgSrc = ref('@/assets/images/img1.jpg')
             const isImg = ref(true)
@@ -300,49 +302,50 @@
                 }
                 const res = await modifyInfo(body)
                     handlGetInfo()
+              globalProperties.$EventBus.emit('handlGetInfo',handlGetInfo)
+            }
+            const uploadCover = (e)=> {
+              var me = ctx1.ctx;
+
+              let f = inputPic.value.files[0];
+
+              let multiForm = new FormData() ; 		//创建一个form对象
+              multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+
+              // 请求后端获得最新数据
+              var fsServerUrl = 'http://localhost:8009';
+              axios.defaults.withCredentials = true;
+              var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+
+              axios.post(
+                  fileServer,
+                  multiForm,
+                  {
+                    headers: {
+                      'Content-Type': 'multipart/form-data',
+                    }
+                  })
+                  .then(res => {
+                    console.log('resImg',res)
+                    if (res.code === 200) {
+                      var imagesList = res.data;
+                      if (imagesList.length < 1) {
+                        alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
+                      } else {
+                        imgSrc.value = imagesList[0];
+                        form.photo = imagesList[0]
+                        isImg.value = true
+                      }
+                    } else {
+                      alert(res.data.msg);
+                    }
+                  });
             }
             // const uploadCover = (e)=> {
-            //   var me = ctx1.ctx;
-            //
-            //   let f = inputPic.value.files[0];
-            //
-            //   let multiForm = new FormData() ; 		//创建一个form对象
-            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
-            //
-            //   // 请求后端获得最新数据
-            //   var fsServerUrl = 'http://localhost:8009';
-            //   axios.defaults.withCredentials = true;
-            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
-            //
-            //   axios.post(
-            //       fileServer,
-            //       multiForm,
-            //       {
-            //         headers: {
-            //           'Content-Type': 'multipart/form-data',
-            //         }
-            //       })
-            //       .then(res => {
-            //         console.log('resImg',res)
-            //         if (res.code === 200) {
-            //           var imagesList = res.data;
-            //           if (imagesList.length < 1) {
-            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
-            //           } else {
-            //             imgSrc.value = imagesList[0];
-            //             form.photo = imagesList[0]
-            //             isImg.value = true
-            //           }
-            //         } else {
-            //           alert(res.data.msg);
-            //         }
-            //       });
+            //     imgSrc.value='@/assets/images/img1.jpg'
+            //     form.photo = '@/assets/images/img1.jpg'
+            //     isImg.value = true
             // }
-            const uploadCover = (e)=> {
-                imgSrc.value='@/assets/images/img1.jpg'
-                form.photo = '@/assets/images/img1.jpg'
-                isImg.value = true
-            }
             const handleClose = (done: () => void) => {
                 ElMessageBox.confirm('Are you sure to close this dialog?')
                     .then(() => {

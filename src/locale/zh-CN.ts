@@ -21,7 +21,7 @@ import localeSettings from './zh-CN/settings';
 export default {
   'menu.dashboard': '仪表盘',
   'menu.list': '赛事管理',
-  'menu.service': '服务管理',
+  'menu.service': '医检管理',
   'menu.result':'资讯管理',
   'menu.person': '人员管理',
   'menu.personnel': '人员管理',

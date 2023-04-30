@@ -16,7 +16,7 @@
                                     <a-option value="运动">运动</a-option>
                                 </a-select>
                             </a-form-item>
-                            <a-form-item field="articleCover" label="文章封面" :rules="[{required:true,message:'请选择文章封面'}]">
+                            <a-form-item field="articleType" label="文章封面" :rules="[{required:true,message:'请选择文章封面'}]">
                                 <a-radio-group v-model.number="form.articleType">
                                     <a-radio :value="1">单封面</a-radio>
                                     <a-radio :value="2">无封面</a-radio>
@@ -71,6 +71,8 @@
  /* eslint-disable */
     // 工具栏配置
     // import {PolicyParams} from "../../../../api/list";
+
+ import axios from "axios";
 
  const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'], // 加粗 斜体 下划线 删除线
@@ -155,7 +157,8 @@
             const router = useRouter()
             const time = ref()
             const articleRef = ref(null)
-            const form = reactive({
+            const inputPic = ref(null)
+          const form = reactive({
                 title:'',
                 content:'',
                 category:'',
@@ -207,48 +210,49 @@
             //         setLoading(false);
             //     }
             // };
+          const uploadCover = (e)=> {
+            var me = ctx1.ctx;
+
+            let f = inputPic.value.files[0];
+
+            let multiForm = new FormData() ; 		//创建一个form对象
+            multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+
+            // 请求后端获得最新数据
+            var fsServerUrl = 'http://localhost:8009';
+            axios.defaults.withCredentials = true;
+            var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+
+            axios.post(
+                fileServer,
+                multiForm,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  }
+                })
+                .then(res => {
+                  console.log('resImg',res)
+                  if (res.code === 200) {
+                    var imagesList = res.data;
+                    if (imagesList.length < 1) {
+                      alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
+                    } else {
+                      imgSrc.value = imagesList[0];
+                      form.articleCover = imagesList[0]
+                      isImg.value = true
+
+                    }
+                  } else {
+                    alert(res.data.msg);
+                  }
+                });
+          }
             // const uploadCover = (e)=> {
-            //   var me = ctx1.ctx;
-            //
-            //   let f = inputPic.value.files[0];
-            //
-            //   let multiForm = new FormData() ; 		//创建一个form对象
-            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
-            //
-            //   // 请求后端获得最新数据
-            //   var fsServerUrl = 'http://localhost:8009';
-            //   axios.defaults.withCredentials = true;
-            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
-            //
-            //   axios.post(
-            //       fileServer,
-            //       multiForm,
-            //       {
-            //         headers: {
-            //           'Content-Type': 'multipart/form-data',
-            //         }
-            //       })
-            //       .then(res => {
-            //         console.log('resImg',res)
-            //         if (res.code === 200) {
-            //           var imagesList = res.data;
-            //           if (imagesList.length < 1) {
-            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
-            //           } else {
-            //             imgSrc.value = imagesList[0];
-            //             form.photo = imagesList[0]
-            //             isImg.value = true
-            //           }
-            //         } else {
-            //           alert(res.data.msg);
-            //         }
-            //       });
+            //     imgSrc.value='@/assets/images/img1.jpg'
+            //     form.articleCover = '@/assets/images/img1.jpg'
+            //     isImg.value = true
             // }
-            const uploadCover = (e)=> {
-                imgSrc.value='@/assets/images/img1.jpg'
-                form.articleCover = '@/assets/images/img1.jpg'
-                isImg.value = true
-            }
             const  handleIsAppoint = ()=>{
                 if (form.isAppoint === 1) {
                     form.isAppoint = 0
@@ -279,7 +283,8 @@
                 handlePreview,
                 articleRef,
                 handleBack,
-                router
+                router,
+              inputPic
             }
         }
     }

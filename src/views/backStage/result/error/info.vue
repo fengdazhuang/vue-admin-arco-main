@@ -13,7 +13,7 @@
 
             </div>
             <img
-                    :src="info.picture"
+                    :src="info.picture || info.articleCover"
                     alt=""
                     class="image"
             />

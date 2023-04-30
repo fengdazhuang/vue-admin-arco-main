@@ -61,7 +61,7 @@
                             <template #cell="{ record }">
                                 <span :style="{color:(record.process===3? 'green':'red')}">{{record.processText}}</span>
                             </template>
-                        </a-table-column>>
+                        </a-table-column>
                         <a-table-column
                                 title="服务方向"
                                 data-index="risk"
@@ -82,72 +82,10 @@
                         查看志愿者信息
                     </template>
                     <div>
-<!--                        <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">-->
-<!--                            <a-form-item field="name" label="姓名"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input disabled v-model="form.name"  placeholder="请输入你的姓名" />-->
-<!--                                <span v-show="isRepeat">{{message}}</span>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item  field="sex" label="性别">-->
-<!--                                <a-radio-group disabled v-model="form.sex">-->
-<!--                                    <a-radio value="1">男</a-radio>-->
-<!--                                    <a-radio value="0">女</a-radio>-->
-<!--                                </a-radio-group>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="age" label="年龄"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input-number disabled v-model="num" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="risk" label="服务方向"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-tree-select-->
-<!--                                        disabled-->
-<!--                                        v-model="form.risk"-->
-<!--                                        :allow-clear="true"-->
-<!--                                        :allow-search="true"-->
-<!--                                        :data="treeDataService"-->
-<!--                                        placeholder="请选择服务方向"-->
-<!--                                        style="width: 300px"-->
-<!--                                ></a-tree-select>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="position" label="地点"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input disabled v-model="form.position" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="principal" label="负责人"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input disabled v-model="form.principal" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="principalEmail" label="负责人邮箱"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input disabled v-model="form.principalEmail" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="applyTime" label="申请时间"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input v-model="form.applyTime" disabled/>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="address" label="地址"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input v-model="form.address" disabled/>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="profession" label="职业"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input v-model="form.profession" disabled/>-->
-<!--                            </a-form-item>-->
-<!--                        </a-form>-->
                         <a-space direction="vertical" size="large" fill>
                             <a-descriptions :data="data" title="志愿者详情信息" :column="2" >
                                 <a-descriptions-item v-for="(item,index) in userInfo"  :label="item.label" :key="index">
-                                    <a-tag :style="{color:(index===9 ? item.value==='已分配'?'green':'red':''),fontWeight:(index===9 ? '700':'')}">{{ item.value }}</a-tag>
+                                    <a-tag :style="{color:(index===11 ? item.value==='已分配'?'green':'red':''),fontWeight:(index===9 ? '700':'')}">{{ item.value }}</a-tag>
                                 </a-descriptions-item>
                             </a-descriptions>
                         </a-space>
@@ -396,6 +334,20 @@
                     if (item.label === 'age') {
                         item.label='年龄'
                     }
+                  if (item.label === 'teamId') {
+                    item.label='团队号'
+                    if(item.value == null) {
+                      item.value = '暂无'
+                    }
+                  }
+                  if (item.label === 'volunteerType') {
+                    item.label='志愿者类型'
+                        if(item.value === 0) {
+                          item.value='赛会志愿者'
+                        }else {
+                          item.value = '城市志愿者'
+                        }
+                  }
                     if (item.label === 'applyTime') {
                         item.label='申请时间'
                     }

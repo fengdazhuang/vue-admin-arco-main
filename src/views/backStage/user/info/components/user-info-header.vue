@@ -5,7 +5,7 @@
         <template #trigger-icon>
           <icon-camera />
         </template>
-        <img src="@/assets/images/img1.jpg" />
+        <img :src="updateAdminInfo.picture" />
       </a-avatar>
       <a-typography-title :heading="6" style="margin: 0">
         {{ adminInfo.username }}
@@ -33,16 +33,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, getCurrentInstance, ref} from 'vue';
 import { useUserStore } from '@/store';
+import {getInfo} from "@/api/user";
 
 export default defineComponent({
   setup() {
+    const ctx1 = getCurrentInstance()
+    const {globalProperties} = ctx1.appContext.config
     const userStore = useUserStore();
     const adminInfo = JSON.parse(window.sessionStorage.getItem('adminInfo'))
+    const updateAdminInfo = ref({})
+    const handlGetInfo = async ()=>{
+      const useParams = {
+        params:{
+          id:adminInfo.id
+        }
+      }
+      const {data} = await getInfo(useParams)
+
+      if(data.sex===1) {
+        data.sex = '男'
+      } else {
+        data.sex = '女'
+      }
+
+      updateAdminInfo.value = data
+    }
+    handlGetInfo()
+    globalProperties.$EventBus.on('handlGetInfo',handlGetInfo)
     return {
       userInfo: userStore,
-        adminInfo
+        adminInfo,
+      updateAdminInfo
+
     };
   },
 });

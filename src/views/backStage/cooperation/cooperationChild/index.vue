@@ -76,6 +76,7 @@
                                 title="logo"
                                 data-index="logo"
                         >
+<!--            eslint-disable              -->
                             <template #cell="{ record }">
                                 <a-space>
                                     <a-avatar
@@ -84,7 +85,7 @@
                                     >
                                         <img
                                                 alt="avatar"
-                                                :src="record.url"
+                                                :src="record.logo"
                                         />
                                     </a-avatar>
                                 </a-space>
@@ -690,43 +691,44 @@
 
             }
 
-            const uploadCover = (e)=> {
-              var me = ctx1.ctx;
+          const uploadCover = (e)=> {
+            var me = ctx1.ctx;
 
-              let f = inputPic.value.files[0];
+            let f = inputPic.value.files[0];
 
-              let multiForm = new FormData() ; 		//创建一个form对象
-              multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+            let multiForm = new FormData() ; 		//创建一个form对象
+            multiForm.append('files', f, f.name);  	//append 向form表单添加数据
 
-              // 请求后端获得最新数据
-              var fsServerUrl = 'http://localhost:8009';
-              axios.defaults.withCredentials = true;
-              var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+            // 请求后端获得最新数据
+            var fsServerUrl = 'http://localhost:8009';
+            axios.defaults.withCredentials = true;
+            var fileServer = fsServerUrl + '/api9/file/uploadFiles';
 
-              axios.post(
-                  fileServer,
-                  multiForm,
-                  {
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                    }
-                  })
-                  .then(res => {
-                    console.log('resImg',res)
-                    if (res.code === 200) {
-                      var imagesList = res.data;
-                      if (imagesList.length < 1) {
-                        alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
-                      } else {
-                        imgSrc.value = imagesList[0];
-                        form.photo = imagesList[0]
-                        isImg.value = true
-                      }
+            axios.post(
+                fileServer,
+                multiForm,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  }
+                })
+                .then(res => {
+                  console.log('resImg',res)
+                  if (res.code === 200) {
+                    var imagesList = res.data;
+                    if (imagesList.length < 1) {
+                      alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
                     } else {
-                      alert(res.data.msg);
+                      imgSrc.value = imagesList[0];
+                      form.logo = imagesList[0]
+                      isImg.value = true
+
                     }
-                  });
-            }
+                  } else {
+                    alert(res.data.msg);
+                  }
+                });
+          }
             // const uploadCover = (e)=> {
             //     imgSrc.value='@/assets/images/img1.jpg'
             //     isImg.value = true

@@ -66,7 +66,7 @@
             <div class="subscribe-content"  v-for="item in articleList" :key="item.id">
                 <div class="subscribe-content-card" @click="handlePreview(item)">
                 <div class="subscribe-content-card-img">
-                    <img src="@/assets/images/img1.jpg" />
+                    <img :src="item.articleCover" />
                 </div>
                 <div class="subscribe-content-card-content">
                     <div class="title">{{item.title}}</div>

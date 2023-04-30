@@ -29,8 +29,8 @@ export default {
       },
     },
     {
-      path: 'card',
-      name: 'card',
+      path: '222',
+      name: '222',
       component: () => import('@/views/backStage/list/card/index.vue'),
       meta: {
         locale: '比赛赛程',

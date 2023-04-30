@@ -5,25 +5,25 @@
         </div>
         <div class="main">
             <img src="@/assets/images/yydt_title.png" />
-            <div class="yydt-box">
-                <div class="yydt-box-img">
-                    <img src="@/assets/images/yydt_img1.jpg" />
-                </div>
-                <div class="yydt-item">
-                    <p class="time">2023/4/15</p>
-                    <a href="#">
-                        <p class="title">亚赛联主席陈春新一行考察杭州亚运会赛艇项目比赛场馆</p>
-                        <p class="summary">
-                            4月14日，亚洲赛艇联合会主席陈春新，杭州亚运会赛艇技术代表Victor（香港）一行来到富阳水上运动中心，考察杭州亚运会赛艇项目比赛场馆，并观摩“韵味杭州”山羊体育杯2023年全国赛艇春季冠军赛。
-                        </p>
-                    </a>
-                    <div class="yydt-item-link">
-                        <a href="/information/infochild" target="_blank">
-                            查看详情
-                            <span>——></span></a>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="yydt-box">-->
+<!--                <div class="yydt-box-img">-->
+<!--                    <img src="@/assets/images/yydt_img1.jpg" />-->
+<!--                </div>-->
+<!--                <div class="yydt-item">-->
+<!--                    <p class="time">2023/4/15</p>-->
+<!--                    <a href="#">-->
+<!--                        <p class="title">亚赛联主席陈春新一行考察杭州亚运会赛艇项目比赛场馆</p>-->
+<!--                        <p class="summary">-->
+<!--                            4月14日，亚洲赛艇联合会主席陈春新，杭州亚运会赛艇技术代表Victor（香港）一行来到富阳水上运动中心，考察杭州亚运会赛艇项目比赛场馆，并观摩“韵味杭州”山羊体育杯2023年全国赛艇春季冠军赛。-->
+<!--                        </p>-->
+<!--                    </a>-->
+<!--                    <div class="yydt-item-link">-->
+<!--                        <a href="/information/infochild" target="_blank">-->
+<!--                            查看详情-->
+<!--                            <span>——></span></a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="yydt-box" @click="handleReadNews(item.id)" v-for="item in newsData" :key="item.id">
                 <div v-show="item.articleCover" class="yydt-box-img">
                     <img @click="handleInfo(item)" :src="item.articleCover" />
