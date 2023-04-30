@@ -43,7 +43,7 @@
                 </div>
 
             </div>
-            <a-modal width="800px" v-model:visible="showModel1" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
+            <a-modal width="600px" v-model:visible="showModel1" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
                 <template #title>
                     查看团队成员信息
                 </template>

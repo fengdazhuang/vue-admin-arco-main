@@ -72,7 +72,7 @@
                         </a-table-column>
                     </template>
                 </a-table>
-                <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs,'edit')"  unmountOnClose>
+                <a-modal width="700px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs,'edit')"  unmountOnClose>
                     <template #title>
                         志愿者审核
                     </template>
@@ -80,7 +80,7 @@
 
                         <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">
                             <a-space direction="vertical" size="large" fill>
-                                <a-descriptions :data="data"  :column="2" >
+                                <a-descriptions size="large" :data="data"  :column="2" >
                                     <a-descriptions-item v-for="(item,index) in userInfo"  :label="item.label" :key="index">
                                         <a-tag>{{ item.value }}</a-tag>
                                     </a-descriptions-item>
@@ -396,6 +396,9 @@
                 userInfo.value = userInfo.value.filter(item=>{
                     return item.label!='photo'
                 })
+              userInfo.value = userInfo.value.filter(item=>{
+                return item.label!='risk'
+              })
                 userInfo.value.forEach(item=>{
                     if (item.label === 'sex') {
                         item.label='性别'
@@ -408,9 +411,15 @@
                     if (item.label === 'age') {
                         item.label='年龄'
                     }
+                  if (item.label === 'teamId') {
+                    item.label='团队号'
+                  }
                     if (item.label === 'certificateType') {
                         item.label='证件类型'
                     }
+                  if (item.label === 'id') {
+                    item.label='ID'
+                  }
                     if (item.label === 'certificateNumber') {
                         item.label='证件号'
                     }
@@ -463,49 +472,7 @@
                 showCheckedAll: true,
                 onlyCurrent: false
             });
-            // const uploadCover = (e)=> {
-            //   var me = ctx1.ctx;
-            //
-            //   let f = inputPic.value.files[0];
-            //
-            //   let multiForm = new FormData() ; 		//创建一个form对象
-            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
-            //
-            //   // 请求后端获得最新数据
-            //   var fsServerUrl = 'http://localhost:8009';
-            //   axios.defaults.withCredentials = true;
-            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
-            //
-            //   axios.post(
-            //       fileServer,
-            //       multiForm,
-            //       {
-            //         headers: {
-            //           'Content-Type': 'multipart/form-data',
-            //         }
-            //       })
-            //       .then(res => {
-            //         console.log('resImg',res)
-            //         if (res.code === 200) {
-            //           var imagesList = res.data;
-            //           if (imagesList.length < 1) {
-            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
-            //           } else {
-            //             imgSrc.value = imagesList[0];
-            //             form.photo = imagesList[0]
-            //             isImg.value = true
-            //           }
-            //         } else {
-            //           alert(res.data.msg);
-            //         }
-            //       });
-            // }
-            const uploadCover = (e)=> {
-                imgSrc.value='@/assets/images/img1.jpg'
-                form.photo = '@/assets/images/img1.jpg'
-                isImg.value = true
-                console.log('isImg.value',isImg.value)
-            }
+
             const handleCancel1 = () => {
                 showModel.value = false;
                 form.status = ''
@@ -665,7 +632,6 @@
                 checkStrictly,
                 treeRef,
                 treeDataSort,
-                // uploadCover,
                 inputPic,
                 isAbled,
                 message,
@@ -674,7 +640,6 @@
                 handleChange,
                 handleOrderType,
                 isRepeat,
-                uploadCover,
                 isImg,
                 imgSrc,
                 userInfo,

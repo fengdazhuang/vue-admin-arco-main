@@ -77,7 +77,7 @@
                         </a-table-column>
                     </template>
                 </a-table>
-                <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
+                <a-modal width="700px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
                     <template #title>
                         查看志愿者信息
                     </template>

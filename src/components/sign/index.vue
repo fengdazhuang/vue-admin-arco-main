@@ -181,6 +181,7 @@
                 this.arrDate.push(now.getDate());
                 this.initData();
                 this.sign = true;
+                this.day++
                 // 接口待完成，虚拟提示
                 this.$fn.success('签到成功');
             }

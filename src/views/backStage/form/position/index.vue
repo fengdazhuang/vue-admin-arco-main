@@ -129,7 +129,7 @@
                         </a-table-column>
                     </template>
                 </a-table>
-                <a-modal width="800px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
+                <a-modal width="600px" v-model:visible="showModel" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
                     <template #title>
                         查看服务点信息
                     </template>
