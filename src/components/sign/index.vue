@@ -48,10 +48,6 @@
             </ul>
         </div>
 
-        <div class="role">
-            <div class="role-title">签到规则</div>
-            <div class="role-content" v-html="role ? role : '暂无内容'"></div>
-        </div>
     </div>
 </template>
 

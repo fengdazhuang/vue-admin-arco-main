@@ -84,7 +84,7 @@
                             <a-button @click="handleManyDelete" type="primary" status="danger">批量删除</a-button>
                             <a-modal width="800px" v-model:visible="visible" @cancel="handleCancel" @ok="handleConfirm($refs,'add')"  unmountOnClose>
                                 <template #title>
-                                    添加运动员
+                                    添加裁判
                                 </template>
                                 <div>
                                     <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}" @submit="handleSubmit">

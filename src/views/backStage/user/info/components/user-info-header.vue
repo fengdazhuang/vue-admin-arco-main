@@ -5,7 +5,7 @@
         <template #trigger-icon>
           <icon-camera />
         </template>
-        <img :src="userInfo.avatar" />
+        <img src="@/assets/images/img1.jpg" />
       </a-avatar>
       <a-typography-title :heading="6" style="margin: 0">
         {{ adminInfo.username }}
@@ -14,17 +14,17 @@
         <a-space :size="18">
           <div>
             <icon-user />
-            <a-typography-text>{{ userInfo.jobName }}</a-typography-text>
+            <a-typography-text>IT</a-typography-text>
           </div>
           <div>
             <icon-home />
             <a-typography-text>
-              {{ userInfo.organizationName }}
+              管理员
             </a-typography-text>
           </div>
           <div>
             <icon-location />
-            <a-typography-text>{{ userInfo.locationName }}</a-typography-text>
+            <a-typography-text>杭州</a-typography-text>
           </div>
         </a-space>
       </div>

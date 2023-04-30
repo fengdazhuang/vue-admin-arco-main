@@ -49,4 +49,16 @@ export function queryVolunteer(params){
 export function applyVolunteer(data) {
     return axios.post('/api3/volunteer/applyVolunteer',data)
 }
+export function queryVolPositions(params){
+    return axios.get('/api3/volunteer/queryVolPositions',params)
+}
+export function addVolPosition(data){
+    return axios.post('/api3/volunteer/addVolPosition',data)
+}
+export function deleteVolPosition(params){
+    return axios.delete('/api3/volunteer/deleteVolPosition',params)
+}
+export function volTeamInfo(params) {
+    return axios.get('/api3/volunteer/volTeamInfo',params)
+}
 

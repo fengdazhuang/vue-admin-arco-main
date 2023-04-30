@@ -38,5 +38,15 @@ export default {
         roles: ['admin'],
       },
     },
+    {
+      path: 'VolunteerServicePosition',
+      name: 'VolunteerServicePosition',
+      component: () => import('@/views/backStage/form/position/index.vue'),
+      meta: {
+        locale: '志愿服务点',
+        requiresAuth: true,
+        roles: ['admin'],
+      },
+    },
   ],
 };

@@ -98,7 +98,7 @@
                                              placeholder="请输入年龄"
                                              :validate-trigger="['change','input']"
                                 >
-                                    <el-input-number :disabled="isEdit" v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="10" @change="handleChange" />
+                                    <el-input-number :disabled="isEdit" v-model="userInfo.age" :min="1" :style="{margin:'0 0 0 0.45rem'}" :max="100" @change="handleChange" />
                                 </a-form-item>
                             </el-col>
                             <el-col :span="24">
@@ -209,6 +209,7 @@
         name: "VolunteerService",
         components:{Bottom},
         setup() {
+            const ctx1 = getCurrentInstance()
             const router = useRouter()
             const  reg_Email = regEmail
             const {ctx} = getCurrentInstance()
@@ -337,6 +338,48 @@
                 userInfo.value.photo = '@/assets/images/img1.jpg'
                 isImg.value = true
             }
+            // const uploadCover = (e)=> {
+            //   var me = ctx1.ctx;
+            //
+            //   let f = inputPic.value.files[0];
+            //
+            //   let multiForm = new FormData() ; 		//创建一个form对象
+            //   multiForm.append('files', f, f.name);  	//append 向form表单添加数据
+            //
+            //   // 请求后端获得最新数据
+            //   var fsServerUrl = 'http://localhost:8009';
+            //   axios.defaults.withCredentials = true;
+            //   var fileServer = fsServerUrl + '/api9/file/uploadFiles';
+            //
+            //   axios.post(
+            //       fileServer,
+            //       multiForm,
+            //       {
+            //         headers: {
+            //           'Content-Type': 'multipart/form-data',
+            //         }
+            //       })
+            //       .then(res => {
+            //         console.log('resImg',res)
+            //         if (res.code === 200) {
+            //           var imagesList = res.data;
+            //           if (imagesList.length < 1) {
+            //             alert("张图片上传失败，请保证图片不能为空，并且符合 jpg/png/jpeg 的后缀格式！");
+            //           } else {
+            //             imgSrc.value = imagesList[0];
+            //             form.photo = imagesList[0]
+            //             isImg.value = true
+            //           }
+            //         } else {
+            //           alert(res.data.msg);
+            //         }
+            //       });
+            // }
+            //   const uploadCover = (e)=> {
+            //       imgSrc.value='@/assets/images/img1.jpg'
+            //       form.photo = '@/assets/images/img1.jpg'
+            //       isImg.value = true
+            //   }
 
             const handleEdit = () =>{
                 isEdit.value = !isEdit.value
