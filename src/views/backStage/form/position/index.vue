@@ -347,8 +347,8 @@
                 volunteerCounts:'',
                 position:'',
                 principal:'',
-                principalEmail:'',
-                volunteerType:''
+                principalEmail:'暂无',
+                volunteerType:'暂无'
 
             });
 
@@ -411,6 +411,12 @@
                         } else {
                             item.status = 0
                         }
+                        if(item.principal == null) {
+                            item.principal = '暂无'
+                        }
+                        if(item.principalEmail == null) {
+                            item.principalEmail = '暂无'
+                        }
                         if(item.process === 0 || item.process==null) {
                             item.processText = '未申请'
 
@@ -444,6 +450,9 @@
 
                 const keys = Object.keys(row)
                 keys.forEach((item,index)=>{
+                    if(item === 'principal' || item === 'principalEmail') {
+                        row[item] = '暂无'
+                    }
                     userInfo.value.push({
                         label:item,
                         value:row[item]

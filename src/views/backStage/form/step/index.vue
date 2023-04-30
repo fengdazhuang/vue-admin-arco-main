@@ -57,7 +57,11 @@
                         <a-table-column
                                 title="分配状态"
                                 data-index="processText"
-                        />
+                        >
+                            <template #cell="{ record }">
+                                <span :style="{color:(record.process===3? 'green':'red')}">{{record.processText}}</span>
+                            </template>
+                        </a-table-column>>
                         <a-table-column
                                 title="服务方向"
                                 data-index="risk"
@@ -143,7 +147,7 @@
                         <a-space direction="vertical" size="large" fill>
                             <a-descriptions :data="data" title="志愿者详情信息" :column="2" >
                                 <a-descriptions-item v-for="(item,index) in userInfo"  :label="item.label" :key="index">
-                                    <a-tag>{{ item.value }}</a-tag>
+                                    <a-tag :style="{color:(index===9 ? item.value==='已分配'?'green':'red':''),fontWeight:(index===9 ? '700':'')}">{{ item.value }}</a-tag>
                                 </a-descriptions-item>
                             </a-descriptions>
                         </a-space>

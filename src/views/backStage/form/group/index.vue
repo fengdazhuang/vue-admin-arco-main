@@ -6,8 +6,8 @@
             <a-card :style="{width:'100%'}" class="general-card card" title="志愿者审核">
                 <a-space size="large" >
 
-                    <span :style="{color:'#000'}">排序</span>
-                    <a-tree-select @change="handleOrderType(form.orderType)" :data="treeDataSort" v-model="form.orderType"  placeholder="请选择服务意向"/>
+                    <span :style="{color:'#000'}">排序方式</span>
+                    <a-tree-select @change="handleOrderType(form.orderType)" :data="treeDataSort" v-model="form.orderType"  placeholder="请选择排序方式"/>
                 </a-space>
                 <a-divider style="margin-top: 20px" />
                 <a-table
@@ -120,6 +120,7 @@
                                          :validate-trigger="['change','input']"
                             >
                                 <a-input v-model="form.emailContent"/>
+                                <a-button type="primary" status="success" @click="handleWrite">默认写入</a-button>
                             </a-form-item>
                         </a-form>
                     </div>
@@ -155,6 +156,7 @@
             const renderData = ref([]);
             const userInfo = ref([])
             const formModel = ref(generateFormModel());
+            const treeDataPosition = ref([])
             const basePagination: Pagination = {
                 pageNumber: 1,
                 pageSize: 20,
@@ -214,8 +216,12 @@
             const imgSrc = ref('@/assets/images/img1.jpg')
             const isImg = ref(false)
             const inputPic = ref(null)
+
             let node
             const num = ref(1)
+            const handleWrite = ()=>{
+                form.emailContent = '恭喜你！通过审核，成为一名亚运会志愿者'
+            }
             const handleChange = (value: number) => {
                 console.log(value)
             }
@@ -255,7 +261,7 @@
 
             ]
             const treeDataService = ref([])
-            const treeDataPosition = ref([])
+
             // const fetchData = async (
             //     params = {name:'',pageNumber: 1, pageSize: 20 }
             // ) => {
@@ -340,7 +346,14 @@
                 })
             }
             // handleGetVolDirections(1)
+            let count = 1
             const handleSelect = async (value)=>{
+                treeDataPosition.value = []
+                if(count!=1) {
+                    positionId.value = ''
+                }
+                count++
+
                 const useParams = {
                     params:{
                         risk:value
@@ -667,7 +680,8 @@
                 userInfo,
                 handleSelect,
                 treeDataPosition,
-                positionId
+                positionId,
+                handleWrite
             };
         },
     });
