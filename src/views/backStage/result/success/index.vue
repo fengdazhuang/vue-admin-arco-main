@@ -45,7 +45,7 @@
                             </span>
                         </template>
                         <template #button-default>
-                            <span @click="handleSearch">Search</span>
+                            <span @click="handleSearch">搜索</span>
                         </template>
                     </a-input-search>
                 </div>
