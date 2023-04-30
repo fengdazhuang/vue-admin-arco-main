@@ -135,7 +135,7 @@
             const treeData = [
                 {
                     key:'',
-                    title:'所有'
+                    title:'请选择志愿类型'
                 },
                 {
                     key: '0',
@@ -297,11 +297,11 @@
 
             const handleClick1 = (row) => {
                 id.value = row.id
-                if (row.sex==='男') {
-                    row.sex = '1'
-                } else {
-                    row.sex = '0'
-                }
+                // if (row.sex==='男') {
+                //     row.sex = '1'
+                // } else {
+                //     row.sex = '0'
+                // }
                 const keys = Object.keys(row)
 
                 keys.forEach((item,index)=>{
@@ -325,7 +325,7 @@
                 userInfo.value.forEach(item=>{
                     if (item.label === 'sex') {
                         item.label='性别'
-                        if (item.value === 1){
+                        if (item.value === 1 || item.value === '男'){
                             item.value = '男'
                         } else {
                             item.value = '女'
@@ -334,6 +334,10 @@
                     if (item.label === 'age') {
                         item.label='年龄'
                     }
+                    if (item.label === 'id') {
+                    item.label='ID'
+                  }
+
                   if (item.label === 'teamId') {
                     item.label='团队号'
                     if(item.value == null) {
@@ -344,8 +348,10 @@
                     item.label='志愿者类型'
                         if(item.value === 0) {
                           item.value='赛会志愿者'
-                        }else {
+                        }else if(item.value === 1) {
                           item.value = '城市志愿者'
+                        } else {
+                          item.value = '所有'
                         }
                   }
                     if (item.label === 'applyTime') {
@@ -387,7 +393,10 @@
 
             }
             const handleGetVolDirections = async (volunteerType)=>{
+              if(volunteerType === '') {
                 treeDataService.value = []
+                return
+              }
                 const useParams = {
                     params:{
                         volunteerType
@@ -606,6 +615,7 @@
                     volunteerType:type,
                     risk:form.risk,
                 }
+
                 handleGetVolDirections(type)
                 fetchData(params)
             }

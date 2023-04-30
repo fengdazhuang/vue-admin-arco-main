@@ -348,7 +348,7 @@
                 position:'',
                 principal:'',
                 principalEmail:'暂无',
-                volunteerType:'暂无'
+                volunteerType:''
 
             });
 
@@ -487,7 +487,9 @@
                     if (item.label === 'principal') {
                         item.label='负责人'
                     }
-
+                  if (item.label === 'id') {
+                    item.label='ID'
+                  }
                     if (item.label === 'position') {
                         item.label='地点'
                     }
@@ -559,7 +561,11 @@
                 });
             };
             const handleGetVolDirections = async (volunteerType)=>{
+              if(volunteerType === '') {
                 treeDataService.value = []
+                return
+              }
+
                 const useParams = {
                     params:{
                         volunteerType
