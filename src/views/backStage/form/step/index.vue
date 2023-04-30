@@ -377,9 +377,6 @@
                     }
                 })
                 showModel.value = true;
-                ctx.$nextTick(() => {
-                    Object.assign(form, row);
-                });
 
             };
             const handleDelete = async (row)=>{
@@ -395,6 +392,7 @@
             const handleGetVolDirections = async (volunteerType)=>{
               if(volunteerType === '') {
                 treeDataService.value = []
+                form.risk = ''
                 return
               }
                 const useParams = {
@@ -609,6 +607,9 @@
             }
 
             const handleSearchType = (type)=>{
+              if (type === '') {
+                form.risk = ''
+              }
                 const params = {
                     pageNumber:1,
                     pageSize:20,

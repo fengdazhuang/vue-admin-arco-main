@@ -563,6 +563,7 @@
             const handleGetVolDirections = async (volunteerType)=>{
               if(volunteerType === '') {
                 treeDataService.value = []
+                form.risk = ''
                 return
               }
 
@@ -794,6 +795,9 @@
             }
 
             const handleSearchType = (type)=>{
+              if (type === '') {
+                form.risk = ''
+              }
                 const params = {
                     pageNumber:1,
                     pageSize:20,
