@@ -141,120 +141,64 @@
                                 </a-descriptions-item>
                             </a-descriptions>
                         </a-space>
+                        <h4>服务点志愿者信息</h4>
                         <a-table
                                 size="large"
                                 row-key="id"
                                 :loading="loading"
                                 :pagination="pagination"
-                                :data="PlayerList"
+                                :data="volunteerList"
                                 :bordered="false"
                                 @page-change="onPageChange"
-                                :row-selection="rowSelection"
                                 @selection-change="handleGetId"
                         >
                             <template #columns>
                                 <a-table-column
-                                        title="序号"
-                                        data-index="id"
-                                />
-                                <a-table-column
-                                        title="服务点"
+                                        title="姓名"
                                         data-index="name"
                                 >
                                 </a-table-column>
                                 <a-table-column
-                                        title="地点"
-                                        data-index="position"
-                                />
-                                <a-table-column
-                                        title="服务方向"
-                                        data-index="risk"
-                                />
-                                <a-table-column
-                                        title="人数"
-                                        data-index="volunteerCounts"
-                                />
-                                <a-table-column
-                                        title="负责人"
-                                        data-index="principal"
-                                />
-                                <a-table-column
-                                        title="负责人邮箱"
-                                        data-index="principalEmail"
-                                />
-
-                                <a-table-column
-                                        title="操作"
-                                        data-index="operations"
+                                        title="照片"
+                                        data-index="photo"
                                 >
                                     <template #cell="{ record }">
-                                        <a-button @click="handleClick1(record)" type="text">详细信息</a-button>
+                                        <a-space @click="handle(record)">
+                                            <a-avatar
+                                                    :size="40"
+                                                    shape="square"
+                                            >
+                                                <a-image
+                                                        :preview-visible="visible2"
+                                                        @preview-visible-change="() => { visible2 = false }"
+                                                        src="/src/assets/images/img1.jpg"
+                                                />
+                                            </a-avatar>
+                                        </a-space>
                                     </template>
                                 </a-table-column>
+                                <a-table-column
+                                        title="性别"
+                                        data-index="sex"
+                                />
+                                <a-table-column
+                                        title="年龄"
+                                        data-index="age"
+                                />
+                                <a-table-column
+                                        title="邮箱"
+                                        data-index="email"
+                                />
+                                <!--                            <a-table-column-->
+                                <!--                                    title="操作"-->
+                                <!--                                    data-index="operations"-->
+                                <!--                            >-->
+                                <!--                                <template #cell="{ record }">-->
+                                <!--                                    <a-button @click="handleClick1(record)" type="text">详细信息</a-button>-->
+                                <!--                                </template>-->
+                                <!--                            </a-table-column>-->
                             </template>
                         </a-table>
-<!--                        <a-form ref="formRef" :size="form.size" :model="form" :style="{width:'600px'}"  @submit="handleSubmit">-->
-<!--                            <a-form-item field="name" label="姓名"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input disabled v-model="form.name"  placeholder="请输入你的姓名" />-->
-<!--                                <span v-show="isRepeat">{{message}}</span>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item  field="sex" label="性别">-->
-<!--                                <a-radio-group disabled v-model="form.sex">-->
-<!--                                    <a-radio value="1">男</a-radio>-->
-<!--                                    <a-radio value="0">女</a-radio>-->
-<!--                                </a-radio-group>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="age" label="年龄"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input-number disabled v-model="num" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="risk" label="服务方向"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-tree-select-->
-<!--                                        disabled-->
-<!--                                        v-model="form.risk"-->
-<!--                                        :allow-clear="true"-->
-<!--                                        :allow-search="true"-->
-<!--                                        :data="treeDataService"-->
-<!--                                        placeholder="请选择服务方向"-->
-<!--                                        style="width: 300px"-->
-<!--                                ></a-tree-select>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="position" label="地点"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input disabled v-model="form.position" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="principal" label="负责人"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input disabled v-model="form.principal" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="principalEmail" label="负责人邮箱"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <el-input disabled v-model="form.principalEmail" :min="1" :max="10" @change="handleChange" />-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="applyTime" label="申请时间"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input v-model="form.applyTime" disabled/>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="address" label="地址"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input v-model="form.address" disabled/>-->
-<!--                            </a-form-item>-->
-<!--                            <a-form-item field="profession" label="职业"-->
-<!--                                         :validate-trigger="['change','input']"-->
-<!--                            >-->
-<!--                                <a-input v-model="form.profession" disabled/>-->
-<!--                            </a-form-item>-->
-<!--                        </a-form>-->
                     </div>
                 </a-modal>
             </a-card>
@@ -276,7 +220,8 @@
         resetRisk,
         addVolPosition,
         pageVolPositions,
-        deleteVolPosition
+        deleteVolPosition,
+        volTeamInfo
     } from '@/api/volunteer'
     import {
         addAdmin,
@@ -286,7 +231,7 @@
         logout,
         queryAdmin,
         resetPassword,
-        updateStatus
+        updateStatus,
     } from '@/api/user';
     import { Pagination, Options } from '@/types/global';
     const generateFormModel = () => {
@@ -375,6 +320,8 @@
                     value: 'offline',
                 },
             ]);
+            const visible2 = ref(false)
+            const volunteerList = ref([])
             const isAbled = ref(false)
             const visible = ref(false);
             const showModel = ref(false)
@@ -486,7 +433,8 @@
                 }
             };
 
-            const handleClick1 = (row) => {
+            const handleClick1 = async (row) => {
+                console.log('row',row)
                 id.value = row.id
                 if (row.sex==='男') {
                     row.sex = '1'
@@ -543,6 +491,20 @@
 
 
                 })
+                const useParams = {
+                    params:{
+                        teamId:id.value
+                    }
+                }
+                const {data} = await volTeamInfo(useParams)
+                data.members.forEach(item=>{
+                    if(item.sex===1) {
+                        item.sex = '男'
+                    }else {
+                        item.sex = '女'
+                    }
+                })
+                volunteerList.value = data.members
                 showModel.value = true;
                 ctx.$nextTick(() => {
                     Object.assign(form, row);
@@ -880,7 +842,9 @@
                 handleManyDelete,
                 handleGetId,
                 handleSearchName,
-                userInfo
+                userInfo,
+                volunteerList,
+                visible2
             };
         },
     });

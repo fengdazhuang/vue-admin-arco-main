@@ -112,7 +112,7 @@
                                         :allow-clear="true"
                                         :allow-search="true"
                                         :data="treeDataPosition"
-                                        placeholder="请选择服务意向"
+                                        placeholder="请选择服务点"
                                         style="width: 300px"
                                 ></a-tree-select>
                             </a-form-item>
@@ -358,6 +358,9 @@
             const handleClick1 = (row) => {
                 form.id = row.id
                 form.email = row.email
+                form.risk = row.risk
+                form.teamId = row.teamId
+                positionId.value = row.teamId
                 console.log('form.email',form.email)
                 if (row.sex==='男') {
                     row.sex = '1'
@@ -367,6 +370,7 @@
 
                 const keys = Object.keys(row)
                 handleGetVolDirections(row.volunteerType)
+                handleSelect(row.risk)
                 keys.forEach((item,index)=>{
                     userInfo.value.push({
                         label:item,
@@ -491,6 +495,7 @@
             }
             const handleCancel1 = () => {
                 showModel.value = false;
+                form.status = ''
                 form.isShow = 0
                 userInfo.value = []
                 ctx.$nextTick(() => {

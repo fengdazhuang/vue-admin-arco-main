@@ -69,7 +69,7 @@
                             <i class="el-icon-office-building"></i>
                             职业
                         </template>
-                        AI
+                        IT
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
@@ -83,7 +83,7 @@
                             <i class="el-icon-magic-stick"></i>
                             个性签名
                         </template>
-                        我真帅
+                        努力哦！
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template #label>
@@ -121,7 +121,7 @@
                                 <div class="choose-cover">
                                     <div class="uploader-comp">
                                         <div id="block-choose" class="block-choose">
-                                            <img :src="imgSrc"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
+                                            <img src="@/assets/images/img1.jpg"  style="width: 100px; height: 100px; align-self: center;" v-show="isImg"/>
                                         </div>
                                         <input type="file" @change="uploadCover()" @mouseover="mouseOver" @mouseout="mouseOut" ref="inputPic" class="inputPic" accept="image/jpeg,image/jpg,image/png">
                                     </div>
@@ -151,9 +151,6 @@
                         <div class="right">
                             <el-form-item label="用户编号" prop="id">
                                 <el-input v-model="form.id" disabled></el-input>
-                            </el-form-item>
-                            <el-form-item label="账号" prop="account">
-                                <el-input v-model="form.account" disabled></el-input>
                             </el-form-item>
                             <el-form-item label="地区" prop="province">
                                 <el-input v-model="form.province"></el-input>
@@ -206,7 +203,7 @@
 
             const updateAdminInfo = ref({})
             const imgSrc = ref('@/assets/images/img1.jpg')
-            const isImg = ref(false)
+            const isImg = ref(true)
             const inputPic = ref(null)
             let adminInfo = reactive(JSON.parse(window.sessionStorage.getItem('adminInfo')))
             if (adminInfo.sex === 1) {
@@ -222,10 +219,10 @@
                 sex: adminInfo.sex,
                 id: adminInfo.id,
                 account: "",
-                area: "",
-                hobby: "",
-                work: "",
-                design: "",
+                area: "杭州西湖",
+                hobby: "乒乓球",
+                work: "IT",
+                design: "努力哦！",
                 createTime:adminInfo.createTime,
                 loginTime:adminInfo.loginTime,
                 name:adminInfo.name,

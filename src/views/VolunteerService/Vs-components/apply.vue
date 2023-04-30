@@ -22,6 +22,27 @@
                                             :data="treeDataService"
                                             placeholder="请选择服务方向"
                                             style="width: 300px"
+                                            @change="handleSelect"
+                                    ></a-tree-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="24">
+                                <el-form-item label="是否选择团队" prop="type" >
+                                        <a-radio-group v-model="form.type">
+                                            <a-radio @click="form.isShow=1" value="1">是</a-radio>
+                                            <a-radio @click="form.isShow=0" value="0">否</a-radio>
+                                        </a-radio-group>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="24">
+                                <el-form-item v-show="form.isShow === 1 ? 1:0"  label="团队号" prop="teamId" :rules="[{required:true,message:'请选择团队号'}]">
+                                    <a-tree-select
+                                            v-model="userInfo.teamId"
+                                            :allow-clear="true"
+                                            :allow-search="true"
+                                            :data="treeDataPosition"
+                                            placeholder="请选择团队号"
+                                            style="width: 300px"
                                     ></a-tree-select>
                                 </el-form-item>
                             </el-col>
@@ -70,10 +91,9 @@
     /* eslint-disable */
     import {reactive, ref,getCurrentInstance} from "vue";
     import {useRouter} from "vue-router";
-    import {modifyInfo,queryVolunteer} from'@/api/volunteer'
     import Bottom from '@/views/VolunteerService/Vs-components/footer.vue'
     import { Message } from '@arco-design/web-vue';
-    import {applyVolunteer,getVolDirections} from "@/api/volunteer";
+    import {applyVolunteer,modifyInfo,queryVolunteer,getVolDirections,pageVolPositions,queryVolPositions} from "@/api/volunteer";
 
     export default {
         name: "VolunteerService",
@@ -86,17 +106,49 @@
             let userInfo = ref({
                 comment:'',
                 id:volunteerInfo.id,
-                intention:''
+                intention:'',
+                type:'',
+                teamId:''
+
             });
+            const form = reactive({
+                type:1,
+                isShow:0
+            })
             const value = ref('')
             const activeIndex = ref("0");
             const treeDataService = ref([])
+            const treeDataPosition = ref([])
+            // const handlePageVolPositions = async ()=>{
+            //     const useParams = {
+            //         params:{pageNumber: 1, pageSize: 20,volunteerType:'',risk:'' ,name:''}
+            //     }
+            //     await queryVolPositions(useParams)
+            //     // treeDataPosition.value =
+            // }
+            const handleSelect = async (value)=>{
+                treeDataPosition.value = []
+                const useParams = {
+                    params:{
+                        risk:1
+                    }
+                }
+                const {data} = await queryVolPositions(useParams)
+                data.forEach(item=>{
+                    treeDataPosition.value.push({
+                        key:item.id,
+                        title:item.name
+                    })
+                })
+            }
             const handleSubmitApply = async ()=>{
                 const intention = userInfo.value.intention.join(',')
                 const body = {
                     id:volunteerInfo.id,
                     comment:userInfo.value.comment,
-                    intention:intention
+                    intention:intention,
+                    teamId:userInfo.value.teamId,
+                    type:userInfo.value.type
                 }
                 const res = await applyVolunteer(body)
                 if (res.code===200) {
@@ -105,9 +157,6 @@
                 }
                 console.log('ress',res)
             }
-            const handleSelect = (key, keyPath) => {
-                console.log(key, keyPath);
-            };
             const handleGetVolDirections = async (volunteerType)=>{
                 const useParams = {
                     params:{
@@ -145,12 +194,15 @@
 
             return {
                 activeIndex,
-                handleSelect,
                 userInfo,
                 value,
                 elForm,
                 treeDataService,
-                handleSubmitApply
+                handleSubmitApply,
+                form,
+                // handlePageVolPositions,
+                handleSelect,
+                treeDataPosition
             };
         },
     };

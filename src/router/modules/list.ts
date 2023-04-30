@@ -28,5 +28,15 @@ export default {
         roles: ['*'],
       },
     },
+    {
+      path: 'card',
+      name: 'card',
+      component: () => import('@/views/backStage/list/card/index.vue'),
+      meta: {
+        locale: '比赛赛程',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
   ],
 };

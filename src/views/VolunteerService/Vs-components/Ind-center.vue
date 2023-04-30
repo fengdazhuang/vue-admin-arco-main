@@ -43,6 +43,70 @@
                 </div>
 
             </div>
+            <a-modal width="800px" v-model:visible="showModel1" @cancel="handleCancel1" @ok="handleConfirm1($refs)"  unmountOnClose>
+                <template #title>
+                    查看团队成员信息
+                </template>
+                <div>
+                    <a-table
+                            size="large"
+                            row-key="id"
+                            :loading="loading"
+                            :pagination="pagination"
+                            :data="volunteerList"
+                            :bordered="false"
+                            @page-change="onPageChange"
+                            @selection-change="handleGetId"
+                    >
+                        <template #columns>
+                            <a-table-column
+                                    title="姓名"
+                                    data-index="name"
+                            >
+                            </a-table-column>
+                            <a-table-column
+                                    title="照片"
+                                    data-index="photo"
+                            >
+                                <template #cell="{ record }">
+                                    <a-space @click="handle(record)">
+                                        <a-avatar
+                                                :size="40"
+                                                shape="square"
+                                        >
+                                            <a-image
+                                                    :preview-visible="visible2"
+                                                    @preview-visible-change="() => { visible2 = false }"
+                                                    src="/src/assets/images/img1.jpg"
+                                            />
+                                        </a-avatar>
+                                    </a-space>
+                                </template>
+                            </a-table-column>
+                            <a-table-column
+                                    title="性别"
+                                    data-index="sex"
+                            />
+                            <a-table-column
+                                    title="年龄"
+                                    data-index="age"
+                            />
+                            <a-table-column
+                                    title="邮箱"
+                                    data-index="email"
+                            />
+<!--                            <a-table-column-->
+<!--                                    title="操作"-->
+<!--                                    data-index="operations"-->
+<!--                            >-->
+<!--                                <template #cell="{ record }">-->
+<!--                                    <a-button @click="handleClick1(record)" type="text">详细信息</a-button>-->
+<!--                                </template>-->
+<!--                            </a-table-column>-->
+                        </template>
+                    </a-table>
+                </div>
+            </a-modal>
         </div>
       <div class="main">
         <div class="main-up">
@@ -87,6 +151,9 @@ export default {
             sex:1,
             email:''
         });
+        const visible2 = ref(false)
+        const volunteerList = ref([])
+        const showModel1 = ref(false)
         const router = useRouter()
         const isShow = ref(false)
         const volunteerInfo = JSON.parse(window.sessionStorage.getItem('volunteerInfo'))
@@ -135,13 +202,21 @@ export default {
 
         }
         const handleVolTeamInfo = async (teamId) => {
+            showModel1.value = true
             const useParams = {
                 params:{
                     teamId:+teamId
                 }
             }
-          const res = await volTeamInfo(useParams)
-            console.log('resss',res)
+          const {data} = await volTeamInfo(useParams)
+            data.members.forEach(item=>{
+                if(item.sex===1) {
+                    item.sex = '男'
+                }else {
+                    item.sex = '女'
+                }
+            })
+            volunteerList.value = data.members
         }
       const previewResume = ()=>{
           window.open('#/resume')
@@ -152,6 +227,13 @@ export default {
         }
         const handleSelectType = ()=>{
             window.open('#/selectType')
+        }
+        const handleConfirm1 = async ($ref)=> {
+            /* eslint-disable */
+            visible.value = false
+        }
+        const handleCancel1 = () => {
+            showModel.value = false;
         }
         const handleLogout = async ()=>{
           // const useParams = {
@@ -178,7 +260,12 @@ export default {
             handleIsShowTrue,
             isShowVolunteerType,
             nowVolunteerInfo,
-            handleVolTeamInfo
+            handleVolTeamInfo,
+            showModel1,
+            volunteerList,
+            handleConfirm1,
+            handleCancel1,
+            visible2
         }
     }
 };
