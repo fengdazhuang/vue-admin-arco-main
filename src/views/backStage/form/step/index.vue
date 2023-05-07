@@ -93,8 +93,6 @@
                 </a-modal>
             </a-card>
         </div>
-
-
     </div>
 </template>
 

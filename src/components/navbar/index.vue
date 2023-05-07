@@ -182,6 +182,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
+import {useRouter} from 'vue-router'
 import { Message } from '@arco-design/web-vue';
 import { useDark, useToggle } from '@vueuse/core';
 import { useAppStore, useUserStore } from '@/store';
@@ -203,6 +204,7 @@ export default defineComponent({
     const avatar = computed(() => {
       return userStore.avatar;
     });
+    const router = useRouter()
     const theme = computed(() => {
       return appStore.theme;
     });
@@ -232,7 +234,9 @@ export default defineComponent({
       refBtn.value.dispatchEvent(event);
     };
     const handleLogout = () => {
-      logout();
+        window.localStorage.removeItem('token')
+        router.push('/login')
+      // logout();
     };
     const setDropDownVisible = () => {
       const event = new MouseEvent('click', {

@@ -43,99 +43,9 @@
                         </a>
                     </li>
                     </template>
-<!--                    <li>-->
-<!--                        <a href="http://www.10086.cn" target="_blank">-->
-<!--                            <img src="../assets/image/zgydlogo.png" alt="" />-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.189.cn" target="_blank">-->
-<!--                            <img src="../assets/image/zgdxlogo4.png" />-->
-<!--                        </a>-->
-<!--                    </li>-->
-
-<!--                    <li>-->
-<!--                        <a href="http://www.icbc.com.cn/icbc" target="_blank">-->
-<!--                            <img src="../assets/image/logo_fsyh2.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.loongair.cn/#/web/home" target="_blank">-->
-<!--                            <img src="../assets/image/logo_clhk2.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.alibabagroup.com/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_albb2.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.antfin.com/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_zfb2.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="http://www.361sport.com/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_3612.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="http://www.cpic.com.cn/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_tpybx3.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.dbappsecurity.com.cn" target="_blank">-->
-<!--                            <img src="../assets/image/logo_ah3.png" alt=""-->
-<!--                            /></a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://bornan.sport/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_bnty2.png"-->
-<!--                            /></a>-->
-<!--                    </li>-->
                 </ul>
                 <div class="cl"></div>
             </div>
-            <!-- 官方赞助商 -->
-<!--            <div class="title-gfzzs">-->
-<!--                <img src="../assets/image/title_gfzzs.png" alt="" />-->
-<!--            </div>-->
-<!--            <div class="main">-->
-<!--                <ul class="gfzzs_lists">-->
-<!--                    <li>-->
-<!--                        <a href="https://www.yto.net.cn" target="_blank">-->
-<!--                            <img src="../assets/image/logo_yt2.png" alt="" style="" />-->
-<!--                        </a>-->
-<!--                    </li>-->
-
-<!--                    <li>-->
-<!--                        <a href="https://www.wahaha.com.cn/#/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_wahaha2.png" alt="" />-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.hikvision.com/cn/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_hkws2.png" alt="" />-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a href="https://www.canon.com.cn/" target="_blank">-->
-<!--                            <img src="../assets/image/logo_canon3.png" alt="" />-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--                <div class="cl"></div>-->
-<!--            </div>-->
-<!--            <div class="all_zzs">-->
-<!--                <a href="" target="_blank" class="hzhb-qbzzqy">-->
-<!--                    <img src="../assets/image/hzhb_qbzzqy.png" alt="" />-->
-<!--                </a>-->
-<!--                <a href="" target="_blank" class="hzhb-swfw">-->
-<!--                    <img src="../assets/image/hzhb_swfw.png" alt="" />-->
-<!--                </a>-->
-<!--            </div>-->
-            <!-- 特许经营 -->
             <div class="title-txjy">
                 <img src="../assets/image/title_txjy.png" alt="" />
             </div>

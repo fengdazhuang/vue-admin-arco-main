@@ -31,6 +31,9 @@ export default defineConfig({
       "/api5":{
         target: "http://localhost:8005"
       },
+      "/api7":{
+        target: "http://localhost:8007"
+      },
 
     }
   },

@@ -375,12 +375,6 @@
             // let filterRowKeys = []
             const handleGetId = (rowKeys) =>{
                 ids = []
-                console.log('rowKeys',rowKeys)
-
-                // rowKeys = rowKeys.filter(item=>{
-                //     return !filterRowKeys.includes(item)
-                // })
-
                 PlayerList.value.forEach(item=>{
                     if (rowKeys.includes(item.id)) {
                         // filterRowKeys.push(item.id)
@@ -600,7 +594,6 @@
             const checkStrictly = ref(false);
 
             const handleChangeMany = async ()=>{
-                console.log('idsbe',ids)
                 ids.forEach(item=>{
                     console.log('item.status',item.status)
                     if (item.status) {

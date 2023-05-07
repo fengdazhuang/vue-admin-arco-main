@@ -173,8 +173,6 @@
             const ctx1 = getCurrentInstance()
             const handlePublic = async (articleRef)=>{
                 const useData = {...form,publishTime:new Date(time.value)}
-                console.log(useData)
-                console.log(new Date(time.value))
                const res = await addNews(useData)
                 if (res.code === 200) {
                     // articleRef.resetFields()
