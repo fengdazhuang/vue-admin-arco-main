@@ -23,6 +23,7 @@ export default {
   'menu.list': '赛事管理',
   'menu.service': '医检管理',
   'menu.result':'资讯管理',
+  'menu.cure':'医疗管理',
   'menu.person': '人员管理',
   'menu.personnel': '人员管理',
   'menu.form': '志愿管理',

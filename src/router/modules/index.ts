@@ -3,6 +3,7 @@ import Dashboard from './dashboard';
 import cooperation from './cooperation'
 import List from './list';
 import Service from './service'
+import Medicine from './medicine'
 import Form from './form';
 import Profile from './profile';
 import Visualization from './visualization';
@@ -18,6 +19,7 @@ export default [
   Visualization,
   List,
   Service,
+  Medicine,
   Form,
   Profile,
   Result,

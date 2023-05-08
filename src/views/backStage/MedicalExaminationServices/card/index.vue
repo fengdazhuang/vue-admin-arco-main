@@ -125,8 +125,8 @@
                               data-index="operations"
                       >
                           <template #cell="{ record }">
-                              <a-button @click="handleSubmitResult(record,1)" type="text">正常</a-button>
-                              <a-button @click="handleSubmitResult(record,0)" type="text" status="danger">异常</a-button>
+                              <a-button @click="handleSubmitResult(record,1)" type="text" status="danger">删除</a-button>
+
                           </template>
                       </a-table-column>
                   </template>

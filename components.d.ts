@@ -24,9 +24,15 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     Footer: typeof import('./src/components/footer/index.vue')['default']
+    FooterView: typeof import('./src/components/TodoList/components/FooterView.vue')['default']
     FormWrapper: typeof import('./src/components/global-setting/form-wrapper.vue')['default']
     GlobalSetting: typeof import('./src/components/global-setting/index.vue')['default']
+    Header: typeof import('./src/components/TodoList/components/HeaderView.vue')['default']
+    HeaderView: typeof import('./src/components/TodoList/components/HeaderView.vue')['default']
+    Item: typeof import('./src/components/TodoList/components/ItemVue.vue')['default']
+    ItemVue: typeof import('./src/components/TodoList/components/ItemVue.vue')['default']
     List: typeof import('./src/components/message-box/list.vue')['default']
+    ListView: typeof import('./src/components/TodoList/components/ListView.vue')['default']
     Menu: typeof import('./src/components/menu/index.vue')['default']
     MessageBox: typeof import('./src/components/message-box/index.vue')['default']
     Navbar: typeof import('./src/components/navbar/index.vue')['default']
@@ -36,6 +42,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SalesList: typeof import('./src/components/SalesList/index.vue')['default']
     Sign: typeof import('./src/components/sign/index.vue')['default']
+    TodoList: typeof import('./src/components/TodoList/index.vue')['default']
     UploadImg: typeof import('./src/components/uploadImg/uploadImg.vue')['default']
   }
 }
