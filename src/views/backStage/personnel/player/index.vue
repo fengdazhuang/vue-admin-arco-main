@@ -325,7 +325,7 @@
 <!--                </a-space>-->
 <!--              </a-form-item>-->
               <a-form-item field="email" label="电子邮箱"
-                           :rules="[{required:true,message:'phoneNumber is required'},{minLength:5,message:'不能少于5位数字'}]"
+                           :rules="[{required:true,message:'请输入电子邮箱'}]"
                            :validate-trigger="['change','input']"
               >
                 <a-input v-model="form.email" placeholder="请输入电子邮箱" />

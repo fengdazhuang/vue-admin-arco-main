@@ -29,8 +29,8 @@
                             <el-col :span="24">
                                 <el-form-item label="是否选择团队" prop="type" >
                                         <a-radio-group v-model="form.type">
-                                            <a-radio @click="form.isShow=1" value="1">是</a-radio>
-                                            <a-radio @click="form.isShow=0" value="0">否</a-radio>
+                                            <a-radio @click="form.isShow=1" :value="0">是</a-radio>
+                                            <a-radio @click="form.isShow=0" :value="1">否</a-radio>
                                         </a-radio-group>
                                 </el-form-item>
                             </el-col>
@@ -64,7 +64,7 @@
                                                 type="primary"
                                                 size="medium"
                                                 class="re-return"
-                                                @click="OpenPage()"
+                                                @click="router.push('/ind-center')"
                                         >
                                             返回
                                         </el-button>
@@ -106,13 +106,13 @@
             let userInfo = ref({
                 comment:'',
                 id:volunteerInfo.id,
-                intention:'',
+                intention:[],
                 type:'',
                 teamId:''
 
             });
             const form = reactive({
-                type:1,
+                type:0,
                 isShow:0
             })
             const value = ref('')
@@ -142,13 +142,13 @@
                 })
             }
             const handleSubmitApply = async ()=>{
-                const intention = userInfo.value.intention.join(',')
+                const intention = userInfo.value.intention + ''
                 const body = {
                     id:volunteerInfo.id,
                     comment:userInfo.value.comment,
                     intention:intention,
                     teamId:userInfo.value.teamId,
-                    type:userInfo.value.type
+                    type:form.type
                 }
                 const res = await applyVolunteer(body)
                 if (res.code===200) {
@@ -202,7 +202,8 @@
                 form,
                 // handlePageVolPositions,
                 handleSelect,
-                treeDataPosition
+                treeDataPosition,
+              router
             };
         },
     };

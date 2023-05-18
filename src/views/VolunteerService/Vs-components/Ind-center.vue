@@ -9,8 +9,12 @@
                     </p>
                     <div class="user">
                         <div class="user-icon">
-                            <el-icon style="font-size: 20px"><User /></el-icon>
-                            <p style="font-size: 14px; margin-top: 0.1rem">志愿者姓名 {{nowVolunteerInfo.name}}</p>
+                            <el-icon v-if="!nowVolunteerInfo.photo" style="font-size: 20px">
+                              <User />
+                            </el-icon>
+                          <img :style="{width:'20px',height:'20px'}" v-else :src="nowVolunteerInfo.photo" />
+
+                          <p style="font-size: 14px; margin-top: 0.1rem;">志愿者姓名 <span style="color: rgb(23, 159, 255);">{{nowVolunteerInfo.name}}</span></p>
                         </div>
                         <p style="font-size: 12px">志愿者类型</p>
                         <span v-if="isShowVolunteerType" style="font-size: 12px; color: #179fff">{{nowVolunteerInfo.volunteerType===0 ? '赛会志愿者':'城市志愿者' }}</span>
@@ -114,12 +118,52 @@
             <span style="font-size: 12px; color: rgb(184, 184, 182)" v-if="isShowVolunteerType">{{nowVolunteerInfo.volunteerType ===0 ? '赛会志愿者':'城市志愿者'}}</span>
           <span style="font-size: 12px; color: rgb(184, 184, 182)"   v-else>选择志愿者类型后呈现</span>
         </div>
-        <div style="height: 4rem" class="main-fo">
-          <el-steps :active="3" direction="vertical">
-            <el-step title="Step 1" description="哈哈哈哈哈" />
-            <el-step title="Step 2" />
-            <el-step title="Step 3" />
-          </el-steps>
+        <div class="phase-container">
+          <div class="phase-item">
+            <div class="phase-title flex-layout">
+              <div class="phase-tip">阶段一</div>
+              <div class="no-phase-name">
+                未申请
+              </div>
+            </div>
+            <div class="phase-content">
+              <div class="pahse-cut-line"></div>
+              <div class="phase-main">
+                <div class="no-phase-intro"></div>
+                <!---->
+              </div>
+            </div>
+          </div>
+          <div class="phase-item">
+            <div class="phase-title flex-layout">
+              <div class="phase-tip">阶段二</div>
+              <div class="no-phase-name">
+                已申请
+              </div>
+            </div>
+            <div class="phase-content">
+              <div class="pahse-cut-line"></div>
+              <div class="phase-main">
+                <div class="no-phase-intro no-type no-width"></div>
+                <!---->
+              </div>
+            </div>
+          </div>
+          <div class="phase-item">
+            <div class="phase-title flex-layout">
+              <div class="phase-tip">阶段三</div>
+              <div class="no-phase-name no-type no-width">
+                申请结果
+              </div>
+            </div>
+            <div class="phase-content">
+              <div class="pahse-cut-line cutline-bg"></div>
+              <div class="phase-main">
+                <div class="no-phase-intro no-type no-width"></div>
+                <!---->
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -319,11 +363,16 @@ body {
             .user-icon {
               display: flex;
               flex-direction: row;
+
               .el-icon {
                 width: 26px;
                 height: 26px;
                 background-color: rgb(162, 168, 184);
                 border-radius: 50%;
+              }
+              img{
+                position: relative;
+                top: 8px;
               }
             }
           }
@@ -392,6 +441,76 @@ body {
       align-items: center;
       background-color: rgb(255, 255, 255);
 
+      .phase-container {
+        position: relative;
+        left: -20%;
+        text-align: left;
+        box-sizing: border-box;
+        padding: 50px 0 50px 150px;
+        .phase-item {
+
+          font-size: 13px;
+          text-align: left;
+          box-sizing: border-box;
+          .phase-title {
+
+            text-align: left;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            .phase-tip {
+              box-sizing: border-box;
+              padding: 2px 5px;
+              color: #fff;
+              font-size: 13px;
+              line-height: 24px;
+              background: #10a1ff;
+              border-radius: 0 100px 100px 0;
+              text-align: center;
+            }
+            .no-phase-name {
+              text-align: left;
+              box-sizing: border-box;
+              line-height: 24px;
+              background: #f6f8fb;
+              height: 24px;
+              margin-left: 16px;
+              width: 273px;
+            }
+          }
+          .phase-content {
+
+
+            text-align: left;
+            box-sizing: border-box;
+            display: flex;
+            .pahse-cut-line {
+
+
+              text-align: left;
+              box-sizing: border-box;
+              width: 3px;
+              margin: 0 45px 0 18px;
+              background: #10a1ff;
+            }
+            .phase-main {
+
+              box-sizing: border-box;
+              padding: 20px 0 40px 0;
+              text-align: left;
+              .no-phase-intro {
+
+
+                text-align: left;
+                box-sizing: border-box;
+                background: #f6f8fb;
+                width: 273px;
+                height: 66px;
+              }
+            }
+          }
+        }
+      }
       .main-up {
         display: flex;
         align-items: center;

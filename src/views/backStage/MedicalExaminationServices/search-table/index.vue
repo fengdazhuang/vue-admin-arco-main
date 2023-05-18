@@ -8,31 +8,31 @@
                     <a-col :flex="1">
                         <a-form
                                 :model="form"
-                                :label-col-props="{ span: 6 }"
-                                :wrapper-col-props="{ span: 18 }"
+                                :label-col-props="{ span: 7 }"
+                                :wrapper-col-props="{ span: 15 }"
                                 label-align="left"
                         >           <a-row :gutter="16">
-                            <a-col :span="12">
+                            <a-col :span="11">
                                 <a-form-item field="playerId"  label="参赛证ID">
                                     <a-input v-model="form.playerId" placeholder="请输入参赛证ID" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="12">
+                            <a-col :span="11">
                                 <a-form-item field="sampleNumber"  label="样品编号">
                                     <a-input  v-model="form.sampleNumber" placeholder="请输入样品编号" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="12">
+                            <a-col :span="11">
                                 <a-form-item field="inspector"  label="检测人员">
                                     <a-input  v-model="form.inspector" placeholder="请输入检测人员" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="12">
+                            <a-col :span="11">
                                 <a-form-item field="examinationPosition"  label="检测地点">
                                     <a-input v-model="form.examinationPosition"  placeholder="请输入检测地点" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="12">
+                            <a-col :span="11">
                                 <a-form-item field="examinationType"  label="检测类型">
                                     <a-tree-select :data="TreeExaminationType" v-model="form.examinationType" placeholder="请选择检测类型"/>
                                 </a-form-item>
@@ -161,7 +161,7 @@
 
 <script>
     import {reactive, ref} from 'vue'
-    import {Message} from "_@arco-design_web-vue@2.45.1@@arco-design/web-vue";
+    import {Message} from "@arco-design/web-vue";
     import {addDopTest,submitResult,pageExamination} from '@/api/dope'
     import useLoading from "../../../../hooks/loading";
 
@@ -264,6 +264,7 @@
                     console.log('res',res)
                     if (res.success) {
                         Message.success('人脸识别成功')
+                      this.isShow = false
                         const useParams = {
                            params:{
                                pageNumber: 1,
@@ -285,6 +286,7 @@
                             }
                         })
                     } else {
+                      this.isShow = false
                         this.imgSrc = ''
                         this.form = {
                             playerId: '',

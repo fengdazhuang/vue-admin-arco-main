@@ -11,8 +11,8 @@
       <div class="fo-container">
         <p>欢迎报名杭州2022年亚运会和亚残运会赛会志愿者</p>
         <span class="fo-content">
-            <button class="fo-content" @click="PageOpen()">注册登录</button>
-            <button class="fo-content" @click="ToPersonal">个人中心</button>
+            <button class="fo-content" :style="{fontSize:'16px'}" @click="PageOpen()">注册登录</button>
+            <button class="fo-content" :style="{fontSize:'16px'}" @click="ToPersonal">个人中心</button>
         </span>
       </div>
     </div>
@@ -53,11 +53,9 @@ export default {
     .vid {
       width: 100%;
       height: 4rem;
-      //background-color: black;
+      background-color: black;
       display: block;
       margin-top: 0.5rem;
-      background-image: url("@/assets/images/volunteer.jpg");
-      background-size: 100%;
     }
     .txt {
       font-size: 16px;
@@ -80,9 +78,6 @@ export default {
       margin-top: 0.7rem;
       margin-bottom: 1rem;
       background-color: rgb(247, 248, 252);
-      button {
-        font-size: 0.14rem !important;
-      }
       p {
         margin-top: 0.2rem;
         font-size: 28px;

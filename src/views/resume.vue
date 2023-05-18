@@ -418,6 +418,7 @@
                         Message.success('提交成功')
                         isEdit.value = true
                         handleQueryVolunteer()
+                        router.push('/ind-center')
                         // volunteerInfo = data
                     } else {
                         Message.error('提交失败')

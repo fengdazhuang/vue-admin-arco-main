@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['工作台', '实时监控']" />
+    <Breadcrumb :items="['工作台', '亚运直播']" />
     <div class="layout">
       <div class="layout-left-side">
         <ChatPanel />

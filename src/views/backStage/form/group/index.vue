@@ -220,7 +220,12 @@
             let node
             const num = ref(1)
             const handleWrite = ()=>{
+              if(form.isShow===1) {
                 form.emailContent = '恭喜你！通过审核，成为一名亚运会志愿者'
+              } else  {
+                form.emailContent = '审核失败！你没有通过志愿者审核'
+              }
+
             }
             const handleChange = (value: number) => {
                 console.log(value)
@@ -477,6 +482,7 @@
                 showModel.value = false;
                 form.status = ''
                 form.isShow = 0
+              form.emailContent = ''
                 userInfo.value = []
                 ctx.$nextTick(() => {
                     Object.assign(form, {

@@ -69,17 +69,21 @@
             :src="img"
         />
       </a-form-item>
-      <a-space :size="16" direction="vertical">
+      <a-space :size="16">
+        <div>
+          <input type="checkbox"  :style="{position:'relative',top:'3px'}" :checked="isChecked2" @click="isChecked2 = !isChecked2"  name="" value="2" />
+          <span :style="{fontSize:'12px',margin:'0 0 0 10px'}">十天内自动登录</span>
+        </div>
         <div class="login-form-password-actions">
           <!--  <a-checkbox checked="rememberPassword" @change="setRememberPassword">
             {{ $t('login.form.rememberPassword') }}
           </a-checkbox> -->
           <a-link>{{ $t('login.form.forgetPassword') }}</a-link>
         </div>
-        <a-button type="primary" html-type="submit" long :loading="loading">
-          {{ $t('login.form.login') }}
-        </a-button>
       </a-space>
+      <a-button :style="{margin:'10px 0 0 0'}" type="primary" html-type="submit" long :loading="loading">
+        {{ $t('login.form.login') }}
+      </a-button>
     </a-form>
   </div>
 </template>

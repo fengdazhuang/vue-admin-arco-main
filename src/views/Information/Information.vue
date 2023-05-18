@@ -26,7 +26,7 @@
 <!--            </div>-->
             <div class="yydt-box" @click="handleReadNews(item.id)" v-for="item in newsData" :key="item.id">
                 <div v-show="item.articleCover" class="yydt-box-img">
-                    <img @click="handleInfo(item)" :src="item.articleCover" />
+                    <img @click="handleInfo(item)" :src="item.articleCover" :style="{width:'600px',height:'360px'}" />
                 </div>
                 <div class="yydt-item">
                     <p class="time">{{item.createTime}}</p>

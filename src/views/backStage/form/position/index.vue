@@ -5,8 +5,8 @@
         <div class="main">
             <a-card :style="{width:'100%'}" class="general-card card" title="志愿服务点">
                 <a-space size="large" >
-                    <span :style="{color:'#000'}">姓名</span>
-                    <a-input @blur="handleSearchName" v-model="form.name"  placeholder="请输入姓名"/>
+<!--                    <span :style="{color:'#000'}">姓名</span>-->
+<!--                    <a-input @blur="handleSearchName" v-model="form.name"  placeholder="请输入姓名"/>-->
                     <span :style="{color:'#000'}">志愿类型</span>
                     <a-tree-select @change="handleSearchType(form.volunteerType)" :data="treeData" v-model="form.volunteerType"  placeholder="请选择志愿类型"/>
                     <span :style="{color:'#000'}">服务方向</span>
@@ -442,11 +442,11 @@
             const handleClick1 = async (row) => {
                 console.log('row',row)
                 id.value = row.id
-                if (row.sex==='男') {
-                    row.sex = '1'
-                } else {
-                    row.sex = '0'
-                }
+                // if (row.sex==='男') {
+                //     row.sex = '1'
+                // } else {
+                //     row.sex = '0'
+                // }
 
                 const keys = Object.keys(row)
                 keys.forEach((item,index)=>{
@@ -496,6 +496,16 @@
                     if (item.label === 'risk') {
                         item.label='服务意向'
                     }
+                  if (item.label === 'volunteerType') {
+                    item.label='志愿者类型'
+                    if(item.value === 0) {
+                      item.value='赛会志愿者'
+                    }else if(item.value === 1) {
+                      item.value = '城市志愿者'
+                    } else {
+                      item.value = '所有'
+                    }
+                  }
                     if (item.label === 'volunteerCounts') {
                         item.label='人数'
                     }
@@ -517,9 +527,6 @@
                 })
                 volunteerList.value = data.members
                 showModel.value = true;
-                ctx.$nextTick(() => {
-                    Object.assign(form, row);
-                });
 
             };
             const handleSearchName = ()=>{

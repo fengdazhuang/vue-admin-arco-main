@@ -8,16 +8,7 @@
             <!-- <img src="@/assets/images/banner1.jpg" alt=""> -->
         </swiper-slide>
         <swiper-slide>
-            <img src="@/assets/images/banner2.jpg" alt="">
-        </swiper-slide>
-        <swiper-slide>
-            <img src="@/assets/images/banner3.jpg" alt="">
-        </swiper-slide>
-        <swiper-slide>
-            <img src="@/assets/images/banner4.jpg" alt="">
-        </swiper-slide>
-        <swiper-slide>
-            <img src="@/assets/images/banner5.jpg" alt="">
+            <img src="@/assets/images/index2.jpg" alt="">
         </swiper-slide>
     </swiper>
         <div class="count-down">
